@@ -1,0 +1,276 @@
+{
+  "@type":[
+    "http://onto.fel.cvut.cz/ontologies/documentation/question"
+  ],
+  "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+  ],
+  "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://onto.fel.cvut.cz/s-pipes-editor/3a9a1353-1dc9-4244-83e7-e6b852413b5d",
+  "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+    "form"
+  ],
+  "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+    {
+      "@type":[
+        "http://onto.fel.cvut.cz/ontologies/documentation/question"
+      ],
+      "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+      ],
+      "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://onto.fel.cvut.cz/s-pipes-editor/3a9a1353-1dc9-4244-83e7-e6b852413b5d",
+      "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+        "wizard-step",
+        "section"
+      ],
+      "http://www.w3.org/2000/01/rdf-schema#label":"Module of type Deploy (http://onto.fel.cvut.cz/ontologies/lib/module/deploy)",
+      "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+        {
+          "@type":[
+            "http://onto.fel.cvut.cz/ontologies/documentation/question"
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-rdf4j-context-iri",
+          "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+
+          ],
+          "http://www.w3.org/2000/01/rdf-schema#label":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-rdf4j-context-iri",
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+
+          ],
+          "http://purl.org/dc/elements/1.1/description":"Rdf4j context IRI\n\n",
+          "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+            {
+              "@type":[
+                "http://onto.fel.cvut.cz/ontologies/documentation/question"
+              ],
+              "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+              ],
+              "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://www.w3.org/2000/01/rdf-schema#label",
+              "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+
+              ],
+              "http://www.w3.org/2000/01/rdf-schema#label":"http://www.w3.org/2000/01/rdf-schema#label",
+              "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+
+              ],
+              "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+                {
+                  "@type":[
+                    "http://onto.fel.cvut.cz/ontologies/documentation/question"
+                  ],
+                  "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+                  ],
+                  "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://www.w3.org/2000/01/rdf-schema#Resource",
+                  "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+
+                  ],
+                  "http://www.w3.org/2000/01/rdf-schema#label":"URI",
+                  "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+
+                  ],
+                  "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+
+                  ],
+                  "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+                    {
+                      "@type":[
+                        "http://onto.fel.cvut.cz/ontologies/documentation/answer"
+                      ],
+                      "http://onto.fel.cvut.cz/ontologies/form/has-answer-hash":"94fa886097746695da67ea878d1a67171321224c",
+                      "http://onto.fel.cvut.cz/ontologies/documentation/has_object_value":"http://onto.fel.cvut.cz/s-pipes-editor/3a9a1353-1dc9-4244-83e7-e6b852413b5d"
+                    }
+                  ],
+                  "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-a5f46726-398b-48af-af41-e94c056a628b"
+                }
+              ],
+              "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+                {
+                  "@type":[
+                    "http://onto.fel.cvut.cz/ontologies/documentation/answer"
+                  ]
+                }
+              ],
+              "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-e96c5355-e336-4042-a4b4-783ed0a77e92"
+            }
+          ],
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+            {
+              "@type":[
+                "http://onto.fel.cvut.cz/ontologies/documentation/answer"
+              ]
+            }
+          ],
+          "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-b0f4fd67-9b72-4a7d-99a7-f19249e7fb6c",
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-origin-context":"http://onto.fel.cvut.cz/ontologies/lib/module"
+        },
+        {
+          "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-e96c5355-e336-4042-a4b4-783ed0a77e92"
+        },
+        {
+          "@type":[
+            "http://onto.fel.cvut.cz/ontologies/documentation/question"
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-rdf4j-repository-name",
+          "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+
+          ],
+          "http://www.w3.org/2000/01/rdf-schema#label":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-rdf4j-repository-name",
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+
+          ],
+          "http://purl.org/dc/elements/1.1/description":"Rdf4j repository name\n\n",
+          "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+            {
+              "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-e96c5355-e336-4042-a4b4-783ed0a77e92"
+            }
+          ],
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+            {
+              "@type":[
+                "http://onto.fel.cvut.cz/ontologies/documentation/answer"
+              ]
+            }
+          ],
+          "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-42835e69-3660-4837-a728-37c65c80b8a9",
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-origin-context":"http://onto.fel.cvut.cz/ontologies/lib/module"
+        },
+        {
+          "@type":[
+            "http://onto.fel.cvut.cz/ontologies/documentation/question"
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-is-replace",
+          "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+
+          ],
+          "http://www.w3.org/2000/01/rdf-schema#label":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-is-replace",
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+
+          ],
+          "http://purl.org/dc/elements/1.1/description":"Is replace\n\n",
+          "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+            {
+              "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-e96c5355-e336-4042-a4b4-783ed0a77e92"
+            }
+          ],
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+            {
+              "@type":[
+                "http://onto.fel.cvut.cz/ontologies/documentation/answer"
+              ]
+            }
+          ],
+          "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-05ee892a-8ef0-4bda-ab83-ef81e9266f63",
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-origin-context":"http://onto.fel.cvut.cz/ontologies/lib/module"
+        },
+        {
+          "@type":[
+            "http://onto.fel.cvut.cz/ontologies/documentation/question"
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-rdf4j-server-url",
+          "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+
+          ],
+          "http://www.w3.org/2000/01/rdf-schema#label":"http://onto.fel.cvut.cz/ontologies/lib/module/rdf4j/p-rdf4j-server-url",
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+
+          ],
+          "http://purl.org/dc/elements/1.1/description":"Rdf4j server URL\n\n",
+          "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+            {
+              "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-e96c5355-e336-4042-a4b4-783ed0a77e92"
+            }
+          ],
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+            {
+              "@type":[
+                "http://onto.fel.cvut.cz/ontologies/documentation/answer"
+              ]
+            }
+          ],
+          "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-f09ba3a3-c7cc-4cce-a6e6-df8ebfe40906",
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-origin-context":"http://onto.fel.cvut.cz/ontologies/lib/module"
+        },
+        {
+          "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-a5f46726-398b-48af-af41-e94c056a628b"
+        }
+      ],
+      "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+
+      ],
+      "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+
+      ],
+      "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-6dd6ec3c-5e6b-4d8c-b788-f84f26daa8b7"
+    },
+    {
+      "@type":[
+        "http://onto.fel.cvut.cz/ontologies/documentation/question"
+      ],
+      "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+      ],
+      "http://onto.fel.cvut.cz/ontologies/form/has-question-origin":"http://onto.fel.cvut.cz/s-pipes-editor/3a9a1353-1dc9-4244-83e7-e6b852413b5d",
+      "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+        "wizard-step",
+        "section"
+      ],
+      "http://www.w3.org/2000/01/rdf-schema#label":"TTL",
+      "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+        {
+          "@type":[
+            "http://onto.fel.cvut.cz/ontologies/documentation/question"
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form-spin/has-declared-prefix":[
+
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form-layout/has-layout-class":[
+            "ttl"
+          ],
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question":[
+
+          ],
+          "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+
+          ],
+          "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+            {
+              "@type":[
+                "http://onto.fel.cvut.cz/ontologies/documentation/answer"
+              ],
+              "http://onto.fel.cvut.cz/ontologies/form/has-answer-hash":"da39a3ee5e6b4b0d3255bfef95601890afd80709",
+              "http://onto.fel.cvut.cz/ontologies/documentation/has_data_value":""
+            }
+          ],
+          "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-47abae50-fb87-47f1-bc52-f0a64cee1e10"
+        }
+      ],
+      "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+
+      ],
+      "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+
+      ],
+      "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-b828e22f-36cd-420e-b09e-f74f5d9b5c74"
+    }
+  ],
+  "http://onto.fel.cvut.cz/ontologies/form/has-preceding-question":[
+
+  ],
+  "http://onto.fel.cvut.cz/ontologies/documentation/has_answer":[
+
+  ],
+  "@id":"http://onto.fel.cvut.cz/ontologies/documentation/question-35899140-8e2a-4a79-a7e0-54ceee96ed42"
+}
