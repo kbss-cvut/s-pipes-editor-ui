@@ -1,6 +1,6 @@
 # S-Pipes-UI editor
 
-> React Starter Boilerplate with Hot Module Replacement and Webpack 4
+> Skeleton is from - React Starter Boilerplate with Hot Module Replacement and Webpack 4
 
 ## Basic info
 
