@@ -44,9 +44,9 @@ const config = {
       template: `public/index.html`,
       favicon: `public/favicon.ico`
     }),
-    new webpack.DefinePlugin({
-      'REST_URL': JSON.stringify('http://localhost:3000/api/s_pipes_editor_war_exploded/rest')
-    }),
+    // new webpack.DefinePlugin({
+    //   // 'REST_URL': JSON.stringify('http://localhost:3000/api/s_pipes_editor_war_exploded/rest')
+    // }),
     new FlowWebpackPlugin(),
   ]
 };
