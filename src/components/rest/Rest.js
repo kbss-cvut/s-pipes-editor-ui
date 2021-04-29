@@ -31,7 +31,7 @@ const postRequestOptions = {
 export const Rest = {
 
     getScripts: function () {
-        return fetch(REST_URL + "/scripts")
+        return fetch("/rest/scripts")
             .then(res => res.json())
     },
 
@@ -48,7 +48,7 @@ export const Rest = {
                 [TRANSFORMATION_ID] : transformation
             }
         )
-        return fetch(REST_URL + "/views/new", postRequestOptions)
+        return fetch("/rest/views/new", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -66,7 +66,7 @@ export const Rest = {
                 [SCRIPT_PATH] : scriptPath
             }
         )
-        return fetch(REST_URL + "/scripts/forms", postRequestOptions)
+        return fetch("/rest/scripts/forms", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -101,7 +101,7 @@ export const Rest = {
             }
         )
         console.log("update script json: " + postRequestOptions)
-        return fetch(REST_URL + "/scripts/forms/answers", postRequestOptions)
+        return fetch("/rest/scripts/forms/answers", postRequestOptions)
     },
 
     deleteScriptNode: function (filepath, nodeId){
@@ -112,7 +112,7 @@ export const Rest = {
                 [MODULE_URI] : nodeId
             }
         )
-        return fetch(REST_URL + "/scripts/modules/delete", postRequestOptions)
+        return fetch("/rest/scripts/modules/delete", postRequestOptions)
     },
 
     deleteScriptEdge: function (filepath, fromNodeId, toNodeId){
@@ -124,7 +124,7 @@ export const Rest = {
                 [TARGET_MODULE_URI] : toNodeId,
             }
         )
-        return fetch(REST_URL + "/scripts/modules/dependencies/delete", postRequestOptions)
+        return fetch("/rest/scripts/modules/dependencies/delete", postRequestOptions)
     },
 
     getModulesTypes: function (filepath) {
@@ -134,7 +134,7 @@ export const Rest = {
                 [ABSOLUTE_PATH] : filepath
             }
         )
-        return fetch(REST_URL + "/scripts/moduleTypes", postRequestOptions)
+        return fetch("/rest/scripts/moduleTypes", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -152,7 +152,7 @@ export const Rest = {
                 [TARGET_MODULE_URI] : targetModuleUri,
             }
         )
-        return fetch(REST_URL + "/scripts/modules/dependency", postRequestOptions);
+        return fetch("/rest/scripts/modules/dependency", postRequestOptions);
     },
 
 }

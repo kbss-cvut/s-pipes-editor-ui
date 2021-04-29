@@ -46,9 +46,9 @@ const config = {
     hot: true,
     open: true,
     proxy: {
-      '/api': {
-        target: 'http://localhost:18115',
-        pathRewrite: {'^/api' : ''}, // In this case we don't pass `api` path
+      '/rest': {
+        target: 'http://localhost:18115/og_spipes',
+        // pathRewrite: {'^/api' : ''}, // In this case we don't pass `api` path
       }
     }
   },
