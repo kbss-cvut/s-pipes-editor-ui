@@ -3,7 +3,7 @@ import SForms from 's-forms';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import {Button, Modal} from "react-bootstrap";
-import {Scripts} from "../rest/Scripts";
+import {Rest} from "../rest/Rest";
 
 
 class SFormsModal extends React.Component {
@@ -25,7 +25,7 @@ class SFormsModal extends React.Component {
 
     componentWillReceiveProps(newProps){
         if(newProps.moduleTypeUri && newProps.scriptPath){
-            Scripts.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath).then((response) => {
+            Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath).then((response) => {
                 console.log(response)
                 this.setState({
                     isLoaded: true,
@@ -47,7 +47,7 @@ class SFormsModal extends React.Component {
         let form = this.state.selectedForm
         form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] = this.refForm.current.context.getFormQuestionsData();
 
-        Scripts.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
+        Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
             if(response.status === 200){
                 window.location.reload(false);
             }else{

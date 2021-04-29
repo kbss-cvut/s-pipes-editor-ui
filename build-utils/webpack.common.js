@@ -45,7 +45,7 @@ const config = {
       favicon: `public/favicon.ico`
     }),
     new webpack.DefinePlugin({
-      'REST_URL': JSON.stringify('http://localhost:3000/api/s_pipes_editor_war_exploded/rest')
+      'REST_URL': JSON.stringify('http://localhost:3000/api/og_spipes/rest')
     }),
     new FlowWebpackPlugin(),
   ]

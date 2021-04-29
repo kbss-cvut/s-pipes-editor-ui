@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dropdown } from 'semantic-ui-react'
-import { Scripts } from './rest/Scripts'
+import { Rest } from './rest/Rest'
 
 class ModuleTypesSelection extends React.Component {
 
@@ -12,7 +12,7 @@ class ModuleTypesSelection extends React.Component {
     }
 
     componentDidMount() {
-        Scripts.getModulesTypes(this.props.scriptPath).then((res) => {
+        Rest.getModulesTypes(this.props.scriptPath).then((res) => {
             const options = res.map((r) => {
                 return ({
                     key: r['@id'],

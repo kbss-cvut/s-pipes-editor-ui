@@ -47,7 +47,7 @@ const config = {
     open: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:18115',
         pathRewrite: {'^/api' : ''}, // In this case we don't pass `api` path
       }
     }

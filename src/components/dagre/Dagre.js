@@ -3,11 +3,12 @@ import cytoscape from 'cytoscape';
 import dagre from "cytoscape-dagre";
 import edgehandles from "cytoscape-edgehandles";
 import cxtmenu from 'cytoscape-cxtmenu';
-import {Scripts} from '../rest/Scripts';
+import popper from 'cytoscape-popper';
+import {Rest} from '../rest/Rest';
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
-import {Button} from "react-bootstrap";
+import BasicFormsModal from "../sform/BasicFormsModal";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -25,6 +26,8 @@ const OBJECT_VALUE = "http://onto.fel.cvut.cz/ontologies/documentation/has_objec
 const COMPONENT = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/component";
 const FUNCTION_LOCAL_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-local-name";
 const FUNCTION_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri";
+const INPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-input-parameter"
+const OUTPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-output-parameter"
 
 
 class Dagre extends React.Component{
@@ -35,21 +38,24 @@ class Dagre extends React.Component{
         this.state = {
             isLoaded: false,
             file: params.get('file'),
+            transformation: params.get('transformation'),
             nodes : [],
             edges : [],
             moduleTypeUri: null,
             moduleUri: null,
             scriptPath: null,
+            logPath: null,
         }
 
         cytoscape.use( dagre );
         cytoscape.use( edgehandles );
         cytoscape.use( cxtmenu );
+        cytoscape.use( popper );
         this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
     }
 
     componentDidMount() {
-        Scripts.getScript(this.state.file).then(response => {
+        Rest.getScript(this.state.file, this.state.transformation).then(response => {
             console.log(response);
             this._processGraph(response);
             this.renderCytoscapeElement();
@@ -58,8 +64,9 @@ class Dagre extends React.Component{
 
     _addNode(n){
         const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
+        console.log(n);
         this.state.nodes.push({
-            data: { id: n["@id"], label: label, component: n[COMPONENT], type: n[TYPE], x: n[X], y: n[Y] }
+            data: { id: n["@id"], label: label, component: n[COMPONENT], type: n[TYPE], x: n[X], y: n[Y], input: n[INPUT_PARAMETER], output: n[OUTPUT_PARAMETER] }
         })
     }
 
@@ -91,7 +98,6 @@ class Dagre extends React.Component{
     renderCytoscapeElement(){
         console.log('* Cytoscape.js is rendering the graph..');
 
-        //TODO ask if ok like this
         this.cy = cytoscape(
             {
                 container: document.getElementById('cy'),
@@ -120,7 +126,7 @@ class Dagre extends React.Component{
                     {
                         selector: '.eh-handle',
                         style: {
-                            'background-color': 'red',
+                            'background-color': 'black',
                             'width': 8,
                             'height': 8,
                             'shape': 'ellipse',
@@ -132,30 +138,30 @@ class Dagre extends React.Component{
                     {
                         selector: '.eh-hover',
                         style: {
-                            'background-color': 'red'
+                            'background-color': 'black'
                         }
                     },
                     {
                         selector: '.eh-source',
                         style: {
                             'border-width': 2,
-                            'border-color': 'red'
+                            'border-color': 'black'
                         }
                     },
                     {
                         selector: '.eh-target',
                         style: {
                             'border-width': 2,
-                            'border-color': 'red'
+                            'border-color': 'black'
                         }
                     },
                     {
                         selector: '.eh-preview, .eh-ghost-edge',
                         style: {
-                            'background-color': 'red',
-                            'line-color': 'red',
-                            'target-arrow-color': 'red',
-                            'source-arrow-color': 'red'
+                            'background-color': 'black',
+                            'line-color': 'black',
+                            'target-arrow-color': 'black',
+                            'source-arrow-color': 'black'
                         }
                     },
                     {
@@ -180,14 +186,7 @@ class Dagre extends React.Component{
                 }
             });
 
-        this.cy = this.cy.on('tap', 'node', (evt) => {
-            const node = evt.target;
-            // node["http://onto.fel.cvut.cz/ontologies/s-pipes-view/component"]
-            //     node.id,
-            //     this.state.file
-
-        });
-
+        //TODO consider usage of https://github.com/iVis-at-Bilkent/cytoscape.js-context-menus
         let filepath = this.state.file;
         this.cy.cxtmenu({
             selector: 'node',
@@ -195,13 +194,35 @@ class Dagre extends React.Component{
                 {
                     content: '<span class="fa fa-trash fa-2x"/>',
                     select: (ele) => {
-                        Scripts.deleteScriptNode(filepath, ele.data('id')).then(response => {
+                        Rest.deleteScriptNode(filepath, ele.data('id')).then(response => {
                             if(response.status === 204){
                                 ele.remove();
                             }else{
                                 console.log("node not delete some kind of error message");
                             }
                         });
+                    }
+                },
+                {
+                    content: '<span class="fa fa-info-circle fa-2x"/>',
+                    select: (ele) => {
+                        console.log(ele.data('input'));
+                        this.setState({
+                            logPath: ele.data('input'),
+                        })
+                    }
+                },
+                {
+                    content: '',
+                    enabled: false
+                },
+                {
+                    content: '<span class="fa fa-info-circle fa-2x"/>',
+                    select: (ele) => {
+                        console.log(ele.data('output'));
+                        this.setState({
+                            logPath: ele.data('output'),
+                        })
                     }
                 },
                 {
@@ -216,7 +237,6 @@ class Dagre extends React.Component{
             ]
         });
 
-
         this.cy.cxtmenu({
             selector: 'edge',
             commands: [
@@ -225,7 +245,7 @@ class Dagre extends React.Component{
                     select: function(ele){
                         let sourceNode = ele.data('source');
                         let targetNode = ele.data('target');
-                        Scripts.deleteScriptEdge(filepath, sourceNode, targetNode).then(response => {
+                        Rest.deleteScriptEdge(filepath, sourceNode, targetNode).then(response => {
                             if(response.status === 200){
                                 ele.remove();
                             }else{
@@ -244,7 +264,7 @@ class Dagre extends React.Component{
             complete: (sourceNode, targetNode, addedEles ) => {
                 console.log(sourceNode.data('id'))
                 console.log(targetNode.data('id'))
-                Scripts.addModuleDependency(
+                Rest.addModuleDependency(
                     this.state.file,
                     sourceNode.data('id'),
                     targetNode.data('id')
@@ -257,11 +277,44 @@ class Dagre extends React.Component{
                 })
             },
         })
-    }
 
-    handleChange(e) {
-        console.log("Fruit Selected!!");
-        this.setState({ fruit: e.target.value });
+        //JUST visualization of input/output - it would be much better menu, but onclick is tricky to make work
+        const items = [];
+        const poperContent = () => {
+            let div = document.createElement('div');
+            div.classList.add('popper-div');
+            div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" height="1.5em"><path d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"/></svg>';
+            document.body.appendChild( div );
+            return div;
+        }
+        for (const [index, value] of this.cy.nodes().entries()) {
+            if(value.data('input').length > 0){
+                items.push(value.popper({
+                    content: poperContent,
+                    popper: {
+                        placement: 'left-end'
+                    },
+                }));
+            }
+            if(value.data('output').length > 0){
+                items.push(value.popper({
+                    content: poperContent,
+                    popper: {
+                        placement: 'right-end'
+                    },
+                }));
+            }
+        }
+        let update = () => {
+            for (const [index, value] of items.entries()) {
+                value.update();
+            }
+        };
+        for (const [index, value] of this.cy.nodes().entries()) {
+            value.on('position', update);
+        }
+        this.cy.on('pan zoom resize', update);
+
     }
 
     render(){
@@ -290,6 +343,10 @@ class Dagre extends React.Component{
                     moduleTypeUri={this.state.moduleTypeUri}
                     moduleUri={this.state.moduleUri}
                     scriptPath={this.state.file}
+                />
+
+                <BasicFormsModal
+                    logPath={this.state.logPath}
                 />
                 <div>
                     <div style={cyStyle} id="cy"/>

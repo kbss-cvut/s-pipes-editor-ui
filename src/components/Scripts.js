@@ -5,7 +5,7 @@ import Layout from './Layout';
 import ScriptsTree from "./treebeard/ScriptsTree";
 import {Link} from "react-router-dom";
 
-class Home extends React.Component {
+class Scripts extends React.Component {
 
   render() {
     return (
@@ -13,8 +13,6 @@ class Home extends React.Component {
           <Grid stackable columns={2}>
             <Grid.Row>
               <Grid.Column>
-                  <h1>Welcome to SPipes editor</h1>
-                  <br></br>
                   <ScriptsTree />
               </Grid.Column>
             </Grid.Row>
@@ -25,4 +23,4 @@ class Home extends React.Component {
 
 }
 
-export default Home;
+export default Scripts;

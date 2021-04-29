@@ -4,7 +4,7 @@ import {includes} from 'lodash';
 import styles from './styles';
 import Header from './Header';
 import {Treebeard, decorators} from 'react-treebeard';
-import {Scripts} from "../rest/Scripts";
+import {Rest} from "../rest/Rest";
 import { withRouter } from "react-router-dom";
 
 
@@ -21,7 +21,7 @@ class ScriptsTree extends React.Component {
     }
 
     componentDidMount() {
-        Scripts.getScripts().then(response => {
+        Rest.getScripts().then(response => {
             console.log(response);
             this.setState({ data: response});
         });

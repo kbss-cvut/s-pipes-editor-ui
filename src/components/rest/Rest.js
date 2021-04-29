@@ -1,15 +1,23 @@
 import React from 'react';
 
-const SCRIPT_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-dto";
-const QUESTION_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/question-dto";
-const ROOT_QUESTION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-root-question";
-const SCRIPT_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-script-path";
-const MODULE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/module-dto";
-const DEPENDENCY_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/dependency-dto";
-const ABSOLUTE_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path";
-const MODULE_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-uri";
-const MODULE_TYPE_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-type-uri";
-const TARGET_MODULE_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-target-module-uri";
+//TODO - refactor to separate
+export const SCRIPT_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-dto";
+export const QUESTION_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/question-dto";
+export const ROOT_QUESTION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-root-question";
+export const SCRIPT_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-script-path";
+export const MODULE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/module-dto";
+export const DEPENDENCY_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/dependency-dto";
+export const ABSOLUTE_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path";
+export const MODULE_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-uri";
+export const MODULE_LOG = "http://onto.fel.cvut.cz/ontologies/s-pipes/module-log-dto";
+export const MODULE_TYPE_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-type-uri";
+export const TARGET_MODULE_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-target-module-uri";
+export const TRANSFORMATION_ID = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-transformation-id";
+export const DISPLAY_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-display-name";
+export const START_DATE_UNIX = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-pipeline-execution-start-date-unix";
+export const FINISH_DATE_UNIX = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-pipeline-execution-finish-date-unix";
+export const EXECUTION_DURATION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-pipeline-execution-duration";
+export const TRANSFORMATION = "http://onto.fel.cvut.cz/ontologies/dataset-descriptor/transformation"
 
 const postRequestOptions = {
     method: 'POST',
@@ -20,18 +28,24 @@ const postRequestOptions = {
 };
 
 //TODO consider React api
-export const Scripts = {
+export const Rest = {
 
     getScripts: function () {
         return fetch(REST_URL + "/scripts")
             .then(res => res.json())
     },
 
-    getScript: function (script) {
+    getExecutions: function () {
+        return fetch(REST_URL + "/execution/history")
+            .then(res => res.json())
+    },
+
+    getScript: function (script, transformation) {
         postRequestOptions['body'] = JSON.stringify(
             {
                 "@type" : SCRIPT_DTO,
-                [SCRIPT_PATH] : script
+                [SCRIPT_PATH] : script,
+                [TRANSFORMATION_ID] : transformation
             }
         )
         return fetch(REST_URL + "/views/new", postRequestOptions)
@@ -53,6 +67,22 @@ export const Scripts = {
             }
         )
         return fetch(REST_URL + "/scripts/forms", postRequestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    getLogForm: function (logPath) {
+        postRequestOptions['body'] = JSON.stringify(
+            {
+                "@type" : MODULE_LOG,
+                [ABSOLUTE_PATH] : logPath
+            }
+        )
+        return fetch(REST_URL + "/scripts/load-log", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
