@@ -4,6 +4,7 @@ import dagre from "cytoscape-dagre";
 import edgehandles from "cytoscape-edgehandles";
 import cxtmenu from 'cytoscape-cxtmenu';
 import popper from 'cytoscape-popper';
+import navigator from 'cytoscape-navigator';
 import {Rest} from '../rest/Rest';
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
@@ -51,6 +52,9 @@ class Dagre extends React.Component{
         cytoscape.use( edgehandles );
         cytoscape.use( cxtmenu );
         cytoscape.use( popper );
+        cytoscape.use( navigator );
+        // const navigator = require('cytoscape-navigator');
+        // navigator( this.cy );
         this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
     }
 
@@ -315,6 +319,18 @@ class Dagre extends React.Component{
         }
         this.cy.on('pan zoom resize', update);
 
+        // let defaults = {
+        //     container: true,
+        //     viewLiveFramerate: 0, // set false to update graph pan only on drag end; set 0 to do it instantly; set a number (frames per second) to update not more than N times per second
+        //     thumbnailEventFramerate: 30, // max thumbnail's updates per second triggered by graph updates
+        //     thumbnailLiveFramerate: false, // max thumbnail's updates per second. Set false to disable
+        //     dblClickDelay: 200, // milliseconds
+        //     removeCustomContainer: true, // destroy the container specified by user on plugin destroy
+        //     rerenderDelay: 100 // ms to throttle rerender updates to the panzoom for performance
+        // };
+        console.log(this.cy.navigator);
+
+        this.cy.navigator( {} );
     }
 
     render(){

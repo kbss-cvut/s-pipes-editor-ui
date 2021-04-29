@@ -36,7 +36,7 @@ export const Rest = {
     },
 
     getExecutions: function () {
-        return fetch(REST_URL + "/execution/history")
+        return fetch("/rest/execution/history")
             .then(res => res.json())
     },
 
@@ -82,7 +82,7 @@ export const Rest = {
                 [ABSOLUTE_PATH] : logPath
             }
         )
-        return fetch(REST_URL + "/scripts/load-log", postRequestOptions)
+        return fetch("/rest/scripts/load-log", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
