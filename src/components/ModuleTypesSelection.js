@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dropdown } from 'semantic-ui-react'
 import { Rest } from './rest/Rest'
+import {ICONS_MAP} from "./dagre/DagreIcons";
 
 class ModuleTypesSelection extends React.Component {
 
@@ -18,7 +19,7 @@ class ModuleTypesSelection extends React.Component {
                     key: r['@id'],
                     text: r['http://www.w3.org/2000/01/rdf-schema#label'],
                     value: r['@id'],
-                    image: { avatar: true, src: 'https://react.semantic-ui.com/images/avatar/small/elliot.jpg' }
+                    image: { avatar: true, src: '/public/icons/' + ICONS_MAP[r['@id']] }
                 })
             })
             this.setState({
@@ -30,7 +31,7 @@ class ModuleTypesSelection extends React.Component {
     render() {
         return (
             <Dropdown
-                placeholder='Select Friend'
+                placeholder='Add module'
                 fluid
                 search
                 selection
