@@ -32,7 +32,7 @@ const FUNCTION_LOCAL_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-func
 const FUNCTION_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri";
 const INPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-input-parameter"
 const OUTPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-output-parameter"
-
+const GROUP = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/group"
 
 const rankDirOptions = [
     {'text' : 'LeftRight', 'key' : 'LR', 'value' : 'LR'},
@@ -48,6 +48,7 @@ class Dagre extends React.Component{
             isLoaded: false,
             file: params.get('file'),
             transformation: params.get('transformation'),
+            groups : new Set(),
             nodes : [],
             edges : [],
             moduleTypeUri: null,
@@ -87,17 +88,24 @@ class Dagre extends React.Component{
                 y: n[Y],
                 input: n[INPUT_PARAMETER],
                 output: n[OUTPUT_PARAMETER],
-                icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]]
-            }
-            // data: { id: n["@id"], parent: "parent_node", label: label, component: n[COMPONENT], type: n[TYPE], x: n[X], y: n[Y], input: n[INPUT_PARAMETER], output: n[OUTPUT_PARAMETER] }
+                icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
+                menu: true,
+                parent: n[GROUP]
+            },
+            selectable: false
         })
+
+        if(n[GROUP] !== undefined){
+            if(this.state.groups.has(n[GROUP])){
+                this.state.nodes.push({
+                    data: { id: n[GROUP], label: "", input: [], output: []}
+                })
+            }
+            this.state.groups.add(n[GROUP]);
+        }
     }
 
     _processGraph(data){
-        this.state.nodes.push({
-            data: { id: "parent_node", label: "parent_node", input: [], output: []}
-        })
-
         data[NODE].map(n => {
             if (n[TYPE] !== undefined){
                 this._addNode(n)
@@ -117,7 +125,8 @@ class Dagre extends React.Component{
             let from = typeof e[SOURCE_NODE] === "object" ? e[SOURCE_NODE]["@id"] :e[SOURCE_NODE];
             let to = typeof e[DESTINATION_NODE] === "object" ? e[DESTINATION_NODE]["@id"] : e[DESTINATION_NODE];
             this.state.edges.push({
-                data: { source: from, target: to }
+                data: { source: from, target: to, menu: true },
+                selectable: false
             })
         });
     }
@@ -138,8 +147,6 @@ class Dagre extends React.Component{
         this.cy = cytoscape(
             {
                 container: document.getElementById('cy'),
-                boxSelectionEnabled: false,
-                autounselectify: true,
                 style: [
                     {
                         selector: 'node',
@@ -150,7 +157,7 @@ class Dagre extends React.Component{
                             'height': 40,
                             'width': 40,
                             'background-image': 'data(icon)',
-                            "background-fit": "cover cover",
+                            'background-fit': 'cover cover'
                         }
                     },
                     {
@@ -210,7 +217,7 @@ class Dagre extends React.Component{
                     {
                         selector: ':parent',
                         style: {
-                            'background-opacity': 0.333
+                            'background-opacity': 0.111
                         }
                     },
                     {
@@ -230,8 +237,8 @@ class Dagre extends React.Component{
                     {
                         selector: ':selected',
                         style: {
-                            "border-width": 3,
-                            "border-color": '#DAA520'
+                            // "border-width": 3,
+                            // "border-color": '#DAA520'
                         }
                     }
                 ],
@@ -253,7 +260,7 @@ class Dagre extends React.Component{
         //TODO consider usage of https://github.com/iVis-at-Bilkent/cytoscape.js-context-menus
         let filepath = this.state.file;
         this.cy.cxtmenu({
-            selector: 'node',
+            selector: 'node[menu]',
             commands: [
                 {
                     content: '<span class="fa fa-trash fa-2x"/>',
@@ -302,7 +309,7 @@ class Dagre extends React.Component{
         });
 
         this.cy.cxtmenu({
-            selector: 'edge',
+            selector: 'edge[menu]',
             commands: [
                 {
                     content: '<span class="fa fa-trash fa-2x"/>',
@@ -322,6 +329,7 @@ class Dagre extends React.Component{
         });
 
         this.cy.edgehandles({
+            handleNodes: 'node[menu]',
             handlePosition: function( node ){
                 return 'right right';
             },
@@ -333,7 +341,7 @@ class Dagre extends React.Component{
                     sourceNode.data('id'),
                     targetNode.data('id')
                 ).then((res) => {
-                    if(res.status === 201){
+                    if(res.status === 204){
                         //TODO reload?
                     }else{
                         console.log("ERROR add edge/dependency")
@@ -390,17 +398,9 @@ class Dagre extends React.Component{
         //navigator bird-eye
         this.cy.navigator( {} );
 
-        // this.cy.expandCollapse({
-        //     layoutBy: {
-        //         animate: "end",
-        //         randomize: false,
-        //         fit: true
-        //     },
-        //     fisheye: true,
-        //     animate: true,
-        //     undoable: false
-        // });
-
+        this.cy.expandCollapse({
+            undoable: false
+        });
     }
 
     render(){

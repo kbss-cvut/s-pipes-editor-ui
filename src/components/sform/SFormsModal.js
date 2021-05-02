@@ -9,7 +9,6 @@ import {Rest} from "../rest/Rest";
 class SFormsModal extends React.Component {
     constructor(props) {
         super(props);
-        // const { moduleTypeUri, moduleUri, scriptPath, modalVisible } = this.props;
 
         this.state = {
             isLoaded: false,
@@ -21,7 +20,6 @@ class SFormsModal extends React.Component {
         };
         this.refForm = React.createRef();
     }
-
 
     componentWillReceiveProps(newProps){
         if(newProps.moduleTypeUri && newProps.scriptPath){
@@ -57,12 +55,6 @@ class SFormsModal extends React.Component {
     }
 
     render() {
-        // const modalProps = {
-        //   onHide: () => {},
-        //   show: true,
-        //   title: 'Title'
-        // };
-
         const options = {
           i18n: {
             'wizard.next': 'Next',
@@ -79,10 +71,6 @@ class SFormsModal extends React.Component {
           wizardStepButtons: true,
           enableForwardSkip: true
         };
-
-        // console.log("SForm: " + this.props.modalVisible);
-        // console.log("SForm visible: " + this.props.modalVisible);
-        // console.log("SForm loaded: " + this.state.isLoaded);
 
         if(this.state.isLoaded){
             return (
@@ -115,25 +103,6 @@ class SFormsModal extends React.Component {
         }else{
             return null;
         }
-          // <div className="p-4">
-          //   karel
-          //   <SForms
-          //     ref={this.refForm}
-          //     form={this.state.selectedForm}
-          //     options={options}
-          //   />
-          //   <button
-          //     style={{ width: '100px', margin: '1rem -50px', position: 'relative', left: '50%' }}
-          //     onClick={() => {
-          //       let res = this.state.selectedForm
-          //       res["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] = this.refForm.current.context.getFormQuestionsData();
-          //       console.log(JSON.stringify(res));
-          //       // console.log(JSON.stringify(this.refForm.current.context.getFormQuestionsData(), null, 4));
-          //     }}
-          //   >
-          //     Save
-          //   </button>
-          // </div>
     }
 }
 
