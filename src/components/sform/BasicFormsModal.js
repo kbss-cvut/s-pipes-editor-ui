@@ -6,13 +6,13 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
 
 
-class SFormsModal extends React.Component {
+class BasicFormsModal extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             isLoaded: false,
-            modalVisible: false,
+            basicModalVisible: false,
             logPath: null,
             logContent: null
         };
@@ -30,7 +30,7 @@ class SFormsModal extends React.Component {
                 console.log(response)
                 this.setState({
                     isLoaded: true,
-                    modalVisible: true,
+                    basicModalVisible: true,
                     logPath: newProps.logPath,
                     logContent: response
                 })
@@ -39,10 +39,12 @@ class SFormsModal extends React.Component {
     }
 
     handleClose(){
-        this.setState({modalVisible:false});
+        console.log("closeeee");
+        this.setState({basicModalVisible:false, isLoaded: false});
     }
 
     handleSubmit(){
+        this.setState({basicModalVisible:false});
         alert("Not implemented!");
         // let form = this.state.selectedForm
         // form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] = this.refForm.current.context.getFormQuestionsData();
@@ -68,10 +70,11 @@ class SFormsModal extends React.Component {
     }
 
     render() {
+        console.log("basicModal: " + this.state.basicModalVisible + ", isLoaded: " + this.state.isLoaded)
         if(this.state.isLoaded){
             return (
                 <Modal
-                    show={this.state.modalVisible}
+                    show={this.state.basicModalVisible}
                     onHide={() => this.handleClose()}
                     dialogClassName="modal-80w"
                     aria-labelledby="example-custom-modal-styling-title"
@@ -100,5 +103,5 @@ class SFormsModal extends React.Component {
     }
 }
 
-export default SFormsModal;
+export default BasicFormsModal;
 

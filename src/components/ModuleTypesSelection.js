@@ -35,6 +35,7 @@ class ModuleTypesSelection extends React.Component {
                 fluid
                 search
                 selection
+                multiple
                 options={this.state.moduleOptions}
                 onChange={(e, {value}) => {
                     this.props.onChange(value)

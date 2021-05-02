@@ -35,6 +35,8 @@ const OUTPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-ou
 const GROUP = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/group"
 
 const rankDirOptions = [
+    // preset
+    {'text' : 'Preset', 'key' : 'preset', 'value' : 'preset'},
     {'text' : 'LeftRight', 'key' : 'LR', 'value' : 'LR'},
     {'text' : 'TopBottom', 'key' : 'TB', 'value' : 'TB'}
 ]
@@ -55,7 +57,7 @@ class Dagre extends React.Component{
             moduleUri: null,
             scriptPath: null,
             logPath: null,
-            rankDir: 'LR',
+            rankDir: 'preset',
             popperItems: []
         }
 
@@ -84,15 +86,14 @@ class Dagre extends React.Component{
                 label: label,
                 component: n[COMPONENT],
                 type: n[TYPE],
-                x: n[X],
-                y: n[Y],
                 input: n[INPUT_PARAMETER],
                 output: n[OUTPUT_PARAMETER],
                 icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
                 menu: true,
                 parent: n[GROUP]
             },
-            selectable: false
+            selectable: false,
+            position: { x: n[X], y: n[Y] }
         })
 
         if(n[GROUP] !== undefined){
@@ -246,9 +247,9 @@ class Dagre extends React.Component{
                     nodes: this.state.nodes,
                     edges: this.state.edges
                 },
-                //https://github.com/cytoscape/cytoscape.js-dagre
+                // //https://github.com/cytoscape/cytoscape.js-dagre
                 layout: {
-                    name: 'dagre',
+                    name: this.state.rankDir === 'preset' ? 'preset' : 'dagre',
                     rankDir: this.state.rankDir,//TB;LR
                     nodeSep: 100,
                     rankSep: 200,
@@ -257,7 +258,7 @@ class Dagre extends React.Component{
                 }
             });
 
-        //TODO consider usage of https://github.com/iVis-at-Bilkent/cytoscape.js-context-menus
+        // TODO consider usage of https://github.com/iVis-at-Bilkent/cytoscape.js-context-menus
         let filepath = this.state.file;
         this.cy.cxtmenu({
             selector: 'node[menu]',
@@ -277,9 +278,10 @@ class Dagre extends React.Component{
                 {
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
-                        console.log(ele.data('input'));
                         this.setState({
                             logPath: ele.data('input'),
+                            moduleTypeUri: null,
+                            moduleUri: null
                         })
                     }
                 },
@@ -290,9 +292,10 @@ class Dagre extends React.Component{
                 {
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
-                        console.log(ele.data('output'));
                         this.setState({
                             logPath: ele.data('output'),
+                            moduleTypeUri: null,
+                            moduleUri: null
                         })
                     }
                 },
@@ -301,7 +304,8 @@ class Dagre extends React.Component{
                     select: (ele) => {
                         this.setState({
                             moduleTypeUri: ele.data('component'),
-                            moduleUri: ele.data('id')
+                            moduleUri: ele.data('id'),
+                            logPath: null
                         })
                     }
                 }
@@ -420,13 +424,13 @@ class Dagre extends React.Component{
                     <h5>Modules operations</h5>
                     <ModuleTypesSelection
                         scriptPath={this.state.file}
-                        onChange={(value) => this.setState({moduleTypeUri: value, moduleUri: null})}
+                        onChange={(value) => this.setState({moduleTypeUri: value, moduleUri: null, logPath: null})}
                     />
                     <br></br>
                     <br></br>
                     <h5>Graph render strategy</h5>
                     <Dropdown
-                        placeholder='Render strategy - two clicks'
+                        placeholder='Render strategy - two clicks BUG'
                         options={rankDirOptions}
                         value={this.state.rankDir}
                         selection
