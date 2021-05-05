@@ -56,8 +56,8 @@ class Executions extends React.Component {
                                 <tr key={key}>
                                     <td align={"center"}><FontAwesomeIcon icon={faMugHot} /></td>
                                     <td>{data[DISPLAY_NAME]}</td>
-                                    <td><Moment unix format="DD.MM.YYYY - hh:MM:ss">{data[START_DATE_UNIX]/1000}</Moment></td>
-                                    <td><Moment unix format="DD.MM.YYYY - hh:MM:ss">{data[FINISH_DATE_UNIX]/1000}</Moment></td>
+                                    <td><Moment unix format="DD.MM.YYYY - HH:mm:ss">{data[START_DATE_UNIX]/1000}</Moment></td>
+                                    <td><Moment unix format="DD.MM.YYYY - HH:mm:ss">{data[FINISH_DATE_UNIX]/1000}</Moment></td>
                                     <td>{data[EXECUTION_DURATION]}ms</td>
                                     <td>
                                         <Container>

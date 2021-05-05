@@ -18,6 +18,8 @@ export const START_DATE_UNIX = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-p
 export const FINISH_DATE_UNIX = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-pipeline-execution-finish-date-unix";
 export const EXECUTION_DURATION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-pipeline-execution-duration";
 export const TRANSFORMATION = "http://onto.fel.cvut.cz/ontologies/dataset-descriptor/transformation"
+export const FUNCTION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri"
+export const FUNCTION_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-local-name"
 
 const postRequestOptions = {
     method: 'POST',
@@ -141,6 +143,33 @@ export const Rest = {
                     return result;
                 }
             );
+    },
+
+    getModulesFunctions: function (filepath) {
+        postRequestOptions["body"] =JSON.stringify(
+            {
+                "@type" : SCRIPT_DTO,
+                [ABSOLUTE_PATH] : filepath
+            }
+        )
+        return fetch("/rest/function/script", postRequestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    executeFunction: function (functionUri, params) {
+        postRequestOptions["body"] =JSON.stringify(
+            {
+                "@type" : "http://onto.fel.cvut.cz/ontologies/s-pipes/execution-function-dto",
+                ["http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri"] : functionUri,
+                ["http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-parameter"] : params
+            }
+        )
+        return fetch("/rest/function/execute", postRequestOptions);
     },
 
     addModuleDependency: function (scriptPath, moduleUri, targetModuleUri) {

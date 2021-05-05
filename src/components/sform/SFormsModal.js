@@ -24,7 +24,6 @@ class SFormsModal extends React.Component {
     componentWillReceiveProps(newProps){
         if(newProps.moduleTypeUri && newProps.scriptPath){
             Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath).then((response) => {
-                console.log(response)
                 this.setState({
                     isLoaded: true,
                     selectedForm: response,

@@ -6,7 +6,7 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
 
 
-class BasicFormsModal extends React.Component {
+class ScriptInputOutputModal extends React.Component {
     constructor(props) {
         super(props);
 
@@ -70,7 +70,6 @@ class BasicFormsModal extends React.Component {
     }
 
     render() {
-        console.log("basicModal: " + this.state.basicModalVisible + ", isLoaded: " + this.state.isLoaded)
         if(this.state.isLoaded){
             return (
                 <Modal
@@ -103,5 +102,5 @@ class BasicFormsModal extends React.Component {
     }
 }
 
-export default BasicFormsModal;
+export default ScriptInputOutputModal;
 

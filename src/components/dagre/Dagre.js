@@ -10,9 +10,11 @@ import {Rest} from '../rest/Rest';
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
-import BasicFormsModal from "../sform/BasicFormsModal";
+import ScriptInputOutputModal from "../sform/ScriptInputOutputModal";
 import {Dropdown} from "semantic-ui-react";
 import {ICONS_MAP} from "./DagreIcons";
+import ScriptFunctionSelection from "../ScriptFunctionSelection";
+import FunctionExecutionModal from "../modal/FunctionExecutionModal";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -138,6 +140,7 @@ class Dagre extends React.Component{
             moduleTypeUri: null,
             moduleUri: null,
             logPath: null,
+            functionUri: null
         });
         this.renderCytoscapeElement();
     }
@@ -281,7 +284,8 @@ class Dagre extends React.Component{
                         this.setState({
                             logPath: ele.data('input'),
                             moduleTypeUri: null,
-                            moduleUri: null
+                            moduleUri: null,
+                            functionUri: null
                         })
                     }
                 },
@@ -295,7 +299,8 @@ class Dagre extends React.Component{
                         this.setState({
                             logPath: ele.data('output'),
                             moduleTypeUri: null,
-                            moduleUri: null
+                            moduleUri: null,
+                            functionUri: null
                         })
                     }
                 },
@@ -305,7 +310,8 @@ class Dagre extends React.Component{
                         this.setState({
                             moduleTypeUri: ele.data('component'),
                             moduleUri: ele.data('id'),
-                            logPath: null
+                            logPath: null,
+                            functionUri: null
                         })
                     }
                 }
@@ -420,14 +426,24 @@ class Dagre extends React.Component{
             <div>
                 <NavbarMenu />
 
+                {/*Options*/}
                 <div style={{position: 'absolute', padding: 20, zIndex: 20, width: '20%'}}>
                     <h5>Modules operations</h5>
                     <ModuleTypesSelection
                         scriptPath={this.state.file}
-                        onChange={(value) => this.setState({moduleTypeUri: value, moduleUri: null, logPath: null})}
+                        onChange={(value) => this.setState({moduleTypeUri: value, functionUri: null, moduleUri: null, logPath: null})}
                     />
-                    <br></br>
-                    <br></br>
+
+                    <br/><br/>
+
+                    <h5>Function call</h5>
+                    <ScriptFunctionSelection
+                        scriptPath={this.state.file}
+                        onChange={(value) => this.setState({functionUri: value[1], moduleTypeUri: null, moduleUri: null, logPath: null})}
+                    />
+
+                    <br/><br/>
+
                     <h5>Graph render strategy</h5>
                     <Dropdown
                         placeholder='Render strategy - two clicks BUG'
@@ -438,14 +454,19 @@ class Dagre extends React.Component{
                     />
                 </div>
 
+                {/*Modal windows*/}
                 <SFormsModal
                     moduleTypeUri={this.state.moduleTypeUri}
                     moduleUri={this.state.moduleUri}
                     scriptPath={this.state.file}
                 />
 
-                <BasicFormsModal
+                <ScriptInputOutputModal
                     logPath={this.state.logPath}
+                />
+
+                <FunctionExecutionModal
+                    functionUri={this.state.functionUri}
                 />
                 <div>
                     <div style={cyStyle} id="cy"/>

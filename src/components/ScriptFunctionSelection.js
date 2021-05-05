@@ -1,9 +1,9 @@
 import React from 'react'
 import { Dropdown } from 'semantic-ui-react'
-import { Rest } from './rest/Rest'
+import {FUNCTION, FUNCTION_NAME, Rest} from './rest/Rest'
 import {ICONS_MAP} from "./dagre/DagreIcons";
 
-class ModuleTypesSelection extends React.Component {
+class ScriptFunctionSelection extends React.Component {
 
     constructor(props) {
         super(props);
@@ -13,13 +13,13 @@ class ModuleTypesSelection extends React.Component {
     }
 
     componentDidMount() {
-        Rest.getModulesTypes(this.props.scriptPath).then((res) => {
+        Rest.getModulesFunctions(this.props.scriptPath).then((res) => {
             const options = res.map((r) => {
                 return ({
-                    key: r['@id'],
-                    text: r['http://www.w3.org/2000/01/rdf-schema#label'],
-                    value: r['@id'],
-                    image: { avatar: true, src: '/public/icons/' + ICONS_MAP[r['@id']] }
+                    key: r[FUNCTION],
+                    text: r[FUNCTION_NAME],
+                    value: r[FUNCTION],
+                    image: { avatar: true, src: '/public/icons/fire-extinguisher.png' }
                 })
             })
             this.setState({
@@ -31,7 +31,7 @@ class ModuleTypesSelection extends React.Component {
     render() {
         return (
             <Dropdown
-                text='Add module'
+                text='Call function'
                 fluid
                 search
                 selection
@@ -39,6 +39,7 @@ class ModuleTypesSelection extends React.Component {
                 value={[null]}
                 options={this.state.moduleOptions}
                 onChange={(e, {value}) => {
+                    console.log("value: " + value)
                     this.props.onChange(value)
                 }}
             />
@@ -47,4 +48,4 @@ class ModuleTypesSelection extends React.Component {
 
 }
 
-export default ModuleTypesSelection
+export default ScriptFunctionSelection
