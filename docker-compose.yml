@@ -1,0 +1,74 @@
+version: '3.7'
+
+services:
+  spipes-editor-ui:
+    image: spipes-editor-ui:latest
+    ports:
+      - '3000:80'
+    networks:
+      - overlay
+    depends_on:
+      - spipes-editor-rest
+    environment:
+      SERVICE_URL: "spipes-editor-rest:18115"
+
+  spipes-editor-rest:
+    image: 'spipes-editor-rest:latest'
+    container_name: spipes-editor-rest
+    ports:
+      - '18115:18115'
+    expose:
+      - "18115"
+    networks:
+      - overlay
+    depends_on:
+      - spipes-engine
+      - rdf4j
+    environment:
+      - REPOSITORYURL=/home/jordan/IdeaProjects/s-pipes-newgen/src/test/resources/scripts_test/sample
+      - ENGINEURL=http://spipes-engine:8080/s_pipes_web_war/
+      - SESAME_REPOSITORYURL=http://rdf4j:8080/rdf4j-server/repositories
+      - SESAME_REPOSITORYNAME=s-pipes-hello-world
+      - SESAME_PCONFIGURL=/home/jordan/IdeaProjects/s-pipes/doc/examples/hello-world/config.ttl
+    volumes:
+      - /home:/home
+
+  spipes-engine:
+    image: 'spipes-engine:latest'
+    container_name: spipes-engine
+    ports:
+      - "8081:8080"
+    expose:
+      - "8081"
+    networks:
+      - overlay
+    depends_on:
+      - rdf4j
+    environment:
+      - CONTEXTS_SCRIPTPATHS=/home/jordan/IdeaProjects/s-pipes-newgen/src/test/resources/scripts_test/sample
+    #      - P_RDF4J_SERVER_URL=http://rdf4j:8080/rdf4j-server #TODO should be part of the configuration
+    volumes:
+      - /home:/home
+
+  rdf4j:
+    image: 'eclipse/rdf4j-workbench:amd64-3.5.0'
+    container_name: rdf4j
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    networks:
+      - overlay
+    environment:
+      - JAVA_OPTS=-Xms1g -Xmx4g
+    volumes:
+      - data:/var/rdf4j
+      - logs:/usr/local/tomcat/logs
+
+volumes:
+  data:
+  logs:
+
+networks:
+  overlay:
+
