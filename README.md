@@ -22,21 +22,23 @@ Depending on your needs, you might want to do more optimization to the productio
 
 
 ### Dockerization
-The docker image of SPipes Editor UI can be built by `docker build -t spipes-editor-ui .`
+The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-editor-ui .`
 
-Then, SPipes Editor UI can be run as `docker run -e SERVICE_URL=<SPIPES_BACKEND_URL> -p 3000:80 spipes-editor-ui`   
+Then, SPipes Editor UI can be run as `docker run -e SERVICE_URL=<SPIPES_BACKEND_URL> -p 3000:80 s-pipes-editor-ui`   
 where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 
 
 ### Docker-compose
-The docker-compose is composed of 4 services:
-* spipes-editor-ui - accessible on `http://localhost:3000`
-* spipes-editor-rest - manual build of the image is required [repository](https://github.com/chlupnoha/s-pipes-newgen) - accessible on `http://localhost:18115`
-* spipes-engine - manual build of the image is required [repository](https://github.com/kbss-cvut/s-pipes) - accessible on `http://localhost:8081`
+The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-editor-ui .`
+
+The docker-compose is composed of 4 services and can be ruin via `docker-compose up`:
+* s-pipes-editor-ui - accessible on `http://localhost:3000`
+* s-pipes-editor-rest - manual build of the image is required [repository](https://github.com/chlupnoha/s-pipes-newgen) - accessible on `http://localhost:18115`
+* s-pipes-engine - manual build of the image is required [repository](https://github.com/kbss-cvut/s-pipes) - accessible on `http://localhost:8081`
 * rdf4j - official [docker image](https://hub.docker.com/r/eclipse/rdf4j-workbench) - accessible on `http://localhost:8080/rdf4j-workbench`
 
 Manual required steps: 
-* spipes-engine
+* s-pipes-engine
     * The service does not automatically create the repository in RDF4J, so manual creation of a repository is required.
     * The logging configuration for RDF4j is hardcoded in the image, but it could override via `_pConfigURL` param. However, it is not a convenient format to work. Also both servies must to share volume or the config has to be exposed.
 
