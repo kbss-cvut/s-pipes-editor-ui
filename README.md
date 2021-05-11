@@ -30,10 +30,10 @@ where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 
 ### Docker-compose
 The docker-compose is composed of 4 services:
-* spipes-editor-ui
-* spipes-editor-rest - manual build of the image is required [repository](https://github.com/chlupnoha/s-pipes-newgen)
-* spipes-engine - manual build of the image is required [repository](https://github.com/kbss-cvut/s-pipes)
-* rdf4j - official [docker image](https://hub.docker.com/r/eclipse/rdf4j-workbench)
+* spipes-editor-ui - accessible on `http://localhost:3000`
+* spipes-editor-rest - manual build of the image is required [repository](https://github.com/chlupnoha/s-pipes-newgen) - accessible on `http://localhost:18115`
+* spipes-engine - manual build of the image is required [repository](https://github.com/kbss-cvut/s-pipes) - accessible on `http://localhost:8081`
+* rdf4j - official [docker image](https://hub.docker.com/r/eclipse/rdf4j-workbench) - accessible on `http://localhost:8080/rdf4j-workbench`
 
 Manual required steps: 
 * spipes-engine
