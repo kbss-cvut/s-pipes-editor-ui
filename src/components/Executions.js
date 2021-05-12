@@ -32,6 +32,15 @@ class Executions extends React.Component {
         });
     }
 
+    handleRemove(transformationURI){
+        console.log(transformationURI);
+        Rest.deleteExecution(transformationURI).then(() => {
+            Rest.getExecutions().then(response => {
+                this.setState({ data: response});
+            });
+        })
+    }
+
     render() {
         if(this.state.data === []){
             return (<h3>Loading</h3>);
@@ -63,8 +72,8 @@ class Executions extends React.Component {
                                         <Container>
                                             <Row>
                                                 <Col><Link to={`/dagre_example?file=${data[ABSOLUTE_PATH]}&transformation=${data[TRANSFORMATION]}`}><FontAwesomeIcon icon={faEdit} /></Link></Col>
-                                                <Col><FontAwesomeIcon icon={faPlayCircle} /></Col>
-                                                <Col><FontAwesomeIcon icon={faTrash} /></Col>
+                                                {/*<Col><FontAwesomeIcon icon={faPlayCircle} /></Col>*/}
+                                                <Col onClick={() => this.handleRemove(data[TRANSFORMATION])} style={{cursor: 'pointer'}}><FontAwesomeIcon icon={faTrash} /></Col>
                                             </Row>
                                         </Container>
                                     </td>

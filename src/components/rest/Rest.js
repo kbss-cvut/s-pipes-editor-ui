@@ -184,4 +184,9 @@ export const Rest = {
         return fetch("/rest/scripts/modules/dependency", postRequestOptions);
     },
 
+    deleteExecution: function (transformationURI) {
+        postRequestOptions["body"] = transformationURI;
+        return fetch("/rest/execution/remove", postRequestOptions);
+    },
+
 }
