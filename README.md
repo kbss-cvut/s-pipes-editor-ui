@@ -2,6 +2,17 @@
 
 > Skeleton is from - React Starter Boilerplate with Hot Module Replacement and Webpack 4
 
+
+### Building
+
+```
+$ npm install
+```
+
+Will create a `dist` directory containing your compiled code.
+
+Depending on your needs, you might want to do more optimization to the production build.
+
 ## Basic info
 
 Run development server
@@ -9,16 +20,6 @@ Run development server
 ```
 $ npm run dev
 ```
-
-### Building
-
-```
-$ yarn build
-```
-
-Will create a `dist` directory containing your compiled code.
-
-Depending on your needs, you might want to do more optimization to the production build.
 
 
 ### Dockerization

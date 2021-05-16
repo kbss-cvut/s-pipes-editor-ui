@@ -6,7 +6,7 @@ import cxtmenu from 'cytoscape-cxtmenu';
 import popper from 'cytoscape-popper';
 import navigator from 'cytoscape-navigator';
 import expandCollapse from 'cytoscape-expand-collapse';
-import {Rest} from '../rest/Rest';
+import {Rest, SCRIPT_PATH} from '../rest/Rest';
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
@@ -38,7 +38,7 @@ const GROUP = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/group"
 
 const rankDirOptions = [
     // preset
-    {'text' : 'Preset', 'key' : 'preset', 'value' : 'preset'},
+    // {'text' : 'Preset', 'key' : 'preset', 'value' : 'preset'},
     {'text' : 'LeftRight', 'key' : 'LR', 'value' : 'LR'},
     {'text' : 'TopBottom', 'key' : 'TB', 'value' : 'TB'}
 ]
@@ -59,7 +59,7 @@ class Dagre extends React.Component{
             moduleUri: null,
             scriptPath: null,
             logPath: null,
-            rankDir: 'preset',
+            rankDir: 'TB',
             popperItems: []
         }
 
@@ -81,6 +81,15 @@ class Dagre extends React.Component{
     }
 
     _addNode(n){
+        if(n[GROUP] !== undefined){
+            if(!this.state.groups.has(n[GROUP])){
+                this.state.groups.add(n[GROUP]);
+                this.state.nodes.push({
+                    data: { id: n[GROUP], label: n[GROUP], input: [], output: []}
+                })
+            }
+        }
+
         const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
         this.state.nodes.push({
             data: {
@@ -92,20 +101,12 @@ class Dagre extends React.Component{
                 output: n[OUTPUT_PARAMETER],
                 icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
                 menu: true,
+                scriptPath: n[SCRIPT_PATH],
                 parent: n[GROUP]
             },
             selectable: false,
             position: { x: n[X], y: n[Y] }
         })
-
-        if(n[GROUP] !== undefined){
-            if(this.state.groups.has(n[GROUP])){
-                this.state.nodes.push({
-                    data: { id: n[GROUP], label: "", input: [], output: []}
-                })
-            }
-            this.state.groups.add(n[GROUP]);
-        }
     }
 
     _processGraph(data){
@@ -142,11 +143,20 @@ class Dagre extends React.Component{
             logPath: null,
             functionUri: null
         });
-        this.renderCytoscapeElement();
+        let layout = this.cy.layout({
+            name: 'dagre',
+            rankDir: value,
+            nodeSep: 50,
+            rankSep: 100,
+            directed: true,
+            padding: 100
+        });
+        layout.run();
     }
 
     renderCytoscapeElement(){
         console.log('* Cytoscape.js is rendering the graph..');
+        console.log(this.state.nodes)
 
         this.cy = cytoscape(
             {
@@ -221,7 +231,8 @@ class Dagre extends React.Component{
                     {
                         selector: ':parent',
                         style: {
-                            'background-opacity': 0.111
+                            'background-opacity': 0.111,
+                            'label': 'data(label)'
                         }
                     },
                     {
@@ -250,14 +261,14 @@ class Dagre extends React.Component{
                     nodes: this.state.nodes,
                     edges: this.state.edges
                 },
-                // //https://github.com/cytoscape/cytoscape.js-dagre
+                //https://github.com/cytoscape/cytoscape.js-dagre
                 layout: {
                     name: this.state.rankDir === 'preset' ? 'preset' : 'dagre',
                     rankDir: this.state.rankDir,//TB;LR
-                    nodeSep: 100,
-                    rankSep: 200,
+                    nodeSep: 50,
+                    rankSep: 100,
                     directed: true,
-                    padding: 300
+                    padding: 100
                 }
             });
 
@@ -411,6 +422,8 @@ class Dagre extends React.Component{
         this.cy.expandCollapse({
             undoable: false
         });
+
+        this.setState()
     }
 
     render(){
@@ -420,7 +433,7 @@ class Dagre extends React.Component{
             position: 'absolute',
             left: 0,
             top: 0,
-            zIndex: 10
+            zIndex: 2
         };
         return (
             <div>
@@ -446,7 +459,7 @@ class Dagre extends React.Component{
 
                     <h5>Graph render strategy</h5>
                     <Dropdown
-                        placeholder='Render strategy - two clicks BUG'
+                        placeholder='Render strategy'
                         options={rankDirOptions}
                         value={this.state.rankDir}
                         selection
@@ -469,7 +482,7 @@ class Dagre extends React.Component{
                     functionUri={this.state.functionUri}
                 />
                 <div>
-                    <div style={cyStyle} id="cy"/>
+                    <div key={"cyKey"} style={cyStyle} id="cy"/>
                 </div>
             </div>
         )
