@@ -43,6 +43,17 @@ const rankDirOptions = [
     {'text' : 'TopBottom', 'key' : 'TB', 'value' : 'TB'}
 ]
 
+const cyLayout = (rank) => {
+    return ({
+        name: 'dagre',
+        rankDir: rank,
+        nodeSep: 50,
+        rankSep: 100,
+        directed: true,
+        padding: 100
+    })
+}
+
 class Dagre extends React.Component{
     constructor(props){
         super(props);
@@ -58,6 +69,7 @@ class Dagre extends React.Component{
             moduleTypeUri: null,
             moduleUri: null,
             scriptPath: null,
+            moduleLabel: null,
             logPath: null,
             rankDir: 'TB',
             popperItems: []
@@ -143,14 +155,7 @@ class Dagre extends React.Component{
             logPath: null,
             functionUri: null
         });
-        let layout = this.cy.layout({
-            name: 'dagre',
-            rankDir: value,
-            nodeSep: 50,
-            rankSep: 100,
-            directed: true,
-            padding: 100
-        });
+        let layout = this.cy.layout(cyLayout(value));
         layout.run();
     }
 
@@ -262,14 +267,7 @@ class Dagre extends React.Component{
                     edges: this.state.edges
                 },
                 //https://github.com/cytoscape/cytoscape.js-dagre
-                layout: {
-                    name: this.state.rankDir === 'preset' ? 'preset' : 'dagre',
-                    rankDir: this.state.rankDir,//TB;LR
-                    nodeSep: 50,
-                    rankSep: 100,
-                    directed: true,
-                    padding: 100
-                }
+                layout: cyLayout(this.state.rankDir)
             });
 
         // TODO consider usage of https://github.com/iVis-at-Bilkent/cytoscape.js-context-menus
@@ -294,6 +292,7 @@ class Dagre extends React.Component{
                     select: (ele) => {
                         this.setState({
                             logPath: ele.data('input'),
+                            moduleLabel: ele.data('label'),
                             moduleTypeUri: null,
                             moduleUri: null,
                             functionUri: null
@@ -301,14 +300,24 @@ class Dagre extends React.Component{
                     }
                 },
                 {
-                    content: '',
-                    enabled: false
+                    content: '<span class="fa fa-file fa-2x"/>',
+                    select: (ele) => {
+                        //TODO modal with style
+                        if(ele.data('scriptPath') === this.state.file) {
+                            alert("Script path is the same as actual one")
+                        }else if(ele.data('scriptPath') === undefined){
+                            alert("Script path is not defined")
+                        }else{
+                            window.location.href='?file=' + ele.data('scriptPath')
+                        }
+                    }
                 },
                 {
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
                         this.setState({
                             logPath: ele.data('output'),
+                            moduleLabel: ele.data('label'),
                             moduleTypeUri: null,
                             moduleUri: null,
                             functionUri: null
@@ -447,7 +456,7 @@ class Dagre extends React.Component{
                         onChange={(value) => this.setState({moduleTypeUri: value, functionUri: null, moduleUri: null, logPath: null})}
                     />
 
-                    <br/><br/>
+                    <br/>
 
                     <h5>Function call</h5>
                     <ScriptFunctionSelection
@@ -455,7 +464,7 @@ class Dagre extends React.Component{
                         onChange={(value) => this.setState({functionUri: value[1], moduleTypeUri: null, moduleUri: null, logPath: null})}
                     />
 
-                    <br/><br/>
+                    <br/>
 
                     <h5>Graph render strategy</h5>
                     <Dropdown
@@ -476,6 +485,7 @@ class Dagre extends React.Component{
 
                 <ScriptInputOutputModal
                     logPath={this.state.logPath}
+                    moduleLabel={this.state.moduleLabel}
                 />
 
                 <FunctionExecutionModal

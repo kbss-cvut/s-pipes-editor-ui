@@ -1,8 +1,7 @@
 import React from 'react';
-import SForms from 's-forms';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import {Button, Form, Modal} from "react-bootstrap";
+import {Alert, Button, Form, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
 
 
@@ -14,6 +13,7 @@ class ScriptInputOutputModal extends React.Component {
             isLoaded: false,
             basicModalVisible: false,
             logPath: null,
+            moduleLabel: null,
             logContent: null
         };
         this.refForm = React.createRef();
@@ -25,13 +25,14 @@ class ScriptInputOutputModal extends React.Component {
 
 
     componentWillReceiveProps(newProps){
-        if(newProps.logPath){
+        if(newProps.logPath && newProps.moduleLabel){
             Rest.getLogForm(newProps.logPath).then((response) => {
                 console.log(response)
                 this.setState({
                     isLoaded: true,
                     basicModalVisible: true,
                     logPath: newProps.logPath,
+                    moduleLabel: newProps.moduleLabel,
                     logContent: response
                 })
             })
@@ -39,7 +40,6 @@ class ScriptInputOutputModal extends React.Component {
     }
 
     handleClose(){
-        console.log("closeeee");
         this.setState({basicModalVisible:false, isLoaded: false});
     }
 
@@ -79,20 +79,29 @@ class ScriptInputOutputModal extends React.Component {
                     aria-labelledby="example-custom-modal-styling-title"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>{this.state.moduleLabel}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form>
-                            {this.renderTextAreas()}
-                        </Form>
+                        {this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"].length === 0 &&
+                            <Alert variant="warning">
+                                Module does not have input or output
+                            </Alert>
+                        }
+                        {this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"].length > 0 &&
+                            <Form>
+                                {this.renderTextAreas()}
+                            </Form>
+                        }
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.handleClose()}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={() => this.handleSubmit()}>
-                            Debug
-                        </Button>
+                        {this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"].length > 0 &&
+                            <Button variant="primary" onClick={() => this.handleSubmit()}>
+                                Debug
+                            </Button>
+                        }
                     </Modal.Footer>
                 </Modal>
             );
