@@ -184,4 +184,20 @@ export const Rest = {
         return fetch("/rest/scripts/modules/dependency", postRequestOptions);
     },
 
+    validateScript: function (filepath) {
+        postRequestOptions["body"] =JSON.stringify(
+            {
+                "@type" : SCRIPT_DTO,
+                [ABSOLUTE_PATH] : filepath
+            }
+        )
+        return fetch("/rest/scripts/validate", postRequestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
 }

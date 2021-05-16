@@ -6,7 +6,7 @@ import cxtmenu from 'cytoscape-cxtmenu';
 import popper from 'cytoscape-popper';
 import navigator from 'cytoscape-navigator';
 import expandCollapse from 'cytoscape-expand-collapse';
-import {Rest, SCRIPT_PATH} from '../rest/Rest';
+import {MODULE_URI, Rest, SCRIPT_PATH} from '../rest/Rest';
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
@@ -15,6 +15,7 @@ import {Dropdown} from "semantic-ui-react";
 import {ICONS_MAP} from "./DagreIcons";
 import ScriptFunctionSelection from "../ScriptFunctionSelection";
 import FunctionExecutionModal from "../modal/FunctionExecutionModal";
+import {Button} from "react-bootstrap";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -64,6 +65,7 @@ class Dagre extends React.Component{
             file: params.get('file'),
             transformation: params.get('transformation'),
             groups : new Set(),
+            validation : new Set(),
             nodes : [],
             edges : [],
             moduleTypeUri: null,
@@ -83,12 +85,18 @@ class Dagre extends React.Component{
         cytoscape.use( expandCollapse );
         this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
         this.handleRenderChange = this.handleRenderChange.bind(this);
+        this.handleValidateScript = this.handleValidateScript.bind(this);
     }
 
     componentDidMount() {
-        Rest.getScript(this.state.file, this.state.transformation).then(response => {
-            this._processGraph(response);
-            this.renderCytoscapeElement();
+        //consider validation as part of module
+        Rest.validateScript(this.state.file).then(validation => {
+            let result = new Map(validation.map(i => [i[MODULE_URI], i]));
+            this.setState({validation : result});
+            Rest.getScript(this.state.file, this.state.transformation).then(response => {
+                this._processGraph(response);
+                this.renderCytoscapeElement();
+            });
         });
     }
 
@@ -114,7 +122,8 @@ class Dagre extends React.Component{
                 icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
                 menu: true,
                 scriptPath: n[SCRIPT_PATH],
-                parent: n[GROUP]
+                parent: n[GROUP],
+                validation: this.state.validation.get(n["@id"])
             },
             selectable: false,
             position: { x: n[X], y: n[Y] }
@@ -159,6 +168,11 @@ class Dagre extends React.Component{
         layout.run();
     }
 
+    handleValidateScript = () => {
+        //hard to change graph nodes
+        window.location.href='?file=' + ele.data('scriptPath')
+    }
+
     renderCytoscapeElement(){
         console.log('* Cytoscape.js is rendering the graph..');
         console.log(this.state.nodes)
@@ -177,6 +191,12 @@ class Dagre extends React.Component{
                             'width': 40,
                             'background-image': 'data(icon)',
                             'background-fit': 'cover cover'
+                        }
+                    },
+                    {
+                        selector: 'node[validation]',
+                        css: {
+                            'background-color': '#721c24'
                         }
                     },
                     {
@@ -313,6 +333,18 @@ class Dagre extends React.Component{
                     }
                 },
                 {
+                    content: '<span class="fa fa-bug fa-2x"/>',
+                    select: (ele) => {
+                        // //TODO modal with style
+                        console.log(ele.data('validation'))
+                        if(ele.data('validation') === undefined){
+                            alert('EVERYTHING IS OK')
+                        }else{
+                            alert(ele.data('validation')['http://onto.fel.cvut.cz/ontologies/s-pipes/error-message'])
+                        }
+                    }
+                },
+                {
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
                         this.setState({
@@ -366,17 +398,21 @@ class Dagre extends React.Component{
             complete: (sourceNode, targetNode, addedEles ) => {
                 console.log(sourceNode.data('id'))
                 console.log(targetNode.data('id'))
-                Rest.addModuleDependency(
-                    this.state.file,
-                    sourceNode.data('id'),
-                    targetNode.data('id')
-                ).then((res) => {
-                    if(res.status === 204){
-                        //TODO reload?
-                    }else{
-                        console.log("ERROR add edge/dependency")
-                    }
-                })
+                if(sourceNode.data('menu') !== undefined && targetNode.data('menu')){
+                    Rest.addModuleDependency(
+                        this.state.file,
+                        sourceNode.data('id'),
+                        targetNode.data('id')
+                    ).then((res) => {
+                        if(res.status === 204){
+                            //TODO reload?
+                        }else{
+                            console.log("ERROR add edge/dependency")
+                        }
+                    })
+                }else{
+                    alert("Invalid operation.");
+                }
             },
         })
 
@@ -474,6 +510,10 @@ class Dagre extends React.Component{
                         selection
                         onChange={this.handleRenderChange}
                     />
+
+                    <br/><br/>
+
+                    <Button variant="primary" onClick={() => this.handleValidateScript()}>Validate</Button>
                 </div>
 
                 {/*Modal windows*/}
