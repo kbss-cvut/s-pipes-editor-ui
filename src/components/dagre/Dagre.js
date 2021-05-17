@@ -170,7 +170,7 @@ class Dagre extends React.Component{
 
     handleValidateScript = () => {
         //hard to change graph nodes
-        window.location.href='?file=' + ele.data('scriptPath')
+        window.location.href='?file=' + this.state.file
     }
 
     renderCytoscapeElement(){
@@ -340,7 +340,10 @@ class Dagre extends React.Component{
                         if(ele.data('validation') === undefined){
                             alert('EVERYTHING IS OK')
                         }else{
-                            alert(ele.data('validation')['http://onto.fel.cvut.cz/ontologies/s-pipes/error-message'])
+                            alert(
+                                ele.data('validation')['http://onto.fel.cvut.cz/ontologies/s-pipes/rule-comment'] + "\n" +
+                                ele.data('validation')['http://onto.fel.cvut.cz/ontologies/s-pipes/error-message']
+                            )
                         }
                     }
                 },
