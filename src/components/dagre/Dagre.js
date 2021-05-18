@@ -16,6 +16,7 @@ import {ICONS_MAP} from "./DagreIcons";
 import ScriptFunctionSelection from "../ScriptFunctionSelection";
 import FunctionExecutionModal from "../modal/FunctionExecutionModal";
 import {Button} from "react-bootstrap";
+import ValidationReportModal from "../modal/ValidationReportModal";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -48,7 +49,7 @@ const cyLayout = (rank) => {
     return ({
         name: 'dagre',
         rankDir: rank,
-        nodeSep: 50,
+        nodeSep: 100,
         rankSep: 100,
         directed: true,
         padding: 100
@@ -65,7 +66,8 @@ class Dagre extends React.Component{
             file: params.get('file'),
             transformation: params.get('transformation'),
             groups : new Set(),
-            validation : new Set(),
+            validationMap : new Map(),
+            validationOrigin : null,
             nodes : [],
             edges : [],
             moduleTypeUri: null,
@@ -73,6 +75,7 @@ class Dagre extends React.Component{
             scriptPath: null,
             moduleLabel: null,
             logPath: null,
+            modalValidation: false,
             rankDir: 'TB',
             popperItems: []
         }
@@ -85,14 +88,14 @@ class Dagre extends React.Component{
         cytoscape.use( expandCollapse );
         this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
         this.handleRenderChange = this.handleRenderChange.bind(this);
-        this.handleValidateScript = this.handleValidateScript.bind(this);
+        this.handleValidateReport = this.handleValidateReport.bind(this);
     }
 
     componentDidMount() {
         //consider validation as part of module
         Rest.validateScript(this.state.file).then(validation => {
             let result = new Map(validation.map(i => [i[MODULE_URI], i]));
-            this.setState({validation : result});
+            this.setState({validationMap : result, validationOrigin: validation});
             Rest.getScript(this.state.file, this.state.transformation).then(response => {
                 this._processGraph(response);
                 this.renderCytoscapeElement();
@@ -101,14 +104,14 @@ class Dagre extends React.Component{
     }
 
     _addNode(n){
-        if(n[GROUP] !== undefined){
-            if(!this.state.groups.has(n[GROUP])){
-                this.state.groups.add(n[GROUP]);
-                this.state.nodes.push({
-                    data: { id: n[GROUP], label: n[GROUP], input: [], output: []}
-                })
-            }
-        }
+        // if(n[GROUP] !== undefined){
+        //     if(!this.state.groups.has(n[GROUP])){
+        //         this.state.groups.add(n[GROUP]);
+        //         this.state.nodes.push({
+        //             data: { id: n[GROUP], label: n[GROUP], input: [], output: []}
+        //         })
+        //     }
+        // }
 
         const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
         this.state.nodes.push({
@@ -122,8 +125,8 @@ class Dagre extends React.Component{
                 icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
                 menu: true,
                 scriptPath: n[SCRIPT_PATH],
-                parent: n[GROUP],
-                validation: this.state.validation.get(n["@id"])
+                // parent: n[GROUP],
+                validation: this.state.validationMap.get(n["@id"])
             },
             selectable: false,
             position: { x: n[X], y: n[Y] }
@@ -162,15 +165,23 @@ class Dagre extends React.Component{
             moduleTypeUri: null,
             moduleUri: null,
             logPath: null,
-            functionUri: null
+            functionUri: null,
+            modalValidation: null
         });
         let layout = this.cy.layout(cyLayout(value));
         layout.run();
     }
 
-    handleValidateScript = () => {
-        //hard to change graph nodes
-        window.location.href='?file=' + this.state.file
+    handleValidateReport = () => {
+        this.setState({
+            logPath: null,
+            moduleLabel: null,
+            moduleTypeUri: null,
+            moduleUri: null,
+            functionUri: null,
+            modalValidation: true
+        });
+        // window.location.href='?file=' + this.state.file
     }
 
     renderCytoscapeElement(){
@@ -315,7 +326,8 @@ class Dagre extends React.Component{
                             moduleLabel: ele.data('label'),
                             moduleTypeUri: null,
                             moduleUri: null,
-                            functionUri: null
+                            functionUri: null,
+                            modalValidation: null
                         })
                     }
                 },
@@ -355,7 +367,8 @@ class Dagre extends React.Component{
                             moduleLabel: ele.data('label'),
                             moduleTypeUri: null,
                             moduleUri: null,
-                            functionUri: null
+                            functionUri: null,
+                            modalValidation: null
                         })
                     }
                 },
@@ -366,7 +379,8 @@ class Dagre extends React.Component{
                             moduleTypeUri: ele.data('component'),
                             moduleUri: ele.data('id'),
                             logPath: null,
-                            functionUri: null
+                            functionUri: null,
+                            modalValidation: null
                         })
                     }
                 }
@@ -492,7 +506,7 @@ class Dagre extends React.Component{
                     <h5>Modules operations</h5>
                     <ModuleTypesSelection
                         scriptPath={this.state.file}
-                        onChange={(value) => this.setState({moduleTypeUri: value, functionUri: null, moduleUri: null, logPath: null})}
+                        onChange={(value) => this.setState({moduleTypeUri: value, functionUri: null, moduleUri: null, logPath: null, modalValidation: null})}
                     />
 
                     <br/>
@@ -500,7 +514,7 @@ class Dagre extends React.Component{
                     <h5>Function call</h5>
                     <ScriptFunctionSelection
                         scriptPath={this.state.file}
-                        onChange={(value) => this.setState({functionUri: value[1], moduleTypeUri: null, moduleUri: null, logPath: null})}
+                        onChange={(value) => this.setState({functionUri: value[1], moduleTypeUri: null, moduleUri: null, logPath: null, modalValidation: null})}
                     />
 
                     <br/>
@@ -516,7 +530,7 @@ class Dagre extends React.Component{
 
                     <br/><br/>
 
-                    <Button variant="primary" onClick={() => this.handleValidateScript()}>Validate</Button>
+                    <Button variant="info" onClick={() => this.handleValidateReport()}>Validate Report</Button>
                 </div>
 
                 {/*Modal windows*/}
@@ -533,6 +547,11 @@ class Dagre extends React.Component{
 
                 <FunctionExecutionModal
                     functionUri={this.state.functionUri}
+                />
+
+                <ValidationReportModal
+                    validationOrigin={this.state.validationOrigin}
+                    modalValidation={this.state.modalValidation}
                 />
                 <div>
                     <div key={"cyKey"} style={cyStyle} id="cy"/>
