@@ -9,6 +9,9 @@
 $ npm install
 ```
 
+IMPORTANT - https://github.com/facebook/create-react-app/issues/10811.
+The `npm@7.13.0` version is required and `npm update --force` command.
+
 Will create a `dist` directory containing your compiled code.
 
 Depending on your needs, you might want to do more optimization to the production build.
