@@ -17,6 +17,7 @@ import ScriptFunctionSelection from "../ScriptFunctionSelection";
 import FunctionExecutionModal from "../modal/FunctionExecutionModal";
 import {Button} from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -44,6 +45,10 @@ const rankDirOptions = [
     {'text' : 'LeftRight', 'key' : 'LR', 'value' : 'LR'},
     {'text' : 'TopBottom', 'key' : 'TB', 'value' : 'TB'}
 ]
+
+//todo resolve webpack devserver
+const client = new W3CWebSocket('ws://localhost:18115/og_spipes/rest/notifications');
+// const client = new W3CWebSocket('ws://websocket');
 
 const cyLayout = (rank) => {
     return ({
@@ -101,6 +106,17 @@ class Dagre extends React.Component{
                 this.renderCytoscapeElement();
             });
         });
+    }
+
+    componentWillMount() {
+        client.onopen = () => {
+            console.log("Open websocket")
+            client.send(this.state.file)
+        };
+        client.onmessage = (message) => {
+            console.log(message['data'] + "; Page should be reloaded; ")
+            // window.location.href='?file=' + this.state.file
+        };
     }
 
     _addNode(n){
