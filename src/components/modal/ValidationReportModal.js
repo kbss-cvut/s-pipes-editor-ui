@@ -30,7 +30,6 @@ class FunctionExecutionModal extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
-        console.log(newProps)
         if(newProps.modalValidation && newProps['modalValidation']){
             this.setState({
                 validationOrigin: newProps['validationOrigin'],

@@ -47,8 +47,11 @@ const config = {
     open: true,
     proxy: {
       '/rest': {
-        target: 'http://localhost:18115/og_spipes',
-        // pathRewrite: {'^/api' : ''}, // In this case we don't pass `api` path
+        target: 'http://localhost:18115/og_spipes'
+      },
+      '/websocket': {
+        target: 'ws://localhost:18115/og_spipes/rest/notifications',
+        ws: true
       }
     }
   },

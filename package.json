@@ -41,7 +41,8 @@
     "react-treebeard": "^3.2.4",
     "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.2.1.tgz",
     "semantic-ui-react": "^0.88.2",
-    "superagent": "^6.1.0"
+    "superagent": "^6.1.0",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
 import importedComponent from 'react-imported-component';
 
@@ -36,21 +36,25 @@ const AsyncNoMatch = importedComponent(
   }
 );
 
-const App = () => {
-  return (
-    <Router>
-      <div>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/scripts" component={Scripts} />
-          <Route exact path="/executions" component={Executions} />
-          {/*<Route exact path="/dynamic" component={AsyncDynamicPAge} />*/}
-          <Route exact path="/dagre_example" component={AsyncDagre} />
-          <Route component={AsyncNoMatch} />
-        </Switch>
-      </div>
-    </Router>
-  );
-};
+
+class App extends Component {
+
+    render() {
+        return(
+                <Router>
+                    <div>
+                        <Switch>
+                            <Route exact path="/" component={Home} />
+                            <Route exact path="/scripts" component={Scripts} />
+                            <Route exact path="/executions" component={Executions} />
+                            {/*<Route exact path="/dynamic" component={AsyncDynamicPAge} />*/}
+                            <Route exact path="/dagre_example" component={AsyncDagre} />
+                            <Route component={AsyncNoMatch} />
+                        </Switch>
+                    </div>
+                </Router>
+            )
+    }
+}
 
 export default App;
