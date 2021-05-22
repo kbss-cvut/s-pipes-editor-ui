@@ -5,10 +5,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import {Alert, Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {
     ABSOLUTE_PATH,
-    DISPLAY_NAME,
+    DISPLAY_NAME, ERROR_MESSAGE,
     EXECUTION_DURATION,
-    FINISH_DATE_UNIX,
-    Rest,
+    FINISH_DATE_UNIX, MODULE_URI,
+    Rest, RULE_COMMENT,
     START_DATE_UNIX,
     TRANSFORMATION
 } from "../rest/Rest";
@@ -23,9 +23,11 @@ class FunctionExecutionModal extends React.Component {
 
         this.state = {
             validationMap: null,
-            modalValidation: false
+            modalValidation: false,
+            cytoscape: false,
         };
 
+        this.handleNodeZoom = this.handleNodeZoom.bind(this);
         this.handleClose = this.handleClose.bind(this);
     }
 
@@ -34,8 +36,17 @@ class FunctionExecutionModal extends React.Component {
             this.setState({
                 validationOrigin: newProps['validationOrigin'],
                 modalValidation: newProps['modalValidation'],
+                cytoscape: newProps['cy']
             });
         }
+    }
+
+    handleNodeZoom(id){
+        this.state.cytoscape.zoom({
+            level: 6
+        });
+        this.state.cytoscape.center( this.state.cytoscape.getElementById(id) )
+        this.setState({isLoaded: false,  modalValidation: false});
     }
 
     handleClose(){
@@ -55,7 +66,6 @@ class FunctionExecutionModal extends React.Component {
                         <Modal.Title>Validation report</Modal.Title>
                     </Modal.Header>
 
-                    {/*http://onto.fel.cvut.cz/ontologies/s-pipes/rule-uri: "file:/home/jordan/IdeaProjects/s-pipes-newgen/src/main/resources/rules/SHACL/module-requires-rdfs_label.ttl"*/}
                     <Modal.Body>
                         {this.state.validationOrigin.length > 0 &&
                             <Container>
@@ -67,9 +77,9 @@ class FunctionExecutionModal extends React.Component {
                                 {this.state.validationOrigin.map((data, key) => {
                                     return (
                                         <Row key={key}>
-                                            <Col>{data['http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-uri']}</Col>
-                                            <Col>{data['http://onto.fel.cvut.cz/ontologies/s-pipes/rule-comment']}</Col>
-                                            <Col><Alert variant="danger">{data['http://onto.fel.cvut.cz/ontologies/s-pipes/error-message']}</Alert></Col>
+                                            <Col><Alert onClick={() => this.handleNodeZoom(data[MODULE_URI])} variant="info" style={{cursor: 'pointer'}}>{data[MODULE_URI]}</Alert></Col>
+                                            <Col><Alert variant="info">{data[RULE_COMMENT]}</Alert></Col>
+                                            <Col><Alert variant="danger">{data[ERROR_MESSAGE]}</Alert></Col>
                                         </Row>
                                     );
                                 })}
