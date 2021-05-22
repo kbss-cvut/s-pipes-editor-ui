@@ -82,7 +82,8 @@ class Dagre extends React.Component{
             logPath: null,
             modalValidation: false,
             rankDir: 'TB',
-            popperItems: []
+            popperItems: [],
+            cytoscape: null
         }
 
         cytoscape.use( dagre );
@@ -123,29 +124,33 @@ class Dagre extends React.Component{
         // if(n[GROUP] !== undefined){
         //     if(!this.state.groups.has(n[GROUP])){
         //         this.state.groups.add(n[GROUP]);
-        //         this.state.nodes.push({
-        //             data: { id: n[GROUP], label: n[GROUP], input: [], output: []}
+        //         this.setState({
+        //             nodes:[...this.state.nodes, {
+        //                 data: { id: n[GROUP], label: n[GROUP], input: [], output: []}
+        //             }]
         //         })
         //     }
         // }
 
         const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
-        this.state.nodes.push({
-            data: {
-                id: n["@id"],
-                label: label,
-                component: n[COMPONENT],
-                type: n[TYPE],
-                input: n[INPUT_PARAMETER],
-                output: n[OUTPUT_PARAMETER],
-                icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
-                menu: true,
-                scriptPath: n[SCRIPT_PATH],
-                // parent: n[GROUP],
-                validation: this.state.validationMap.get(n["@id"])
-            },
-            selectable: false,
-            position: { x: n[X], y: n[Y] }
+        this.setState({
+            nodes:[...this.state.nodes, {
+                data: {
+                    id: n["@id"],
+                    label: label,
+                    component: n[COMPONENT],
+                    type: n[TYPE],
+                    input: n[INPUT_PARAMETER],
+                    output: n[OUTPUT_PARAMETER],
+                    icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
+                    menu: true,
+                    scriptPath: n[SCRIPT_PATH],
+                    // parent: n[GROUP],
+                    validation: this.state.validationMap.get(n["@id"])
+                },
+                selectable: false,
+                position: { x: n[X], y: n[Y] }
+            }]
         })
     }
 
@@ -168,9 +173,11 @@ class Dagre extends React.Component{
         data[EDGE].map(e => {
             let from = typeof e[SOURCE_NODE] === "object" ? e[SOURCE_NODE]["@id"] :e[SOURCE_NODE];
             let to = typeof e[DESTINATION_NODE] === "object" ? e[DESTINATION_NODE]["@id"] : e[DESTINATION_NODE];
-            this.state.edges.push({
-                data: { source: from, target: to, menu: true },
-                selectable: false
+            this.setState({
+                edges:[...this.state.edges, {
+                    data: { source: from, target: to, menu: true },
+                    selectable: false
+                }]
             })
         });
     }
@@ -471,7 +478,9 @@ class Dagre extends React.Component{
                     }
                 });
                 items.push(p);
-                this.state.popperItems.push(p);
+                this.setState({
+                    popperItems:[...this.state.popperItems, p]
+                })
             }
             if(value.data('output').length > 0){
                 let p = value.popper({
@@ -481,7 +490,9 @@ class Dagre extends React.Component{
                     }
                 });
                 items.push(p);
-                this.state.popperItems.push(p);
+                this.setState({
+                    popperItems:[...this.state.popperItems, p]
+                })
             }
         }
         let update = () => {
@@ -501,7 +512,6 @@ class Dagre extends React.Component{
             undoable: false
         });
 
-        this.setState()
     }
 
     render(){
@@ -516,10 +526,14 @@ class Dagre extends React.Component{
         return (
             <div>
                 <NavbarMenu />
+                <div>
+                    <div key={"cyKey"} style={cyStyle} id="cy"/>
+                </div>
 
                 {/*Options*/}
                 <div style={{position: 'absolute', padding: 20, zIndex: 20, width: '20%'}}>
-                    <h5>Modules operations</h5>
+                    <h5>Nodes count: {this.state.nodes.filter(x=>x['selectable'] !== undefined).length}</h5>
+                    <h5>Add module</h5>
                     <ModuleTypesSelection
                         scriptPath={this.state.file}
                         onChange={(value) => this.setState({moduleTypeUri: value, functionUri: null, moduleUri: null, logPath: null, modalValidation: null})}
@@ -568,10 +582,8 @@ class Dagre extends React.Component{
                 <ValidationReportModal
                     validationOrigin={this.state.validationOrigin}
                     modalValidation={this.state.modalValidation}
+                    cy={this.cy}
                 />
-                <div>
-                    <div key={"cyKey"} style={cyStyle} id="cy"/>
-                </div>
             </div>
         )
     }
