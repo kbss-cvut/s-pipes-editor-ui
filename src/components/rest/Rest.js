@@ -22,6 +22,7 @@ export const EXECUTION_DURATION = "http://onto.fel.cvut.cz/ontologies/s-pipes/ha
 export const TRANSFORMATION = "http://onto.fel.cvut.cz/ontologies/dataset-descriptor/transformation"
 export const FUNCTION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri"
 export const FUNCTION_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-local-name"
+export const ONTOLOGY_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-ontology-uri"
 
 const postRequestOptions = {
     method: 'POST',
@@ -53,6 +54,22 @@ export const Rest = {
             }
         )
         return fetch("/rest/views/new", postRequestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    getScriptOntologies: function (script) {
+        postRequestOptions["body"] = JSON.stringify(
+            {
+                "@type" : SCRIPT_DTO,
+                [ABSOLUTE_PATH] : script
+            }
+        )
+        return fetch("/rest/scripts/ontologies", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
