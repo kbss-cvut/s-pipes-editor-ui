@@ -32,7 +32,7 @@ class FunctionExecutionModal extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
-        if(newProps.modalValidation && newProps['modalValidation']){
+        if(newProps['validationOrigin'] && newProps['modalValidation']){
             this.setState({
                 validationOrigin: newProps['validationOrigin'],
                 modalValidation: newProps['modalValidation'],
@@ -43,7 +43,7 @@ class FunctionExecutionModal extends React.Component {
 
     handleNodeZoom(id){
         this.state.cytoscape.zoom({
-            level: 6
+            level: 4
         });
         this.state.cytoscape.center( this.state.cytoscape.getElementById(id) )
         this.setState({isLoaded: false,  modalValidation: false});

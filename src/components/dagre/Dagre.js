@@ -18,6 +18,7 @@ import FunctionExecutionModal from "../modal/FunctionExecutionModal";
 import {Button} from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import MoveModuleModal from "../modal/MoveModuleModal";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -59,6 +60,16 @@ const cyLayout = (rank) => {
         directed: true,
         padding: 100
     })
+}
+
+const modalInputs = {
+    logPath: null,
+    moduleLabel: null,
+    moduleTypeUri: null,
+    moduleUri: null,
+    functionUri: null,
+    modalValidation: null,
+    modalMove: null,
 }
 
 class Dagre extends React.Component{
@@ -121,16 +132,16 @@ class Dagre extends React.Component{
     }
 
     _addNode(n){
-        // if(n[GROUP] !== undefined){
-        //     if(!this.state.groups.has(n[GROUP])){
-        //         this.state.groups.add(n[GROUP]);
-        //         this.setState({
-        //             nodes:[...this.state.nodes, {
-        //                 data: { id: n[GROUP], label: n[GROUP], input: [], output: []}
-        //             }]
-        //         })
-        //     }
-        // }
+        if(n[GROUP] !== undefined){
+            if(!this.state.groups.has(n[GROUP])){
+                this.state.groups.add(n[GROUP]);
+                this.setState({
+                    nodes:[...this.state.nodes, {
+                        data: { id: n[GROUP], label: n[GROUP], input: [], output: []}
+                    }]
+                })
+            }
+        }
 
         const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
         this.setState({
@@ -145,7 +156,7 @@ class Dagre extends React.Component{
                     icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
                     menu: true,
                     scriptPath: n[SCRIPT_PATH],
-                    // parent: n[GROUP],
+                    parent: n[GROUP],
                     validation: this.state.validationMap.get(n["@id"])
                 },
                 selectable: false,
@@ -183,27 +194,17 @@ class Dagre extends React.Component{
     }
 
     handleRenderChange = (e, { value }) => {
-        this.setState({
-            rankDir : value,
-            moduleTypeUri: null,
-            moduleUri: null,
-            logPath: null,
-            functionUri: null,
-            modalValidation: null
-        });
+        const modalState = JSON.parse(JSON.stringify(modalInputs));
+        modalState["rankDir"] = value;
+        this.setState(modalState);
         let layout = this.cy.layout(cyLayout(value));
         layout.run();
     }
 
     handleValidateReport = () => {
-        this.setState({
-            logPath: null,
-            moduleLabel: null,
-            moduleTypeUri: null,
-            moduleUri: null,
-            functionUri: null,
-            modalValidation: true
-        });
+        const modalState = JSON.parse(JSON.stringify(modalInputs));
+        modalState["modalValidation"] = true;
+        this.setState(modalState);
         // window.location.href='?file=' + this.state.file
     }
 
@@ -344,14 +345,10 @@ class Dagre extends React.Component{
                 {
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
-                        this.setState({
-                            logPath: ele.data('input'),
-                            moduleLabel: ele.data('label'),
-                            moduleTypeUri: null,
-                            moduleUri: null,
-                            functionUri: null,
-                            modalValidation: null
-                        })
+                        const modalState = JSON.parse(JSON.stringify(modalInputs));
+                        modalState["logPath"] = ele.data('input');
+                        modalState["moduleLabel"] = ele.data('label');
+                        this.setState(modalState);
                     }
                 },
                 {
@@ -365,6 +362,16 @@ class Dagre extends React.Component{
                         }else{
                             window.location.href='?file=' + ele.data('scriptPath')
                         }
+                    }
+                },
+                {
+                    content: '<span class="fa fa-plane fa-2x"/>',
+                    select: (ele) => {
+                        const modalState = JSON.parse(JSON.stringify(modalInputs));
+                        modalState["scriptPath"] = this.state.file;
+                        modalState["moduleURI"] = ele.data('id');
+                        modalState["modalMove"] = true;
+                        this.setState(modalState);
                     }
                 },
                 {
@@ -385,26 +392,19 @@ class Dagre extends React.Component{
                 {
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
-                        this.setState({
-                            logPath: ele.data('output'),
-                            moduleLabel: ele.data('label'),
-                            moduleTypeUri: null,
-                            moduleUri: null,
-                            functionUri: null,
-                            modalValidation: null
-                        })
+                        const modalState = JSON.parse(JSON.stringify(modalInputs));
+                        modalState["logPath"] = ele.data('output');
+                        modalState["moduleLabel"] = ele.data('label');
+                        this.setState(modalState);
                     }
                 },
                 {
                     content: '<span class="fa fa-cogs fa-2x"/>',
                     select: (ele) => {
-                        this.setState({
-                            moduleTypeUri: ele.data('component'),
-                            moduleUri: ele.data('id'),
-                            logPath: null,
-                            functionUri: null,
-                            modalValidation: null
-                        })
+                        const modalState = JSON.parse(JSON.stringify(modalInputs));
+                        modalState["moduleTypeUri"] = ele.data('component');
+                        modalState["moduleUri"] = ele.data('id');
+                        this.setState(modalState);
                     }
                 }
             ]
@@ -583,6 +583,12 @@ class Dagre extends React.Component{
                     validationOrigin={this.state.validationOrigin}
                     modalValidation={this.state.modalValidation}
                     cy={this.cy}
+                />
+
+                <MoveModuleModal
+                    scriptPath={this.state.scriptPath}
+                    moduleURI={this.state.moduleURI}
+                    modalMove={this.state.modalMove}
                 />
             </div>
         )
