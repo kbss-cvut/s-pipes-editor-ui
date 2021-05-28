@@ -23,6 +23,8 @@ export const TRANSFORMATION = "http://onto.fel.cvut.cz/ontologies/dataset-descri
 export const FUNCTION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri"
 export const FUNCTION_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-local-name"
 export const ONTOLOGY_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-ontology-uri"
+export const SCRIPT_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-name"
+export const SCRIPT_CREATE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-create-dto"
 
 const postRequestOptions = {
     method: 'POST',
@@ -62,6 +64,21 @@ export const Rest = {
             );
     },
 
+    deleteScript: function (script) {
+        postRequestOptions["body"] = JSON.stringify(
+            {
+                "@type" : SCRIPT_DTO,
+                [ABSOLUTE_PATH] : script
+            }
+        )
+        return fetch("/rest/scripts/delete", postRequestOptions)
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
     getScriptOntologies: function (script) {
         postRequestOptions["body"] = JSON.stringify(
             {
@@ -89,6 +106,23 @@ export const Rest = {
         )
         return fetch("/rest/scripts/forms", postRequestOptions)
             .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    createScript: function (ontologyURI, scriptName, scriptPath) {
+        postRequestOptions['body'] = JSON.stringify(
+            {
+                "@type" : SCRIPT_CREATE_DTO,
+                [ONTOLOGY_URI] : ontologyURI,
+                [SCRIPT_NAME] : scriptName,
+                [SCRIPT_PATH] : scriptPath
+            }
+        )
+        return fetch("/rest/scripts/create", postRequestOptions)
             .then(
                 (result) => {
                     return result;
