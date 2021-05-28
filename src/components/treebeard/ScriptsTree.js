@@ -6,6 +6,8 @@ import Header from './Header';
 import {Treebeard, decorators} from 'react-treebeard';
 import {Rest} from "../rest/Rest";
 import { withRouter } from "react-router-dom";
+import MoveModuleModal from "../modal/MoveModuleModal";
+import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 
 
 class ScriptsTree extends React.Component {
@@ -14,16 +16,35 @@ class ScriptsTree extends React.Component {
         super(props);
         this.state = {
             data: [],
+            scriptPath: null,
+            displayName: null,
+            type: null,
             isLoaded: null
         };
+        this.handleRefresh = this.handleRefresh.bind(this);
         this.onToggle = this.onToggle.bind(this);
         this.onSelect = this.onSelect.bind(this);
     }
 
     componentDidMount() {
         Rest.getScripts().then(response => {
-            console.log(response);
+            response['toggled']=true;
+            if(response['children'][0] !== undefined){
+                response['children'][0]['toggled']=true;
+            }
             this.setState({ data: response});
+
+            document.addEventListener('contextmenu', (e) => {
+                let dataId = e.target.getAttribute("data-id");
+                if(dataId !== undefined){
+                    e.preventDefault()
+                    if(dataId !== ""){
+                        let childrenId = e.target.getAttribute("data-children");
+                        let displayName = e.target.innerText;
+                        this.setState({ scriptPath: dataId, displayName: displayName, type: childrenId });
+                    }
+                }
+            });
         });
     }
 
@@ -38,14 +59,14 @@ class ScriptsTree extends React.Component {
         if (node.children) {
             node.toggled = toggled;
         }else{
-            console.log(node.file);
-            this.props.history.push({
-                pathname: '/dagre_example',
-                search: '?file=' + node.file
-            });
+            window.location.href='/dagre_example?file=' + node.id
+            // this.props.history.push({
+            //     pathname: '/dagre_example',
+            //     search: '?file=' + node.id
+            // });
         }
 
-        this.setState(() => ({cursor: node, data: Object.assign({}, data)}));
+        this.setState(() => ({cursor: node, data: Object.assign({}, data), scriptPath: null}));
     }
 
     onSelect(node) {
@@ -61,7 +82,11 @@ class ScriptsTree extends React.Component {
 
         node.selected = true;
 
-        this.setState(() => ({cursor: node, data: Object.assign({}, data)}));
+        this.setState(() => ({cursor: node, data: Object.assign({}, data), scriptPath: null}));
+    }
+
+    handleRefresh(){
+        this.componentDidMount();
     }
 
     render() {
@@ -71,6 +96,7 @@ class ScriptsTree extends React.Component {
             return (
                 <Fragment>
                     <h3>Scripts</h3>
+                    <p>Right click on directory/file to add/remove file</p>
                     <div style={styles.component}>
                         <Treebeard
                             data={this.state.data}
@@ -80,6 +106,13 @@ class ScriptsTree extends React.Component {
                             style={styles.treeStyle}
                         />
                     </div>
+
+                    <ScriptActionsModuleModal
+                        scriptPath={this.state.scriptPath}
+                        displayName={this.state.displayName}
+                        type={this.state.type}
+                        handleRefresh={this.handleRefresh}
+                    />
                 </Fragment>
             );
 

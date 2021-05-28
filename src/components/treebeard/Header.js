@@ -8,7 +8,7 @@ const Header = ({onSelect, style, customStyles, node}) => {
 
     return (
         <div style={style.base} onClick={onSelect}>
-            <div style={node.selected ? {...style.title, ...customStyles.header.title} : style.title}>
+            <div data-id={node.id} data-children={node.children ? 'folder' : 'file-text'} style={node.selected ? {...style.title, ...customStyles.header.title} : style.title}>
                 <i className={iconClass} style={iconStyle}/>
                 {node.name}
             </div>
