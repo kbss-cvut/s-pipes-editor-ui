@@ -19,6 +19,7 @@ import {Button} from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import MoveModuleModal from "../modal/MoveModuleModal";
+import ScriptOntologyModal from "../modal/ScriptOntologyModal";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -69,6 +70,7 @@ const modalInputs = {
     moduleUri: null,
     functionUri: null,
     modalValidation: null,
+    modalOntology: null,
     modalMove: null,
 }
 
@@ -206,6 +208,13 @@ class Dagre extends React.Component{
         modalState["modalValidation"] = true;
         this.setState(modalState);
         // window.location.href='?file=' + this.state.file
+    }
+
+    handleOntologyReport = () => {
+        const modalState = JSON.parse(JSON.stringify(modalInputs));
+        modalState["scriptPath"] = this.state.file;
+        modalState["modalOntology"] = true;
+        this.setState(modalState);
     }
 
     renderCytoscapeElement(){
@@ -560,6 +569,10 @@ class Dagre extends React.Component{
 
                     <br/><br/>
 
+                    <Button variant="info" onClick={() => this.handleOntologyReport()}>Manage script's ontology</Button>
+
+                    <br/><br/>
+
                     <Button variant="info" onClick={() => this.handleValidateReport()}>Validate Report</Button>
                 </div>
 
@@ -589,6 +602,11 @@ class Dagre extends React.Component{
                     scriptPath={this.state.scriptPath}
                     moduleURI={this.state.moduleURI}
                     modalMove={this.state.modalMove}
+                />
+
+                <ScriptOntologyModal
+                    scriptPath={this.state.scriptPath}
+                    modalOntology={this.state.modalOntology}
                 />
             </div>
         )

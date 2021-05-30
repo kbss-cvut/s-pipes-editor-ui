@@ -25,6 +25,7 @@ export const FUNCTION_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-fun
 export const ONTOLOGY_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-ontology-uri"
 export const SCRIPT_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-name"
 export const SCRIPT_CREATE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-create-dto"
+export const SCRIPT_ONTOLOGY_CREATE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-ontology-create-dto"
 
 const postRequestOptions = {
     method: 'POST',
@@ -87,6 +88,54 @@ export const Rest = {
             }
         )
         return fetch("/rest/scripts/ontologies", postRequestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    removeScriptOwnOntology: function (script, ontologyURI) {
+        postRequestOptions["body"] = JSON.stringify(
+            {
+                "@type" : SCRIPT_ONTOLOGY_CREATE_DTO,
+                [SCRIPT_PATH] : script,
+                [ONTOLOGY_URI] : ontologyURI,
+            }
+        )
+        return fetch("/rest/scripts/ontology/remove", postRequestOptions)
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    addScriptOwnOntology: function (script, ontologyURI) {
+        postRequestOptions["body"] = JSON.stringify(
+            {
+                "@type" : SCRIPT_ONTOLOGY_CREATE_DTO,
+                [SCRIPT_PATH] : script,
+                [ONTOLOGY_URI] : ontologyURI,
+            }
+        )
+        return fetch("/rest/scripts/ontology/add", postRequestOptions)
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    getScriptOwnOntology: function (script) {
+        postRequestOptions["body"] = JSON.stringify(
+            {
+                "@type" : SCRIPT_DTO,
+                [ABSOLUTE_PATH] : script
+            }
+        )
+        return fetch("/rest/scripts/own-ontology", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {
