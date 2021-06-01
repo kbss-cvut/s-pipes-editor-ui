@@ -35,10 +35,11 @@ class MoveModuleModal extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
-        if(newProps.modalMove && newProps.scriptPath && newProps.moduleURI){
-            Rest.getScriptOntologies(newProps['scriptPath']).then((response) => {
+        if(newProps.modalMove && newProps.sourceScriptPath && newProps.moduleScriptPath && newProps.moduleURI){
+            Rest.getScriptOntologies(newProps['sourceScriptPath']).then((response) => {
                 this.setState({
-                    scriptPath: newProps['scriptPath'],
+                    sourceScriptPath: newProps['sourceScriptPath'],
+                    moduleScriptPath: newProps['moduleScriptPath'],
                     moduleURI: newProps['moduleURI'],
                     ontologies: response,
                     isLoaded: true,
@@ -48,10 +49,14 @@ class MoveModuleModal extends React.Component {
         }
     }
 
-    handleModuleMove(ontologyURI){
-        alert('Not implemented yet')
-        //this.state.moduleURI
-        this.setState({isLoaded: false,  modalVisible: false});
+    handleModuleMove(toScript, rename){
+        Rest.moveModule(
+            this.state.moduleScriptPath,
+            toScript,
+            this.state.moduleURI,
+            rename
+        )
+        window.location.href='?file=' + ele.data('scriptPath')
     }
 
     handleClose(){
@@ -77,13 +82,20 @@ class MoveModuleModal extends React.Component {
                             <Row>
                                 <Col><h4>Ontology</h4></Col>
                                 <Col><h4>File</h4></Col>
+                                <Col><h4>Actions</h4></Col>
                             </Row>
                             <hr/>
                             {this.state.ontologies.map((data, key) => {
                                 return (
                                     <Row key={key}>
-                                        <Col><Alert onClick={() => this.handleModuleMove(data[ONTOLOGY_URI])} variant="info" style={{cursor: 'pointer'}}>{data[ONTOLOGY_URI]}</Alert>                                        </Col>
+                                        <Col>{data[ONTOLOGY_URI]}</Col>
                                         <Col>{data[SCRIPT_PATH].replace(/^.*[\\\/]/, '')}</Col>
+                                        <Col>
+                                            <Row key={"o" + key}>
+                                                <Col><Alert onClick={() => this.handleModuleMove(data[SCRIPT_PATH], true)} variant="info" style={{cursor: 'pointer'}}>MOVE RENAME</Alert></Col>
+                                                <Col><Alert onClick={() => this.handleModuleMove(data[SCRIPT_PATH], false)} variant="info" style={{cursor: 'pointer'}}>MOVE</Alert></Col>
+                                            </Row>
+                                        </Col>
                                     </Row>
                                 );
                             })}

@@ -7,6 +7,7 @@ export const ROOT_QUESTION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-roo
 export const SCRIPT_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-script-path";
 export const MODULE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/module-dto";
 export const DEPENDENCY_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/dependency-dto";
+export const MOVE_MODULE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/move-module-dto";
 export const ABSOLUTE_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path";
 export const MODULE_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-uri";
 export const RULE_COMMENT = "http://onto.fel.cvut.cz/ontologies/s-pipes/rule-comment";
@@ -26,6 +27,9 @@ export const ONTOLOGY_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-onto
 export const SCRIPT_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-name"
 export const SCRIPT_CREATE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-create-dto"
 export const SCRIPT_ONTOLOGY_CREATE_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-ontology-create-dto"
+export const MODULE_FROM_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-from-path"
+export const MODULE_TO_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-to-path"
+export const RENAME_MODULE = "http://onto.fel.cvut.cz/ontologies/s-pipes/rename-module"
 
 const postRequestOptions = {
     method: 'POST',
@@ -229,6 +233,24 @@ export const Rest = {
             }
         )
         return fetch("/rest/scripts/modules/dependencies/delete", postRequestOptions)
+    },
+
+    moveModule: function (fromScript, toScript, moduleUri, rename){
+        postRequestOptions["body"] =JSON.stringify(
+            {
+                "@type" : MOVE_MODULE_DTO,
+                [MODULE_FROM_PATH] : fromScript,
+                [MODULE_TO_PATH] : toScript,
+                [MODULE_URI] : moduleUri,
+                [RENAME_MODULE] : rename
+            }
+        )
+        return fetch("/rest/scripts/modules/move", postRequestOptions)
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
     },
 
     getModulesTypes: function (filepath) {

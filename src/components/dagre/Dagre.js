@@ -72,6 +72,7 @@ const modalInputs = {
     modalValidation: null,
     modalOntology: null,
     modalMove: null,
+    selectedScript: null
 }
 
 class Dagre extends React.Component{
@@ -93,6 +94,7 @@ class Dagre extends React.Component{
             scriptPath: null,
             moduleLabel: null,
             logPath: null,
+            selectedScript: null,
             modalValidation: false,
             rankDir: 'TB',
             popperItems: [],
@@ -377,7 +379,7 @@ class Dagre extends React.Component{
                     content: '<span class="fa fa-plane fa-2x"/>',
                     select: (ele) => {
                         const modalState = JSON.parse(JSON.stringify(modalInputs));
-                        modalState["scriptPath"] = this.state.file;
+                        modalState["selectedScript"] = ele.data('scriptPath');
                         modalState["moduleURI"] = ele.data('id');
                         modalState["modalMove"] = true;
                         this.setState(modalState);
@@ -599,7 +601,8 @@ class Dagre extends React.Component{
                 />
 
                 <MoveModuleModal
-                    scriptPath={this.state.scriptPath}
+                    sourceScriptPath={this.state.file}
+                    moduleScriptPath={this.state.selectedScript}
                     moduleURI={this.state.moduleURI}
                     modalMove={this.state.modalMove}
                 />
