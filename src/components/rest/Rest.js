@@ -30,6 +30,14 @@ export const SCRIPT_ONTOLOGY_CREATE_DTO = "http://onto.fel.cvut.cz/ontologies/s-
 export const MODULE_FROM_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-from-path"
 export const MODULE_TO_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-to-path"
 export const RENAME_MODULE = "http://onto.fel.cvut.cz/ontologies/s-pipes/rename-module"
+export const EXECUTION_INFO = "http://onto.fel.cvut.cz/ontologies/s-pipes/module-execution-info"
+export const EXECUTION_VARIABLE = "http://onto.fel.cvut.cz/ontologies/s-pipes/execution-variable-dto"
+export const MODULE_VARIABLES = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-variables"
+export const MODULE_EXECUTION_DURATION = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-execution-duration"
+export const MODULE_EXECUTION_START_DATE = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-execution-start-date-unix"
+export const MODULE_EXECUTION_FINISH_DATE = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-execution-finish-date-unix"
+export const MODULE_INPUT_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-input-path"
+export const MODULE_OUTPUT_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-output-path"
 
 const postRequestOptions = {
     method: 'POST',
@@ -316,6 +324,22 @@ export const Rest = {
             }
         )
         return fetch("/rest/scripts/validate", postRequestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
+    getScriptModuleExecution: function (transformationId) {
+        postRequestOptions["body"] =JSON.stringify(
+            {
+                "@type" : SCRIPT_DTO,
+                [TRANSFORMATION_ID] : transformationId
+            }
+        )
+        return fetch("/rest/execution/history-modules", postRequestOptions)
             .then(res => res.json())
             .then(
                 (result) => {

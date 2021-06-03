@@ -15,11 +15,12 @@ import {Dropdown} from "semantic-ui-react";
 import {ICONS_MAP} from "./DagreIcons";
 import ScriptFunctionSelection from "../ScriptFunctionSelection";
 import FunctionExecutionModal from "../modal/FunctionExecutionModal";
-import {Button} from "react-bootstrap";
+import {Button, Modal} from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import MoveModuleModal from "../modal/MoveModuleModal";
 import ScriptOntologyModal from "../modal/ScriptOntologyModal";
+import ScriptExecutionModal from "../modal/ScriptExecutionModal";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -72,7 +73,8 @@ const modalInputs = {
     modalValidation: null,
     modalOntology: null,
     modalMove: null,
-    selectedScript: null
+    selectedScript: null,
+    modalExecution: null
 }
 
 class Dagre extends React.Component{
@@ -218,6 +220,12 @@ class Dagre extends React.Component{
         modalState["modalOntology"] = true;
         this.setState(modalState);
     }
+
+    handleExecutionReport = () => {
+        const modalState = JSON.parse(JSON.stringify(modalInputs));
+        modalState["modalExecution"] = true;
+        this.setState(modalState);
+}
 
     renderCytoscapeElement(){
         console.log('* Cytoscape.js is rendering the graph..');
@@ -569,13 +577,25 @@ class Dagre extends React.Component{
                         onChange={this.handleRenderChange}
                     />
 
-                    <br/><br/>
+                    {this.state.transformation !== null &&
+                        <div>
+                            <br/>
+                            <Button variant="info" onClick={() => this.handleExecutionReport()}>Execution report</Button>
+                            <br/>
+                        </div>
+                    }
 
-                    <Button variant="info" onClick={() => this.handleOntologyReport()}>Manage script's ontology</Button>
+                    <div>
+                        <br/>
+                        <Button variant="info" onClick={() => this.handleOntologyReport()}>Manage script's ontology</Button>
+                        <br/>
+                    </div>
 
-                    <br/><br/>
+                    <div>
+                        <br/>
+                        <Button variant="info" onClick={() => this.handleValidateReport()}>Validate Report</Button>
+                    </div>
 
-                    <Button variant="info" onClick={() => this.handleValidateReport()}>Validate Report</Button>
                 </div>
 
                 {/*Modal windows*/}
@@ -610,6 +630,12 @@ class Dagre extends React.Component{
                 <ScriptOntologyModal
                     scriptPath={this.state.scriptPath}
                     modalOntology={this.state.modalOntology}
+                />
+
+                <ScriptExecutionModal
+                    transformationId={this.state.transformation}
+                    modalExecution={this.state.modalExecution}
+                    cy={this.cy}
                 />
             </div>
         )
