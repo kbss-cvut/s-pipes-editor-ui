@@ -38,6 +38,8 @@ export const MODULE_EXECUTION_START_DATE = "http://onto.fel.cvut.cz/ontologies/s
 export const MODULE_EXECUTION_FINISH_DATE = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-execution-finish-date-unix"
 export const MODULE_INPUT_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-input-path"
 export const MODULE_OUTPUT_PATH = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-output-path"
+export const MODULE_VARIABLE_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-variable-name"
+export const MODULE_VARIABLE_VALUE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-variable-value"
 
 const postRequestOptions = {
     method: 'POST',

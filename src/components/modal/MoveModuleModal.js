@@ -56,7 +56,7 @@ class MoveModuleModal extends React.Component {
             this.state.moduleURI,
             rename
         )
-        window.location.href='?file=' + ele.data('scriptPath')
+        window.location.href='?file=' + this.state.sourceScriptPath
     }
 
     handleClose(){

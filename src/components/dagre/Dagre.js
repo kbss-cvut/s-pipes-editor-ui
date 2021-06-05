@@ -6,7 +6,14 @@ import cxtmenu from 'cytoscape-cxtmenu';
 import popper from 'cytoscape-popper';
 import navigator from 'cytoscape-navigator';
 import expandCollapse from 'cytoscape-expand-collapse';
-import {MODULE_URI, Rest, SCRIPT_PATH} from '../rest/Rest';
+import {
+    MODULE_URI,
+    MODULE_VARIABLE_NAME,
+    MODULE_VARIABLE_VALUE,
+    MODULE_VARIABLES,
+    Rest,
+    SCRIPT_PATH
+} from '../rest/Rest';
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
@@ -98,6 +105,7 @@ class Dagre extends React.Component{
             logPath: null,
             selectedScript: null,
             modalValidation: false,
+            executionInfo: [],
             rankDir: 'TB',
             popperItems: [],
             cytoscape: null
@@ -159,6 +167,7 @@ class Dagre extends React.Component{
                     type: n[TYPE],
                     input: n[INPUT_PARAMETER],
                     output: n[OUTPUT_PARAMETER],
+                    variables: n[MODULE_VARIABLES],
                     icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
                     menu: true,
                     scriptPath: n[SCRIPT_PATH],
@@ -531,6 +540,15 @@ class Dagre extends React.Component{
             undoable: false
         });
 
+        this.cy.on('mouseover', 'node[menu]', function(event) {
+            let variables = event.target.data('variables');
+            this.setState({executionInfo: variables});
+        }.bind(this));
+
+        this.cy.on('mouseout', 'node[menu]', function(event) {
+            this.setState({executionInfo: []});
+        }.bind(this));
+
     }
 
     render(){
@@ -550,7 +568,7 @@ class Dagre extends React.Component{
                 </div>
 
                 {/*Options*/}
-                <div style={{position: 'absolute', padding: 20, zIndex: 20, width: '20%'}}>
+                <div style={{position: 'absolute', padding: 20, zIndex: 20, width: '25%'}}>
                     <h5>Nodes count: {this.state.nodes.filter(x=>x['selectable'] !== undefined).length}</h5>
                     <h5>Add module</h5>
                     <ModuleTypesSelection
@@ -595,6 +613,18 @@ class Dagre extends React.Component{
                         <br/>
                         <Button variant="info" onClick={() => this.handleValidateReport()}>Validate Report</Button>
                     </div>
+
+                    {this.state.executionInfo.length > 0 &&
+                        <div>
+                        <hr/>
+                        <h4>Variables info</h4>
+                            {this.state.executionInfo.sort((a, b) => a[MODULE_VARIABLE_NAME].localeCompare(b[MODULE_VARIABLE_NAME])).map((d, k) => {return(
+                                <div key={"variable"+k}>
+                                    {d[MODULE_VARIABLE_NAME]}: {d[MODULE_VARIABLE_VALUE].replace(/^.*[\\\/]/, '')}
+                                </div>
+                            );})}
+                        </div>
+                    }
 
                 </div>
 
