@@ -1,6 +1,5 @@
 import React from 'react';
 
-import 'react-datepicker/dist/react-datepicker.css';
 import {Alert, Button, Col, Container, Modal, Row, Table} from "react-bootstrap";
 import {
     MODULE_EXECUTION_FINISH_DATE,

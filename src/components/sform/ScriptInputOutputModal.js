@@ -1,6 +1,5 @@
 import React from 'react';
 
-import 'react-datepicker/dist/react-datepicker.css';
 import {Alert, Button, Form, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
 

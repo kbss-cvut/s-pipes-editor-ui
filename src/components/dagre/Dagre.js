@@ -28,6 +28,8 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import MoveModuleModal from "../modal/MoveModuleModal";
 import ScriptOntologyModal from "../modal/ScriptOntologyModal";
 import ScriptExecutionModal from "../modal/ScriptExecutionModal";
+import "@triply/yasgui/build/yasgui.min.css";
+import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
@@ -541,12 +543,16 @@ class Dagre extends React.Component{
         });
 
         this.cy.on('mouseover', 'node[menu]', function(event) {
+            const modalState = JSON.parse(JSON.stringify(modalInputs));
             let variables = event.target.data('variables');
-            this.setState({executionInfo: variables});
+            modalState["executionInfo"] = variables;
+            this.setState(modalState);
         }.bind(this));
 
         this.cy.on('mouseout', 'node[menu]', function(event) {
-            this.setState({executionInfo: []});
+            const modalState = JSON.parse(JSON.stringify(modalInputs));
+            modalState["executionInfo"] = [];
+            this.setState(modalState);
         }.bind(this));
 
     }
@@ -573,7 +579,11 @@ class Dagre extends React.Component{
                     <h5>Add module</h5>
                     <ModuleTypesSelection
                         scriptPath={this.state.file}
-                        onChange={(value) => this.setState({moduleTypeUri: value, functionUri: null, moduleUri: null, logPath: null, modalValidation: null})}
+                        onChange={(value) => {
+                            const modalState = JSON.parse(JSON.stringify(modalInputs));
+                            modalState["moduleTypeUri"] = value;
+                            this.setState(modalState)
+                        }}
                     />
 
                     <br/>
@@ -581,7 +591,11 @@ class Dagre extends React.Component{
                     <h5>Function call</h5>
                     <ScriptFunctionSelection
                         scriptPath={this.state.file}
-                        onChange={(value) => this.setState({functionUri: value[1], moduleTypeUri: null, moduleUri: null, logPath: null, modalValidation: null})}
+                        onChange={(value) => {
+                            const modalState = JSON.parse(JSON.stringify(modalInputs));
+                            modalState["functionUri"] = value[1];
+                            this.setState(modalState)
+                        }}
                     />
 
                     <br/>
@@ -635,14 +649,19 @@ class Dagre extends React.Component{
                     scriptPath={this.state.file}
                 />
 
+                <SFormsFunctionModal
+                    scriptPath={this.state.file}
+                    functionUri={this.state.functionUri}
+                />
+
                 <ScriptInputOutputModal
                     logPath={this.state.logPath}
                     moduleLabel={this.state.moduleLabel}
                 />
 
-                <FunctionExecutionModal
-                    functionUri={this.state.functionUri}
-                />
+                {/*<FunctionExecutionModal*/}
+                {/*    functionUri={this.state.functionUri}*/}
+                {/*/>*/}
 
                 <ValidationReportModal
                     validationOrigin={this.state.validationOrigin}

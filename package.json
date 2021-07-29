@@ -1,9 +1,9 @@
 {
   "name": "react-starter-boilerplate-hmr",
   "version": "1.0.0",
-  "description": "React starter boilerplate with Hot Module Replacement, React 16 and Webpack 4",
+  "description": "SPipes editor UI",
   "main": "index.js",
-  "author": "Esau Silva <@_esausilva>",
+  "author": "Petr Jordan",
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --env.env=dev",
@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@tippyjs/react": "^4.2.5",
+    "@triply/yasgui": "^4.2.14",
     "bootstrap": "^4.5.3",
     "cytoscape": "^3.17.1",
     "cytoscape-compound-drag-and-drop": "^1.0.0",
@@ -39,7 +40,7 @@
     "react-moment": "^1.1.1",
     "react-router-dom": "^5.1.2",
     "react-treebeard": "^3.2.4",
-    "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.2.1.tgz",
+    "s-forms": "https://kbss.felk.cvut.cz/dist/s-forms-0.2.7.tgz",
     "semantic-ui-react": "^0.88.2",
     "superagent": "^6.1.0",
     "websocket": "^1.0.34"

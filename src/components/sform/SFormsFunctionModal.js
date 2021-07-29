@@ -6,7 +6,7 @@ import {Rest} from "../rest/Rest";
 import "@triply/yasgui/build/yasgui.min.css";
 
 
-class SFormsModal extends React.Component {
+class SFormsFunctionModal extends React.Component {
     constructor(props) {
         super(props);
 
@@ -22,15 +22,14 @@ class SFormsModal extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
-        if(newProps.moduleTypeUri && newProps.scriptPath){
-            Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath).then((response) => {
+        if(newProps.scriptPath && newProps.functionUri){
+            Rest.getFunctionForm(newProps.scriptPath, newProps.functionUri).then((response) => {
                 this.setState({
                     isLoaded: true,
                     selectedForm: response,
                     modalVisible: true,
-                    moduleTypeUri: newProps.moduleTypeUri,
-                    moduleUri: newProps.moduleUri,
-                    scriptPath: newProps.scriptPath
+                    moduleTypeUri: newProps.scriptPath,
+                    moduleUri: newProps.functionUri
                 })
             })
         }
@@ -41,15 +40,28 @@ class SFormsModal extends React.Component {
     }
 
     handleSubmit(){
-        let form = this.state.selectedForm
-        form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] = this.refForm.current.context.getFormQuestionsData();
-
-        Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
-            if(response.status === 200){
-                window.location.reload(false);
-            }else{
-                console.log("ERROR on script update")
+        let data = this.refForm.current.context.getFormQuestionsData()[0]["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"];
+        let functionUri = ""
+        let params = []
+        data.forEach((q) => {
+            let label = q["http://www.w3.org/2000/01/rdf-schema#label"] + "="
+            let value = q["http://onto.fel.cvut.cz/ontologies/documentation/has_answer"][0]["http://onto.fel.cvut.cz/ontologies/documentation/has_data_value"]
+            if(value["@value"] !== undefined){
+                params.push(label + value["@value"]);
+            } else if(label === "URI="){
+                functionUri = value;
             }
+        })
+
+        Rest.executeFunction(functionUri, params.join("&")).then((response) => {
+            console.log(response)
+            console.log(response.status)
+            if(response.status === 200){
+                window.location.href='/executions'
+            }else{
+                console.log("ERROR during script execution")
+            }
+            this.setState({isLoaded: false, modalVisible:false});
         })
     }
 
@@ -105,5 +117,5 @@ class SFormsModal extends React.Component {
     }
 }
 
-export default SFormsModal;
+export default SFormsFunctionModal;
 

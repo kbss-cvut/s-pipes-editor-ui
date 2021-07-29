@@ -176,6 +176,23 @@ export const Rest = {
             );
     },
 
+    getFunctionForm: function (scriptPath, functionUri) {
+        postRequestOptions['body'] = JSON.stringify(
+            {
+                "@type" : "http://onto.fel.cvut.cz/ontologies/s-pipes/execution-function-dto",
+                [SCRIPT_PATH] : scriptPath,
+                [FUNCTION] : functionUri
+            }
+        )
+        return fetch("/rest/function/form", postRequestOptions)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
     createScript: function (ontologyURI, scriptName, scriptPath) {
         postRequestOptions['body'] = JSON.stringify(
             {

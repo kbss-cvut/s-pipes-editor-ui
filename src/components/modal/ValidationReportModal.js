@@ -1,7 +1,6 @@
 import React from 'react';
 import SForms from 's-forms';
 
-import 'react-datepicker/dist/react-datepicker.css';
 import {Alert, Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {
     ABSOLUTE_PATH,
