@@ -160,6 +160,7 @@ class Dagre extends React.Component{
         }
 
         const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
+        const icon = ICONS_MAP[n[COMPONENT]] === undefined ?  "beer.png" : ICONS_MAP[n[COMPONENT]]
         this.setState({
             nodes:[...this.state.nodes, {
                 data: {
@@ -170,7 +171,7 @@ class Dagre extends React.Component{
                     input: n[INPUT_PARAMETER],
                     output: n[OUTPUT_PARAMETER],
                     variables: n[MODULE_VARIABLES],
-                    icon: '/public/icons/' + ICONS_MAP[n[COMPONENT]],
+                    icon: '/public/icons/' + icon,
                     menu: true,
                     scriptPath: n[SCRIPT_PATH],
                     parent: n[GROUP],
