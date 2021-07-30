@@ -30,7 +30,7 @@ import ScriptOntologyModal from "../modal/ScriptOntologyModal";
 import ScriptExecutionModal from "../modal/ScriptExecutionModal";
 import "@triply/yasgui/build/yasgui.min.css";
 import SFormsFunctionModal from "../sform/SFormsFunctionModal";
-
+import "s-forms/css/s-forms.min.css"
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
 const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
