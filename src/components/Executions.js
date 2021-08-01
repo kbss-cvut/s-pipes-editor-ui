@@ -12,7 +12,7 @@ import {
 } from "./rest/Rest";
 import {Col, Container, Row, Table} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMugHot, faTrash, faRunning, faPlayCircle, faEdit } from '@fortawesome/free-solid-svg-icons'
+import {faMugHot, faTrash, faRunning, faPlayCircle, faEdit, faQuestion} from '@fortawesome/free-solid-svg-icons'
 import Moment from 'react-moment';
 import {Link} from "react-router-dom";
 
@@ -63,8 +63,9 @@ class Executions extends React.Component {
                                         <Container>
                                             <Row>
                                                 <Col><Link to={`/dagre_example?file=${data[ABSOLUTE_PATH]}&transformation=${data[TRANSFORMATION]}`}><FontAwesomeIcon icon={faEdit} /></Link></Col>
-                                                <Col><FontAwesomeIcon icon={faPlayCircle} /></Col>
-                                                <Col><FontAwesomeIcon icon={faTrash} /></Col>
+                                                <Col onClick={()=> {window.open(data["http://onto.fel.cvut.cz/ontologies/s-pipes/rdf4j-transformation-id"], "_blank")}}><FontAwesomeIcon icon={faQuestion} /></Col>
+                                                {/*<Col><FontAwesomeIcon icon={faPlayCircle} /></Col>*/}
+                                                {/*<Col><FontAwesomeIcon icon={faTrash} /></Col>*/}
                                             </Row>
                                         </Container>
                                     </td>
