@@ -62,7 +62,7 @@ class Executions extends React.Component {
                                     <td>
                                         <Container>
                                             <Row>
-                                                <Col><Link to={`/dagre_example?file=${data[ABSOLUTE_PATH]}&transformation=${data[TRANSFORMATION]}`}><FontAwesomeIcon icon={faEdit} /></Link></Col>
+                                                <Col><Link to={`/script?file=${data[ABSOLUTE_PATH]}&transformation=${data[TRANSFORMATION]}`}><FontAwesomeIcon icon={faEdit} /></Link></Col>
                                                 <Col onClick={()=> {window.open(data["http://onto.fel.cvut.cz/ontologies/s-pipes/rdf4j-transformation-id"], "_blank")}}><FontAwesomeIcon icon={faQuestion} /></Col>
                                                 {/*<Col><FontAwesomeIcon icon={faPlayCircle} /></Col>*/}
                                                 {/*<Col><FontAwesomeIcon icon={faTrash} /></Col>*/}

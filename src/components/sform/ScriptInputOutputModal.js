@@ -12,24 +12,30 @@ class ScriptInputOutputModal extends React.Component {
             isLoaded: false,
             basicModalVisible: false,
             logPath: null,
+            input: null,
+            moduleURI: null,
             moduleLabel: null,
-            logContent: null
+            logContent: null,
+            inputData: null
         };
         this.refForm = React.createRef();
 
         this.handleClose = this.handleClose.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderTextAreas = this.renderTextAreas.bind(this)
     }
 
 
     componentWillReceiveProps(newProps){
-        if(newProps.logPath && newProps.moduleLabel){
+        if(newProps.logPath && newProps.moduleLabel && newProps.moduleURI){
             Rest.getLogForm(newProps.logPath).then((response) => {
                 console.log(response)
                 this.setState({
                     isLoaded: true,
                     basicModalVisible: true,
+                    input: newProps.input,
+                    moduleURI: newProps.moduleURI,
                     logPath: newProps.logPath,
                     moduleLabel: newProps.moduleLabel,
                     logContent: response
@@ -39,37 +45,68 @@ class ScriptInputOutputModal extends React.Component {
     }
 
     handleClose(){
-        this.setState({basicModalVisible:false, isLoaded: false});
+        this.setState({basicModalVisible:false, isLoaded: false, moduleResponse: null});
+    }
+
+    handleChange(event){
+        let value = event.target.value;
+        this.setState({inputData: value})
     }
 
     handleSubmit(){
         this.setState({basicModalVisible:false});
-        alert("Not implemented!");
-        // let form = this.state.selectedForm
-        // form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] = this.refForm.current.context.getFormQuestionsData();
-        //
-        // Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
-        //     if(response.status === 200){
-        //         window.location.reload(false);
-        //     }else{
-        //         console.log("ERROR on script update")
-        //     }
-        // })
+        let inputData = this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"][0]['@id']
+        if(this.state.inputData){
+            inputData = this.state.inputData
+        }
+        //todo consider better framework
+        const ttl2jsonld = require('@frogcat/ttl2jsonld').parse;
+        const jsonld = ttl2jsonld(inputData);
+        console.log(jsonld)
+
+        Rest.executeModule(this.state.moduleURI, jsonld, null).then((response) => {
+            this.setState({moduleResponse: response})
+        })
     }
 
     renderTextAreas(){
         return this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"].map((data, i) => {
+            // this.setState({inputData: data['@id']})
             return (
                     <Form.Group controlId="exampleForm.ControlTextarea1" key={i}>
                         <Form.Label>Log info</Form.Label>
-                        <Form.Control as="textarea" defaultValue={data['@id']} rows={30} />
+                        <Form.Control
+                            as="textarea"
+                            defaultValue={data['@id']}
+                            onChange={this.handleChange.bind(this)}
+                            rows={30}
+                        />
                     </Form.Group>
             );
         });
     }
 
     render() {
-        if(this.state.isLoaded){
+        if(this.state.moduleResponse){
+            return (
+                <Modal
+                    show={true}
+                    onHide={() => this.handleClose()}
+                    dialogClassName="modal-80w"
+                    aria-labelledby="example-custom-modal-styling-title"
+                >
+                    <Modal.Body>
+                        {this.state.moduleResponse}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.handleClose()}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            );
+
+        }else if(this.state.isLoaded){
             return (
                 <Modal
                     show={this.state.basicModalVisible}
@@ -96,7 +133,7 @@ class ScriptInputOutputModal extends React.Component {
                         <Button variant="secondary" onClick={() => this.handleClose()}>
                             Close
                         </Button>
-                        {this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"].length > 0 &&
+                        {this.state.input === "input" && this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"].length > 0 &&
                             <Button variant="primary" onClick={() => this.handleSubmit()}>
                                 Debug
                             </Button>

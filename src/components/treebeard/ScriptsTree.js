@@ -6,9 +6,8 @@ import Header from './Header';
 import {Treebeard, decorators} from 'react-treebeard';
 import {Rest} from "../rest/Rest";
 import { withRouter } from "react-router-dom";
-import MoveModuleModal from "../modal/MoveModuleModal";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
-
+import { LoopCircleLoading } from 'react-loadingg';
 
 class ScriptsTree extends React.Component {
 
@@ -59,7 +58,7 @@ class ScriptsTree extends React.Component {
         if (node.children) {
             node.toggled = toggled;
         }else{
-            window.location.href='/dagre_example?file=' + node.id
+            window.location.href='/script?file=' + node.id
             // this.props.history.push({
             //     pathname: '/dagre_example',
             //     search: '?file=' + node.id
@@ -91,7 +90,7 @@ class ScriptsTree extends React.Component {
 
     render() {
         if(this.state.data === []){
-            return (<h3>Loading</h3>);
+            return (<LoopCircleLoading />);
         }else{
             return (
                 <Fragment>

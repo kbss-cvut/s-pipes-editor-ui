@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
               <Navbar color="dark">
                   <Container>
                       <p className="pull-right">
-                        Made with <Icon name="heart" color="red" /> by Petr Jordan
+                        Made with <Icon name="heart" color="red" />
                       </p>
                   </Container>
               </Navbar>

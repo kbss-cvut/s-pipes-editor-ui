@@ -48,7 +48,7 @@ class App extends Component {
                             <Route exact path="/scripts" component={Scripts} />
                             <Route exact path="/executions" component={Executions} />
                             {/*<Route exact path="/dynamic" component={AsyncDynamicPAge} />*/}
-                            <Route exact path="/dagre_example" component={AsyncDagre} />
+                            <Route exact path="/script" component={AsyncDagre} />
                             <Route component={AsyncNoMatch} />
                         </Switch>
                     </div>

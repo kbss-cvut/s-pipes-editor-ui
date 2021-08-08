@@ -3,6 +3,7 @@ import SForms from 's-forms';
 
 import {Button, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
+import { LoopCircleLoading } from 'react-loadingg';
 import "@triply/yasgui/build/yasgui.min.css";
 
 
@@ -12,6 +13,7 @@ class SFormsModal extends React.Component {
 
         this.state = {
             isLoaded: false,
+            isLoading: false,
             modalVisible: false,
             selectedForm: null,
             moduleTypeUri: null,
@@ -23,9 +25,11 @@ class SFormsModal extends React.Component {
 
     componentWillReceiveProps(newProps){
         if(newProps.moduleTypeUri && newProps.scriptPath){
+            this.setState({isLoading: true})
             Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath).then((response) => {
                 this.setState({
                     isLoaded: true,
+                    isLoading: false,
                     selectedForm: response,
                     modalVisible: true,
                     moduleTypeUri: newProps.moduleTypeUri,
@@ -37,7 +41,7 @@ class SFormsModal extends React.Component {
     }
 
     handleClose(){
-        this.setState({modalVisible:false});
+        this.setState({modalVisible:false, isLoaded: false, isLoading: false});
     }
 
     handleSubmit(){
@@ -46,7 +50,7 @@ class SFormsModal extends React.Component {
 
         Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
             if(response.status === 200){
-                window.location.reload(false);
+                // window.location.reload(false);
             }else{
                 console.log("ERROR on script update")
             }
@@ -99,6 +103,8 @@ class SFormsModal extends React.Component {
                     </Modal.Footer>
                 </Modal>
             );
+        }else if(this.state.isLoading){
+            return (<LoopCircleLoading/>);
         }else{
             return null;
         }

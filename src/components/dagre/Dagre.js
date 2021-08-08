@@ -31,6 +31,7 @@ import ScriptExecutionModal from "../modal/ScriptExecutionModal";
 import "@triply/yasgui/build/yasgui.min.css";
 import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "s-forms/css/s-forms.min.css"
+import { LoopCircleLoading } from 'react-loadingg';
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
 const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
@@ -206,7 +207,8 @@ class Dagre extends React.Component{
                 edges:[...this.state.edges, {
                     data: { source: from, target: to, menu: true },
                     selectable: false
-                }]
+                }],
+                isLoaded: true
             })
         });
     }
@@ -377,6 +379,8 @@ class Dagre extends React.Component{
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
                         const modalState = JSON.parse(JSON.stringify(modalInputs));
+                        modalState["input"] = "input";
+                        modalState["moduleURI"] = ele.data('id');
                         modalState["logPath"] = ele.data('input');
                         modalState["moduleLabel"] = ele.data('label');
                         this.setState(modalState);
@@ -424,6 +428,8 @@ class Dagre extends React.Component{
                     content: '<span class="fa fa-info-circle fa-2x"/>',
                     select: (ele) => {
                         const modalState = JSON.parse(JSON.stringify(modalInputs));
+                        modalState["input"] = "output";
+                        modalState["moduleURI"] = ele.data('id');
                         modalState["logPath"] = ele.data('output');
                         modalState["moduleLabel"] = ele.data('label');
                         this.setState(modalState);
@@ -458,7 +464,7 @@ class Dagre extends React.Component{
                         });
                     }
                 }
-            ]
+            ],
         });
 
         this.cy.edgehandles({
@@ -569,6 +575,9 @@ class Dagre extends React.Component{
         };
         return (
             <div>
+                {this.state.isLoaded === false &&
+                    <LoopCircleLoading/>
+                }
                 <NavbarMenu />
                 <div>
                     <div key={"cyKey"} style={cyStyle} id="cy"/>
@@ -657,6 +666,8 @@ class Dagre extends React.Component{
 
                 <ScriptInputOutputModal
                     logPath={this.state.logPath}
+                    input={this.state.input}
+                    moduleURI={this.state.moduleURI}
                     moduleLabel={this.state.moduleLabel}
                 />
 

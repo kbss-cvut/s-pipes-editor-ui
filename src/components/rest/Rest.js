@@ -323,6 +323,24 @@ export const Rest = {
         return fetch("/rest/function/execute", postRequestOptions);
     },
 
+    executeModule: function (moduleURI, moduleInput, params) {
+        postRequestOptions["body"] =JSON.stringify(
+            {
+                "@type" : "http://onto.fel.cvut.cz/ontologies/s-pipes/execution-module-dto",
+                ["http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-uri"] : moduleURI,
+                ["http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-input-parameter"] : moduleInput,
+                ["http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-parameter"] : params
+            }
+        )
+        return fetch("/rest/function/module/execute", postRequestOptions)
+            .then(res => res.text())
+            .then(
+                (result) => {
+                    return result;
+                }
+            );
+    },
+
     addModuleDependency: function (scriptPath, moduleUri, targetModuleUri) {
         postRequestOptions["body"] =JSON.stringify(
             {

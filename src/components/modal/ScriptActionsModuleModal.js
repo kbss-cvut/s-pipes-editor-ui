@@ -72,7 +72,7 @@ class ScriptActionsModuleModal extends React.Component {
     }
 
     handleEditScript(){
-        window.location.href='/dagre_example?file=' + this.state.scriptPath
+        window.location.href='/script?file=' + this.state.scriptPath
     }
 
     handleDeleteScript(){
