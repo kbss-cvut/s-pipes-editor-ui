@@ -30,8 +30,11 @@ services:
       - SCRIPTRULES=/home/jordan/IdeaProjects/s-pipes-newgen/src/main/resources/rules
       - RDF4J_REPOSITORYURL=http://rdf4j:8080/rdf4j-server/repositories
       - RDF4J_REPOSITORYNAME=s-pipes-hello-world
+      - RDF4J_PCONFIGURL=/home/jordan/IdeaProjects/s-pipes-newgen/src/main/resources/config.ttl
     volumes:
+      - /tmp:/tmp
       - /home:/home
+      - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   s-pipes-engine:
     image: 'chlupnoha/spipes-engine:latest'
@@ -47,7 +50,9 @@ services:
     environment:
       - CONTEXTS_SCRIPTPATHS=/home/jordan/IdeaProjects/s-pipes-newgen/src/test/resources/scripts_test/sample
     volumes:
+      - /tmp:/tmp
       - /home:/home
+      - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   rdf4j:
     image: 'eclipse/rdf4j-workbench:amd64-3.5.0'
