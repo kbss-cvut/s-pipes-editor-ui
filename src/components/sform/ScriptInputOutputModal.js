@@ -2,7 +2,10 @@ import React from 'react';
 
 import {Alert, Button, Form, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
-
+import Yasgui from "@triply/yasgui";
+import "@triply/yasgui/build/yasgui.min.css";
+import JSONPretty from 'react-json-pretty';
+import 'react-json-pretty/themes/monikai.css';
 
 class ScriptInputOutputModal extends React.Component {
     constructor(props) {
@@ -16,12 +19,15 @@ class ScriptInputOutputModal extends React.Component {
             moduleURI: null,
             moduleLabel: null,
             logContent: null,
+            variables: null,
+            scriptPath: null,
             inputData: null
         };
         this.refForm = React.createRef();
 
         this.handleClose = this.handleClose.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeModuleInput = this.handleChangeModuleInput.bind(this);
+        this.handleChangParams = this.handleChangParams.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderTextAreas = this.renderTextAreas.bind(this)
     }
@@ -35,6 +41,8 @@ class ScriptInputOutputModal extends React.Component {
                     isLoaded: true,
                     basicModalVisible: true,
                     input: newProps.input,
+                    variables: newProps.variables,
+                    scriptPath: newProps.scriptPath,
                     moduleURI: newProps.moduleURI,
                     logPath: newProps.logPath,
                     moduleLabel: newProps.moduleLabel,
@@ -48,9 +56,14 @@ class ScriptInputOutputModal extends React.Component {
         this.setState({basicModalVisible:false, isLoaded: false, moduleResponse: null});
     }
 
-    handleChange(event){
+    handleChangeModuleInput(event){
         let value = event.target.value;
         this.setState({inputData: value})
+    }
+
+    handleChangParams(event){
+        let value = event.target.value;
+        this.setState({inputParams: value})
     }
 
     handleSubmit(){
@@ -59,27 +72,37 @@ class ScriptInputOutputModal extends React.Component {
         if(this.state.inputData){
             inputData = this.state.inputData
         }
-        //todo consider better framework
-        const ttl2jsonld = require('@frogcat/ttl2jsonld').parse;
-        const jsonld = ttl2jsonld(inputData);
-        console.log(jsonld)
 
-        Rest.executeModule(this.state.moduleURI, jsonld, null).then((response) => {
+        Rest.executeModule(this.state.scriptPath, this.state.moduleURI, inputData, this.state.inputParams).then((response) => {
             this.setState({moduleResponse: response})
         })
     }
 
     renderTextAreas(){
         return this.state.logContent["http://onto.fel.cvut.cz/ontologies/s-pipes/has-absolute-path"].map((data, i) => {
-            // this.setState({inputData: data['@id']})
+            const vars = this.state.variables.map((v) => {
+                const name = v['http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-variable-name']
+                const value = v['http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-variable-value']
+                if(name === "_pId"){
+                    return ""
+                }else{
+                    return name + "=" + value
+                }
+            }).filter((v) => {return v !== ""}).join("&")
             return (
                     <Form.Group controlId="exampleForm.ControlTextarea1" key={i}>
                         <Form.Label>Log info</Form.Label>
                         <Form.Control
                             as="textarea"
                             defaultValue={data['@id']}
-                            onChange={this.handleChange.bind(this)}
+                            onChange={this.handleChangeModuleInput.bind(this)}
                             rows={30}
+                        />
+                        <Form.Label>Params</Form.Label>
+                        <Form.Control
+                            type="text"
+                            defaultValue={vars}
+                            onChange={this.handleChangParams.bind(this)}
                         />
                     </Form.Group>
             );
@@ -95,8 +118,12 @@ class ScriptInputOutputModal extends React.Component {
                     dialogClassName="modal-80w"
                     aria-labelledby="example-custom-modal-styling-title"
                 >
+                    <Modal.Header closeButton>
+                        <Modal.Title>SPipes response</Modal.Title>
+                    </Modal.Header>
                     <Modal.Body>
-                        {this.state.moduleResponse}
+                        <JSONPretty id="json-pretty" data={this.state.moduleResponse}></JSONPretty>
+                        {/*{this.state.moduleResponse}*/}
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.handleClose()}>

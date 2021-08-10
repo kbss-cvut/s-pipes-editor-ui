@@ -383,6 +383,8 @@ class Dagre extends React.Component{
                         modalState["moduleURI"] = ele.data('id');
                         modalState["logPath"] = ele.data('input');
                         modalState["moduleLabel"] = ele.data('label');
+                        modalState["variables"] = ele.data('variables');
+                        modalState["scriptPath"] = ele.data('scriptPath');
                         this.setState(modalState);
                     }
                 },
@@ -667,6 +669,8 @@ class Dagre extends React.Component{
                 <ScriptInputOutputModal
                     logPath={this.state.logPath}
                     input={this.state.input}
+                    variables={this.state.variables}
+                    scriptPath={this.state.scriptPath}
                     moduleURI={this.state.moduleURI}
                     moduleLabel={this.state.moduleLabel}
                 />

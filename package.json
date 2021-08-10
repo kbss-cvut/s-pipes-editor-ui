@@ -38,6 +38,7 @@
     "react-delay-render": "^0.1.2",
     "react-dom": "^16.13.1",
     "react-imported-component": "6.2.1",
+    "react-json-pretty": "^2.2.0",
     "react-loadingg": "^1.7.2",
     "react-moment": "^1.1.1",
     "react-router-dom": "^5.1.2",

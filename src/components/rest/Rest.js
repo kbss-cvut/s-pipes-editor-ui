@@ -323,10 +323,11 @@ export const Rest = {
         return fetch("/rest/function/execute", postRequestOptions);
     },
 
-    executeModule: function (moduleURI, moduleInput, params) {
+    executeModule: function (scriptPath, moduleURI, moduleInput, params) {
         postRequestOptions["body"] =JSON.stringify(
             {
                 "@type" : "http://onto.fel.cvut.cz/ontologies/s-pipes/execution-module-dto",
+                ["http://onto.fel.cvut.cz/ontologies/s-pipes/has-script-path"] : scriptPath,
                 ["http://onto.fel.cvut.cz/ontologies/s-pipes/has-module-uri"] : moduleURI,
                 ["http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-input-parameter"] : moduleInput,
                 ["http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-parameter"] : params
