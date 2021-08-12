@@ -5,6 +5,7 @@ import {Button, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
 import { SemipolarLoading } from 'react-loadingg';
 import "@triply/yasgui/build/yasgui.min.css";
+import ErrorModal from "../modal/ErrorModal";
 
 
 class SFormsModal extends React.Component {
@@ -18,9 +19,11 @@ class SFormsModal extends React.Component {
             selectedForm: null,
             moduleTypeUri: null,
             moduleUri: null,
+            errorMessage: null,
             scriptPath: null
         };
         this.refForm = React.createRef();
+        this.handleErrorModal = this.handleErrorModal.bind(this);
     }
 
     componentWillReceiveProps(newProps){
@@ -44,15 +47,22 @@ class SFormsModal extends React.Component {
         this.setState({modalVisible:false, isLoaded: false, isLoading: false});
     }
 
+    handleErrorModal(){
+        this.setState({errorMessage:null});
+    }
+
     handleSubmit(){
         let form = this.state.selectedForm
         form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] = this.refForm.current.context.getFormQuestionsData();
 
+        this.setState({isLoading: true, isLoaded: false})
         Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
+            this.setState({isLoading: false})
             if(response.status === 200){
                 window.location.reload(false);
             }else{
                 console.log("ERROR on script update")
+                this.setState({errorMessage:"ERROR during script execution"})
             }
         })
     }
@@ -75,7 +85,21 @@ class SFormsModal extends React.Component {
           enableForwardSkip: true
         };
 
-        if(this.state.isLoaded){
+        if(this.state.errorMessage) {
+            return (
+                <ErrorModal
+                    errorMessage={this.state.errorMessage}
+                    handleErrorModal={this.handleErrorModal}
+                />
+            )
+        }else if(this.state.isLoading){
+            return (
+                <SemipolarLoading
+                    size={"large"}
+                    style={{margin: 'auto', position: 'absolute', inset: '0px', zIndex: 9000}}
+                />
+            );
+        }else if(this.state.isLoaded){
             return (
                 <Modal
                     show={this.state.modalVisible}
@@ -102,13 +126,6 @@ class SFormsModal extends React.Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            );
-        }else if(this.state.isLoading){
-            return (
-                <SemipolarLoading
-                    size={"large"}
-                    style={{margin: 'auto', position: 'absolute', inset: '0px', zIndex: 9000}}
-                />
             );
         }else{
             return null;
