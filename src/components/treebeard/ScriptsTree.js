@@ -7,7 +7,7 @@ import {Treebeard, decorators} from 'react-treebeard';
 import {Rest} from "../rest/Rest";
 import { withRouter } from "react-router-dom";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
-import { LoopCircleLoading } from 'react-loadingg';
+import { SemipolarLoading } from 'react-loadingg';
 
 class ScriptsTree extends React.Component {
 
@@ -90,7 +90,12 @@ class ScriptsTree extends React.Component {
 
     render() {
         if(this.state.data === []){
-            return (<LoopCircleLoading />);
+            return (
+                <SemipolarLoading
+                    size={"large"}
+                    style={{margin: 'auto', position: 'absolute', inset: '0px', zIndex: 9000}}
+                />
+            );
         }else{
             return (
                 <Fragment>

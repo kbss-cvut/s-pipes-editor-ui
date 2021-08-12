@@ -30,6 +30,7 @@ class ScriptInputOutputModal extends React.Component {
         this.handleChangParams = this.handleChangParams.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.renderTextAreas = this.renderTextAreas.bind(this)
+        this.handleRedirectExecution = this.handleRedirectExecution.bind(this)
     }
 
 
@@ -54,6 +55,10 @@ class ScriptInputOutputModal extends React.Component {
 
     handleClose(){
         this.setState({basicModalVisible:false, isLoaded: false, moduleResponse: null});
+    }
+
+    handleRedirectExecution(){
+        window.location.href='/executions'
     }
 
     handleChangeModuleInput(event){
@@ -128,6 +133,9 @@ class ScriptInputOutputModal extends React.Component {
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => this.handleClose()}>
                             Close
+                        </Button>
+                        <Button variant="secondary" onClick={() => this.handleRedirectExecution()}>
+                            View execution
                         </Button>
                     </Modal.Footer>
                 </Modal>

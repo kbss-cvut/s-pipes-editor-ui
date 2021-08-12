@@ -21,7 +21,6 @@ import ScriptInputOutputModal from "../sform/ScriptInputOutputModal";
 import {Dropdown} from "semantic-ui-react";
 import {ICONS_MAP} from "./DagreIcons";
 import ScriptFunctionSelection from "../ScriptFunctionSelection";
-import FunctionExecutionModal from "../modal/FunctionExecutionModal";
 import {Button, Modal} from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
@@ -31,7 +30,8 @@ import ScriptExecutionModal from "../modal/ScriptExecutionModal";
 import "@triply/yasgui/build/yasgui.min.css";
 import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "s-forms/css/s-forms.min.css"
-import { LoopCircleLoading } from 'react-loadingg';
+import { SemipolarLoading } from 'react-loadingg';
+import ErrorModal from "../modal/ErrorModal";
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
 const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
@@ -84,7 +84,9 @@ const modalInputs = {
     modalOntology: null,
     modalMove: null,
     selectedScript: null,
-    modalExecution: null
+    modalExecution: null,
+    fileEdit: null,
+    errorMessage: null
 }
 
 class Dagre extends React.Component{
@@ -123,6 +125,7 @@ class Dagre extends React.Component{
         this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
         this.handleRenderChange = this.handleRenderChange.bind(this);
         this.handleValidateReport = this.handleValidateReport.bind(this);
+        this.handleErrorModal = this.handleErrorModal.bind(this);
     }
 
     componentDidMount() {
@@ -207,10 +210,14 @@ class Dagre extends React.Component{
                 edges:[...this.state.edges, {
                     data: { source: from, target: to, menu: true },
                     selectable: false
-                }],
-                isLoaded: true
+                }]
             })
         });
+        this.setState({isLoaded: true})
+    }
+
+    handleErrorModal(){
+        this.setState({errorMessage:null});
     }
 
     handleRenderChange = (e, { value }) => {
@@ -366,11 +373,14 @@ class Dagre extends React.Component{
                 {
                     content: '<span class="fa fa-trash fa-2x"/>',
                     select: (ele) => {
+                        this.setState({isLoaded:false})
                         Rest.deleteScriptNode(filepath, ele.data('id')).then(response => {
+                            this.setState({isLoaded:true})
                             if(response.status === 204){
                                 ele.remove();
                             }else{
-                                console.log("node not delete some kind of error message");
+                                console.log("Node can not be deleted.");
+                                this.setState({errorMessage: "Node can not be deleted."})
                             }
                         });
                     }
@@ -443,6 +453,7 @@ class Dagre extends React.Component{
                         const modalState = JSON.parse(JSON.stringify(modalInputs));
                         modalState["moduleTypeUri"] = ele.data('component');
                         modalState["moduleUri"] = ele.data('id');
+                        modalState["fileEdit"] = ele.data('scriptPath');
                         this.setState(modalState);
                     }
                 }
@@ -457,11 +468,14 @@ class Dagre extends React.Component{
                     select: function(ele){
                         let sourceNode = ele.data('source');
                         let targetNode = ele.data('target');
+                        this.setState({isLoaded:false})
                         Rest.deleteScriptEdge(filepath, sourceNode, targetNode).then(response => {
-                            if(response.status === 200){
+                            this.setState({isLoaded:true})
+                            if(response.status === 204){
                                 ele.remove();
                             }else{
-                                console.log("node not delete ome kind of message");
+                                console.log("Edge can not be deleted.");
+                                this.setState({errorMessage: "Edge can not be deleted."})
                             }
                         });
                     }
@@ -478,15 +492,18 @@ class Dagre extends React.Component{
                 console.log(sourceNode.data('id'))
                 console.log(targetNode.data('id'))
                 if(sourceNode.data('menu') !== undefined && targetNode.data('menu')){
+                    this.setState({isLoaded:false})
                     Rest.addModuleDependency(
                         this.state.file,
                         sourceNode.data('id'),
                         targetNode.data('id')
                     ).then((res) => {
+                        this.setState({isLoaded:true})
                         if(res.status === 204){
                             //TODO reload?
                         }else{
                             console.log("ERROR add edge/dependency")
+                            this.setState({errorMessage: "ERROR add edge/dependency."})
                         }
                     })
                 }else{
@@ -578,7 +595,10 @@ class Dagre extends React.Component{
         return (
             <div>
                 {this.state.isLoaded === false &&
-                    <LoopCircleLoading/>
+                    <SemipolarLoading
+                        size={"large"}
+                        style={{margin: 'auto', position: 'absolute', inset: '0px', zIndex: 9000}}
+                    />
                 }
                 <NavbarMenu />
                 <div>
@@ -658,7 +678,7 @@ class Dagre extends React.Component{
                 <SFormsModal
                     moduleTypeUri={this.state.moduleTypeUri}
                     moduleUri={this.state.moduleUri}
-                    scriptPath={this.state.file}
+                    scriptPath={this.state.fileEdit !== null ? this.state.fileEdit : this.state.file}
                 />
 
                 <SFormsFunctionModal
@@ -701,6 +721,11 @@ class Dagre extends React.Component{
                     transformationId={this.state.transformation}
                     modalExecution={this.state.modalExecution}
                     cy={this.cy}
+                />
+
+                <ErrorModal
+                    errorMessage={this.state.errorMessage}
+                    handleErrorModal={this.handleErrorModal}
                 />
             </div>
         )

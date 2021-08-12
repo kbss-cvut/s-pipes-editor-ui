@@ -51,7 +51,7 @@ class Executions extends React.Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {this.state.data.map((data, key) => {
+                        {this.state.data.filter((v) => {return v !== null}).map((data, key) => {
                             return (
                                 <tr key={key}>
                                     <td align={"center"}><FontAwesomeIcon icon={faMugHot} /></td>

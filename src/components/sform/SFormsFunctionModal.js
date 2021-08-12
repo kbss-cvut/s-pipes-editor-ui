@@ -4,6 +4,8 @@ import SForms from 's-forms';
 import {Button, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
 import "@triply/yasgui/build/yasgui.min.css";
+import ErrorModal from "../modal/ErrorModal";
+import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 
 
 class SFormsFunctionModal extends React.Component {
@@ -16,9 +18,11 @@ class SFormsFunctionModal extends React.Component {
             selectedForm: null,
             moduleTypeUri: null,
             moduleUri: null,
-            scriptPath: null
+            scriptPath: null,
+            errorMessage: null,
         };
         this.refForm = React.createRef();
+        this.handleErrorModal = this.handleErrorModal.bind(this);
     }
 
     componentWillReceiveProps(newProps){
@@ -39,6 +43,10 @@ class SFormsFunctionModal extends React.Component {
         this.setState({modalVisible:false});
     }
 
+    handleErrorModal(){
+        this.setState({errorMessage:null});
+    }
+
     handleSubmit(){
         let data = this.refForm.current.context.getFormQuestionsData()[0]["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"];
         let functionUri = ""
@@ -57,9 +65,11 @@ class SFormsFunctionModal extends React.Component {
             console.log(response)
             console.log(response.status)
             if(response.status === 200){
+                console.log(response)
                 window.location.href='/executions'
             }else{
                 console.log("ERROR during script execution")
+                this.setState({errorMessage:"ERROR during script execution"})
             }
             this.setState({isLoaded: false, modalVisible:false});
         })
@@ -83,7 +93,14 @@ class SFormsFunctionModal extends React.Component {
           enableForwardSkip: true
         };
 
-        if(this.state.isLoaded){
+        if(this.state.errorMessage) {
+            return (
+                <ErrorModal
+                    errorMessage={this.state.errorMessage}
+                    handleErrorModal={this.handleErrorModal}
+                />
+            )
+        }else if(this.state.isLoaded){
             return (
                 <Modal
                     show={this.state.modalVisible}
