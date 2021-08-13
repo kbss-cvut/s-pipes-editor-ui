@@ -30,7 +30,7 @@ class ScriptsTree extends React.Component {
 
     componentDidMount() {
         Rest.getScripts().then(response => {
-            if(response.status === 404){
+            if(response.status === 404 || response['children'] === undefined){
                 console.log("ERROR when loading scripts! Check configuration.")
                 this.setState({errorMessage:"ERROR when loading scripts! Check configuration."})
             }else {
