@@ -511,6 +511,8 @@ class Dagre extends React.Component{
                         }
                     })
                 }else{
+                    this.cy.remove('edge[source=\'' + sourceNode.data('id') + '\']');
+                    this.cy.remove('edge[target=\'' + targetNode.data('id') + '\']');
                     alert("Invalid operation.");
                 }
             },
