@@ -32,6 +32,7 @@ import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "s-forms/css/s-forms.min.css"
 import { SemipolarLoading } from 'react-loadingg';
 import ErrorModal from "../modal/ErrorModal";
+import toast from "toasted-notes";
 
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
 const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
@@ -147,7 +148,10 @@ class Dagre extends React.Component{
         };
         client.onmessage = (message) => {
             console.log(message['data'] + "; Page should be reloaded; ")
-            // window.location.href='?file=' + this.state.file
+            toast.notify(message['data'] + "; Page should be reloaded; ", {
+                duration: 10000,
+                position: 'top-right'
+            });
         };
     }
 

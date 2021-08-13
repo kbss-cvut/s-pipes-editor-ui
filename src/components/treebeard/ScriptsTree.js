@@ -8,6 +8,7 @@ import {Rest} from "../rest/Rest";
 import { withRouter } from "react-router-dom";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 import { SemipolarLoading } from 'react-loadingg';
+import ErrorModal from "../modal/ErrorModal";
 
 class ScriptsTree extends React.Component {
 
@@ -18,33 +19,44 @@ class ScriptsTree extends React.Component {
             scriptPath: null,
             displayName: null,
             type: null,
+            errorMessage: null,
             isLoaded: null
         };
         this.handleRefresh = this.handleRefresh.bind(this);
+        this.handleErrorModal = this.handleErrorModal.bind(this);
         this.onToggle = this.onToggle.bind(this);
         this.onSelect = this.onSelect.bind(this);
     }
 
     componentDidMount() {
         Rest.getScripts().then(response => {
-            response['toggled']=true;
-            if(response['children'][0] !== undefined){
-                response['children'][0]['toggled']=true;
-            }
-            this.setState({ data: response});
-
-            document.addEventListener('contextmenu', (e) => {
-                let dataId = e.target.getAttribute("data-id");
-                if(dataId !== undefined){
-                    e.preventDefault()
-                    if(dataId !== ""){
-                        let childrenId = e.target.getAttribute("data-children");
-                        let displayName = e.target.innerText;
-                        this.setState({ scriptPath: dataId, displayName: displayName, type: childrenId });
-                    }
+            if(response.status === 404){
+                console.log("ERROR when loading scripts! Check configuration.")
+                this.setState({errorMessage:"ERROR when loading scripts! Check configuration."})
+            }else {
+                response['toggled']=true;
+                if(response['children'][0] !== undefined){
+                    response['children'][0]['toggled']=true;
                 }
-            });
+                this.setState({ data: response});
+
+                document.addEventListener('contextmenu', (e) => {
+                    let dataId = e.target.getAttribute("data-id");
+                    if(dataId !== undefined){
+                        e.preventDefault()
+                        if(dataId !== ""){
+                            let childrenId = e.target.getAttribute("data-children");
+                            let displayName = e.target.innerText;
+                            this.setState({ scriptPath: dataId, displayName: displayName, type: childrenId });
+                        }
+                    }
+                });
+            }
         });
+    }
+
+    handleErrorModal(){
+        this.setState({errorMessage:null});
     }
 
     onToggle(node, toggled) {
@@ -59,10 +71,6 @@ class ScriptsTree extends React.Component {
             node.toggled = toggled;
         }else{
             window.location.href='/script?file=' + node.id
-            // this.props.history.push({
-            //     pathname: '/dagre_example',
-            //     search: '?file=' + node.id
-            // });
         }
 
         this.setState(() => ({cursor: node, data: Object.assign({}, data), scriptPath: null}));
@@ -85,6 +93,7 @@ class ScriptsTree extends React.Component {
     }
 
     handleRefresh(){
+        this.setState({displayName: null})
         this.componentDidMount();
     }
 
@@ -117,9 +126,12 @@ class ScriptsTree extends React.Component {
                         type={this.state.type}
                         handleRefresh={this.handleRefresh}
                     />
+                    <ErrorModal
+                        errorMessage={this.state.errorMessage}
+                        handleErrorModal={this.handleErrorModal}
+                    />
                 </Fragment>
             );
-
         }
     }
 }

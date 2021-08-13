@@ -38,7 +38,6 @@ class ScriptActionsModuleModal extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
-        console.log(newProps)
         if(newProps.scriptPath && newProps.displayName && newProps.type){
             this.setState({
                 scriptPath: newProps.scriptPath,

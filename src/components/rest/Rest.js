@@ -55,6 +55,9 @@ export const Rest = {
     getScripts: function () {
         return fetch("/rest/scripts")
             .then(res => res.json())
+            .catch((error) => {
+                return error
+            });
     },
 
     getExecutions: function () {
