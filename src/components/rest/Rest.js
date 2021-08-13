@@ -44,9 +44,9 @@ export const MODULE_VARIABLE_VALUE = "http://onto.fel.cvut.cz/ontologies/s-pipes
 const postRequestOptions = {
     method: 'POST',
     headers: {
-        'Accept': 'application/ld+json, application/json',
+        'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
-    }
+    },
 };
 
 //TODO consider React api

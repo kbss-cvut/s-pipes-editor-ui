@@ -99,6 +99,7 @@ class ScriptOntologyModal extends React.Component {
 
                     <Modal.Body>
                         <Container>
+                            <Alert variant='warning'>Be very careful with the deleting! Only for advance users.</Alert>
                             <Row>
                                 <Col><h4>Ontology</h4></Col>
                                 <Col><h4>Action</h4></Col>
@@ -119,6 +120,7 @@ class ScriptOntologyModal extends React.Component {
                                                 <Form.Control
                                                     required
                                                     placeholder="http://onto.fel.cvut.cz/ontologies/s-pipes-lib"
+                                                    type={"url"}
                                                     onChange={(e) => this.setState({newOntologyName: e.target.value})}
                                                 />
                                             </Form.Group>

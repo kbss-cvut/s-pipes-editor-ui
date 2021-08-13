@@ -59,13 +59,12 @@ class ScriptActionsModuleModal extends React.Component {
             this.state.scriptName,
             this.state.scriptPath
         ).then(response => {
-            console.log(response)
             if(response.status === 200){
                 this.props.handleRefresh();
                 this.setState({isLoaded: false,  modalVisible: false});
                 this.setState({isLoaded: false,  modalVisible: false, createScriptVisible: false});
             }else{
-                alert("Can not be created")
+                response.json().then(r => alert("Can not be created. " + r.message))
             }
         })
     }
@@ -120,11 +119,11 @@ class ScriptActionsModuleModal extends React.Component {
                                 <Form onSubmit={this.handleCreateScript}>
                                     <Form.Group controlId="scriptName" >
                                         <Form.Label>Script name</Form.Label>
-                                        <Form.Control required placeholder="ontology-name.ttl" onChange={(e) => this.setState({scriptName: e.target.value})}/>
+                                        <Form.Control required pattern={".*ttl$"} placeholder="ontology-name.ttl" onChange={(e) => this.setState({scriptName: e.target.value})}/>
                                     </Form.Group>
                                     <Form.Group controlId="ontologyURI" >
                                         <Form.Label>Ontology URI</Form.Label>
-                                        <Form.Control required placeholder="http://onto.fel.cvut.cz/ontologies/s-pipes/ontolog-name" onChange={(e) => this.setState({ontologyURI: e.target.value})}/>
+                                        <Form.Control required type={"url"} placeholder="http://onto.fel.cvut.cz/ontologies/s-pipes/ontolog-name" onChange={(e) => this.setState({ontologyURI: e.target.value})}/>
                                     </Form.Group>
                                     <Button variant="primary" type="submit">
                                         Submit
