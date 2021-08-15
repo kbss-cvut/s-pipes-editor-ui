@@ -21,7 +21,7 @@ import ScriptInputOutputModal from "../sform/ScriptInputOutputModal";
 import {Dropdown} from "semantic-ui-react";
 import {ICONS_MAP} from "./DagreIcons";
 import ScriptFunctionSelection from "../ScriptFunctionSelection";
-import {Button, Modal} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import MoveModuleModal from "../modal/MoveModuleModal";
@@ -60,8 +60,8 @@ const rankDirOptions = [
     {'text' : 'TopBottom', 'key' : 'TB', 'value' : 'TB'}
 ]
 
-//todo resolve webpack devserver
-const client = new W3CWebSocket('ws://localhost:18115/og_spipes/rest/notifications');
+//todo resolve webpack devserver + correct proxy behaviour
+const client = new W3CWebSocket('ws://127.0.0.1:18115/og_spipes/rest/notifications');
 // const client = new W3CWebSocket('ws://websocket');
 
 const cyLayout = (rank) => {
@@ -123,6 +123,7 @@ class Dagre extends React.Component{
         cytoscape.use( popper );
         cytoscape.use( navigator );
         cytoscape.use( expandCollapse );
+        cytoscape.warnings(false)
         this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
         this.handleRenderChange = this.handleRenderChange.bind(this);
         this.handleValidateReport = this.handleValidateReport.bind(this);
