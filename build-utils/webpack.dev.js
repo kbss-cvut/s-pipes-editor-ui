@@ -47,10 +47,12 @@ const config = {
     open: true,
     proxy: {
       '/rest': {
-        target: 'http://localhost:18115/og_spipes'
+        target: 'http://localhost:18115/og_spipes',
+        ws: true
       },
-      '/websocket': {
-        target: 'ws://localhost:18115/og_spipes/rest/notifications',
+      '/notifications': {
+        target: 'ws://localhost:18115/og_spipes/rest',
+        changeOrigin: true,
         ws: true
       }
     }

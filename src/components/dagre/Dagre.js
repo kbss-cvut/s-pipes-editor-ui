@@ -60,9 +60,9 @@ const rankDirOptions = [
     {'text' : 'TopBottom', 'key' : 'TB', 'value' : 'TB'}
 ]
 
-//todo resolve webpack devserver + correct proxy behaviour
-const client = new W3CWebSocket('ws://127.0.0.1:18115/og_spipes/rest/notifications');
-// const client = new W3CWebSocket('ws://websocket');
+const websocketURL = new URL('/rest/notifications', window.location.href);
+websocketURL.protocol = websocketURL.protocol.replace('http', 'ws');
+const client = new W3CWebSocket(websocketURL);
 
 const cyLayout = (rank) => {
     return ({
@@ -150,7 +150,7 @@ class Dagre extends React.Component{
         client.onmessage = (message) => {
             console.log(message['data'] + "; Page should be reloaded; ")
             toast.notify(message['data'] + "; Page should be reloaded; ", {
-                duration: 10000,
+                duration: 15000,
                 position: 'top-right'
             });
         };
