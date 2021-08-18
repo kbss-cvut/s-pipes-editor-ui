@@ -124,6 +124,7 @@ class Dagre extends React.Component{
         cytoscape.use( navigator );
         cytoscape.use( expandCollapse );
         cytoscape.warnings(false)
+        this._keepAlive = this._keepAlive.bind(this);
         this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
         this.handleRenderChange = this.handleRenderChange.bind(this);
         this.handleValidateReport = this.handleValidateReport.bind(this);
@@ -146,6 +147,7 @@ class Dagre extends React.Component{
         client.onopen = () => {
             console.log("Open websocket")
             client.send(this.state.file)
+            this._keepAlive(20000)
         };
         client.onmessage = (message) => {
             console.log(message['data'] + "; Page should be reloaded; ")
@@ -154,6 +156,16 @@ class Dagre extends React.Component{
                 position: 'top'
             });
         };
+    }
+
+    //prevent session timeout
+    _keepAlive(timeout = 20000) {
+        if (client.readyState === client.OPEN) {
+            client.send('');
+        }
+        setTimeout(() => {
+            this._keepAlive(20000);
+        }, timeout);
     }
 
     _addNode(n){
