@@ -151,7 +151,7 @@ class Dagre extends React.Component{
             console.log(message['data'] + "; Page should be reloaded; ")
             toast.notify(message['data'] + "; Page should be reloaded; ", {
                 duration: 15000,
-                position: 'top-right'
+                position: 'top'
             });
         };
     }
