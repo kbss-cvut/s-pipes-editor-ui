@@ -30,7 +30,7 @@ where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 ### Docker-compose
 The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-editor-ui .`
 
-The docker-compose is composed of 4 services and can be ruin via `docker-compose up`:
+The docker-compose is composed of 4 services and can be run via `docker-compose up`:
 * chlupnoha/s-pipes-editor-ui:latest - [repository](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-ui) - accessible on `http://localhost:3000`
 * chlupnoha/s-pipes-editor-rest:latest - [repository](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-rest) - accessible on `http://localhost:18115`
 * chlupnoha/spipes-engine:latest - [repository](https://hub.docker.com/repository/docker/chlupnoha/spipes-engine) - accessible on `http://localhost:8081`
@@ -38,7 +38,9 @@ The docker-compose is composed of 4 services and can be ruin via `docker-compose
 
 **Manual required steps:** 
 * s-pipes-engine
-    * The service does not automatically create the repository in RDF4J, so manual creation of a repository is required.
+    * The service does not automatically create the repository in RDF4J, so manual creation of a repository is required (after running `docker-compose up`).
+          * First open the RDF4J Workbench: `http://localhost:<port>/rdf4j-workbench` where `<port>` is the RDF4J service port specified in `docker-compose.yml`.
+          * Then follow these instructions: [Creating a Repository](https://rdf4j.org/documentation/tools/server-workbench/#:~:text=for%20the%20repository.-,Creating%20a%20Repository,-Click%20on%20%E2%80%9CNew) (For repository type use for example Native Store.)
     * The logging configuration for RDF4j is hardcoded in the image, but it could override via `_pConfigURL` param. However, it is not a convenient format to work. Also both servies must to share volume or the config has to be exposed.
 
 * Notes
