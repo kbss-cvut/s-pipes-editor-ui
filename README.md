@@ -1,4 +1,4 @@
-# SPipes-UI editor
+# SPipes Editor UI
 
 ### Building
 
@@ -28,13 +28,12 @@ Then, SPipes Editor UI can be run as `docker run -e SERVICE_URL=<SPIPES_BACKEND_
 where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 
 ### Docker-compose
-The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-editor-ui .`
 
 The docker-compose is composed of 4 services and can be run via `docker-compose up`:
-* chlupnoha/s-pipes-editor-ui:latest - [repository](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-ui) - accessible on `http://localhost:3000`
-* chlupnoha/s-pipes-editor-rest:latest - [repository](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-rest) - accessible on `http://localhost:18115`
-* chlupnoha/spipes-engine:latest - [repository](https://hub.docker.com/repository/docker/chlupnoha/spipes-engine) - accessible on `http://localhost:8081`
-* eclipse/rdf4j-workbench:amd64-3.5.0 - official [docker image](https://hub.docker.com/r/eclipse/rdf4j-workbench) - accessible on `http://localhost:8080/rdf4j-workbench`
+* [chlupnoha/s-pipes-editor-ui:latest](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-ui) - accessible on `http://localhost:3000`
+* [chlupnoha/s-pipes-editor-rest:latest](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-rest) - accessible on `http://localhost:18115` with [configuration options](https://github.com/kbss-cvut/s-pipes-editor#dockerization)
+* [chlupnoha/spipes-engine:latest](https://hub.docker.com/repository/docker/chlupnoha/spipes-engine) - accessible on `http://localhost:8081` with [configuration options](https://github.com/kbss-cvut/s-pipes#dockerization) 
+* [eclipse/rdf4j-workbench:amd64-3.5.0](https://hub.docker.com/r/eclipse/rdf4j-workbench) - accessible on `http://localhost:8080/rdf4j-workbench`
 
 **Manual required steps:** 
 * s-pipes-engine
