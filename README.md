@@ -1,4 +1,4 @@
-# SPipes-UI editor
+# SPipes Editor UI
 
 ### Building
 
