@@ -56,7 +56,7 @@ services:
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   rdf4j:
-    image: 'eclipse/rdf4j-workbench:amd64-3.5.0'
+    image: 'eclipse/rdf4j-workbench:3.7.7'
     container_name: rdf4j
     ports:
       - "8080:8080"
