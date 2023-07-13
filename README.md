@@ -13,7 +13,7 @@ Will create a `dist` directory containing your compiled code.
 
 Depending on your needs, you might want to do more optimization to the production build.
 
-## Basic info
+## Development
 
 Run development server
 
@@ -27,9 +27,14 @@ The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-ed
 Then, SPipes Editor UI can be run as `docker run -e SERVICE_URL=<SPIPES_BACKEND_URL> -p 3000:80 s-pipes-editor-ui`   
 where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 
-### Docker-compose
+### Running Editor UI
 
-The docker-compose is composed of 4 services and can be run via `docker-compose up`:
+To run editor do the following:
+- run `docker-compose up` in root directory of the project
+
+#### Docker-compose detail
+
+You can run editor together with backend using docker orchestration. The docker-compose is composed of 4 services and can be run via `docker-compose up`:
 * [chlupnoha/s-pipes-editor-ui:latest](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-ui) - accessible on `http://localhost:3000`
 * [chlupnoha/s-pipes-editor-rest:latest](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-rest) - accessible on `http://localhost:18115` with [configuration options](https://github.com/kbss-cvut/s-pipes-editor#dockerization)
 * [chlupnoha/spipes-engine:latest](https://hub.docker.com/repository/docker/chlupnoha/spipes-engine) - accessible on `http://localhost:8081` with [configuration options](https://github.com/kbss-cvut/s-pipes#dockerization) 
