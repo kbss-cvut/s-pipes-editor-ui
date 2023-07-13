@@ -1,5 +1,11 @@
 # SPipes Editor UI
 
+### Running Editor UI
+
+To run editor do the following:
+- run `docker-compose up` in root directory of the project
+
+
 ### Building
 
 ```
@@ -27,12 +33,7 @@ The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-ed
 Then, SPipes Editor UI can be run as `docker run -e SERVICE_URL=<SPIPES_BACKEND_URL> -p 3000:80 s-pipes-editor-ui`   
 where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 
-### Running Editor UI
-
-To run editor do the following:
-- run `docker-compose up` in root directory of the project
-
-#### Docker-compose detail
+### Docker-compose
 
 You can run editor together with backend using docker orchestration. The docker-compose is composed of 4 services and can be run via `docker-compose up`:
 * [chlupnoha/s-pipes-editor-ui:latest](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-ui) - accessible on `http://localhost:3000`
