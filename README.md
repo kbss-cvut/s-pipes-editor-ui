@@ -1,10 +1,22 @@
 # SPipes Editor UI
 
+We will use `$PROJECT_ROOT` as the root directory of this project, i.e., the directory where this README is located. Similarly, we will define:
+- `$SPIPES_EDITOR_ROOT` -- root folder of cloned repository [s-pipes-editor](https://github.com/kbss-cvut/s-pipes-editor)
+- `$SCRIPTS_ROOT` -- root folder of cloned repository [s-pipes](https://github.com/kbss-cvut/s-pipes)
+
+
 ### Running Editor UI
 
-To run editor do the following:
-- run `docker-compose up` in root directory of the project
-
+To run the editor, do the following steps:
+- create `$PROJECT_ROOT/.env` file and configure the following parameters:
+  - `SCRIPTPATHS` -- e.g. `$SPIPES_ROOT/doc/examples/hello-world/`, in case more than one directory use separator ";"
+  - `SCRIPTPATHS_SPE` -- e.g. `$SPIPES_ROOT/doc/examples/hello-world/`, in case more than one directory use separator ","
+  - `SCRIPTRULES` --  e.g. `$SPIPES_EDITOR_ROOT/src/main/resources/rules`
+  - `RDF4J_REPOSITORYNAME` -- e.g. `s-pipes-hello-world`
+  - `RDF4J_PCONFIGURL` -- e.g. `$SPIPES_ROOT/doc/examples/hello-world/config.ttl`
+- run `docker-compose up` in the root directory of this project
+- create rdf4j repository with the name specified in `RDF4J_REPOSITORYNAME`
+- access the editor from URL `http://localhost:3000`
 
 ### Building
 
