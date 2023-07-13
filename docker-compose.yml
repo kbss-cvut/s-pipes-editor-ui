@@ -38,8 +38,8 @@ services:
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   s-pipes-engine:
-    image: 'chlupnoha/spipes-engine:latest'
-    container_name: s-pipes-engine
+    image: 'ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest'
+#    container_name: s-pipes-engine
     ports:
       - "8081:8080"
     expose:
