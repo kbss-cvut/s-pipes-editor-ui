@@ -14,7 +14,7 @@ services:
       SERVICE_URL: "s-pipes-editor-rest:18115"
 
   s-pipes-editor-rest:
-    image: 'chlupnoha/s-pipes-editor-rest:latest'
+    image: 'ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest'
     container_name: s-pipes-editor-rest
     ports:
       - '18115:18115'
