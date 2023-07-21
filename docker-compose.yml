@@ -26,7 +26,7 @@ services:
       - s-pipes-engine
       - rdf4j
     environment:
-      - SCRIPTPATHS=${SCRIPTPATHS_SPE}
+      - SCRIPTPATHS=${SCRIPTPATHS}
       - SCRIPTRULES=${SCRIPTRULES}
       - ENGINEURL=http://s-pipes-engine:8080/s-pipes/
       - RDF4J_REPOSITORYURL=http://rdf4j:8080/rdf4j-server/repositories
