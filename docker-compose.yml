@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   s-pipes-editor-ui:
-    image: 'chlupnoha/s-pipes-editor-ui:latest'
+    image: 'ghcr.io/kbss-cvut/s-pipes-editor-ui/s-pipes-editor-ui:latest'
     container_name: s-pipes-editor-ui
     ports:
       - '3000:80'
