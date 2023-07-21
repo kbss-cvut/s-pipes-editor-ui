@@ -6,14 +6,11 @@ We will use `$PROJECT_ROOT` as the root directory of this project, i.e., the dir
 - `$SCRIPTS_ROOT` -- root folder of cloned repository [s-pipes](https://github.com/kbss-cvut/s-pipes)
 
 
-
-
 ### Running Editor UI
 
 To run the editor, do the following steps:
 - create `$PROJECT_ROOT/.env` file and configure the following parameters:
   - `SCRIPTPATHS` -- e.g. `$SPIPES_MODULES_ROOT;$SPIPES_ROOT/doc/examples/hello-world/`, note the separator ";"
-  - `SCRIPTPATHS_SPE` -- e.g. `$SPIPES_MODULES_ROOT,$SPIPES_ROOT/doc/examples/hello-world/`, note the separator  ","
   - `SCRIPTRULES` --  e.g. `$SPIPES_EDITOR_ROOT/src/main/resources/rules`
   - `RDF4J_REPOSITORYNAME` -- e.g. `s-pipes-hello-world`
   - `RDF4J_PCONFIGURL` -- e.g. `$SPIPES_ROOT/doc/examples/hello-world/config.ttl`
