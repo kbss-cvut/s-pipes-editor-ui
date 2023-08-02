@@ -34,7 +34,7 @@ services:
       - RDF4J_PCONFIGURL=${RDF4J_PCONFIGURL}
     volumes:
       - /tmp:/tmp
-      - /home:/home
+      - ${PATH_ROOT}:/home
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   s-pipes-engine:
@@ -52,7 +52,7 @@ services:
       - CONTEXTS_SCRIPTPATHS=${SCRIPTPATHS}
     volumes:
       - /tmp:/tmp
-      - /home:/home
+      - ${PATH_ROOT}:/home
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   rdf4j:

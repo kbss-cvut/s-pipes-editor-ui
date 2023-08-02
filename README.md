@@ -5,11 +5,20 @@ We will use `$PROJECT_ROOT` as the root directory of this project, i.e., the dir
 - `$SPIPES_MODULES_ROOT` -- root folder of cloned repository [s-pipes-modules](https://kbss.felk.cvut.cz/gitblit/summary/s-pipes-modules.git) 
 - `$SCRIPTS_ROOT` -- root folder of cloned repository [s-pipes](https://github.com/kbss-cvut/s-pipes)
 
+Note that the `*_ROOT` paths are paths in the individual service containers. In order for the `*_ROOT` paths to work 
+properly inside the containers, local paths are mounted as volumes. Variable `PATH_ROOT` is used to mount local root directory 
+containing referenced project paths. 
+- Setting up `PATH_ROOT` when running on Windows with wsl -- use prefix `/host_mnt` for paths from the root or `~` for
+  paths from user home. For example, assume that the current user is `user1`, correct `PATH_ROOT` values that point to  
+  `/c/Users/user1/code` are:
+  - `/host_mnt/c/Users/user1/code` or
+  - `~/code`.
 
 ### Running Editor UI
 
 To run the editor, do the following steps:
 - create `$PROJECT_ROOT/.env` file and configure the following parameters:
+  - `PATH_ROOT` -- e.g. `/home` for linux; `/host_mnt/c/Users/user1/code` or `~/code` for Windows
   - `SCRIPTPATHS` -- e.g. `$SPIPES_MODULES_ROOT;$SPIPES_ROOT/doc/examples/hello-world/`, note the separator ";"
   - `SCRIPTRULES` --  e.g. `$SPIPES_EDITOR_ROOT/src/main/resources/rules`
   - `RDF4J_REPOSITORYNAME` -- e.g. `s-pipes-hello-world`
