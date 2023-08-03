@@ -27,7 +27,7 @@ To override default configuration create `$PROJECT_ROOT/.env` and use following 
   Use separator ";" to add multiple paths. The path must be absolute and the same as in host filesystem.
 - `SCRIPTRULES` --  to set up different rules to validate SPipes scripts
   (defaults to `${PROJECT_ROOT}/../s-pipes-editor/src/main/resources/rules`),
-- `RDF4J_SERVER_URL` -- to set up different Rdf4j server (defaults to docker service server at `http://rdf4j:8080/rdf4j-server`).
+- `RDF4J_SERVER_URL` -- to set up different Rdf4j server (defaults to internal docker service at `http://rdf4j:8080/rdf4j-server`).
   **Note that this variable must be consistent with variable `RDF4J_PCONFIGURL`**.
 - `RDF4J_REPOSITORYNAME` -- to set up different Rdf4j repository name where SPipes logs from execution are created
   (defaults to `s-pipes-hello-world`). **Note that this variable must be consistent with
@@ -35,6 +35,9 @@ To override default configuration create `$PROJECT_ROOT/.env` and use following 
 - `RDF4J_PCONFIGURL` -- to set up configuration of Rdf4j repository where SPipes logs from execution are created
   (defaults to `$SPIPES_ROOT/doc/examples/hello-world/config.ttl`). **Note that this variable must be consistent with
   variables `RDF4J_SERVER_URL` and `RDF4J_REPOSITORYNAME`**.
+- `SPIPES_ENGINE` -- to set up different s-pipes engine (defaults to internal docker service `http://s-pipes-engine:8080/s-pipes/`),
+- `SPIPES_EDITOR_REST` -- to set up different s-pipes-editor backend (defaults to internal docker service `s-pipes-editor-rest:18115`).
+
 
 ### Building
 

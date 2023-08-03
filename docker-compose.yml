@@ -11,7 +11,7 @@ services:
     depends_on:
       - s-pipes-editor-rest
     environment:
-      SERVICE_URL: "s-pipes-editor-rest:18115"
+      - SERVICE_URL=${SPIPES_EDITOR_REST:-s-pipes-editor-rest:18115}
 
   s-pipes-editor-rest:
     image: 'ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest'
@@ -28,7 +28,7 @@ services:
     environment:
       - SCRIPTPATHS=${SCRIPTPATHS:-${PWD}/../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../s-pipes/doc/examples}}
       - SCRIPTRULES=${SCRIPTRULES:-${PWD}/../s-pipes-editor/src/main/resources/rules}
-      - ENGINEURL=http://s-pipes-engine:8080/s-pipes/
+      - ENGINEURL=${SPIPES_ENGINE:-http://s-pipes-engine:8080/s-pipes/}
       - RDF4J_REPOSITORYURL=${RDF4J_SERVER_URL:-http://rdf4j:8080/rdf4j-server}/repositories
       - RDF4J_REPOSITORYNAME=${RDF4J_REPOSITORYNAME:-s-pipes-hello-world}
       - RDF4J_PCONFIGURL=${RDF4J_PCONFIGURL:-../s-pipes/doc/examples/hello-world/config.ttl}
