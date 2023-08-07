@@ -16,11 +16,39 @@ Default configuration assumes that:
 - you have **at least** docker-compose v2.20.2 (due to https://github.com/docker/cli/issues/4265; earlier versions were not tested)
 - all relevant projects are "git cloned" as sibling directories to `$PROJECT_ROOT` (i.e. `$SPIPES_EDITOR_ROOT=$PROJECT_ROOT/../s-pipes-editor`, $SPIPES_MODULES_ROOT=$PROJECT_ROOT/../s-pipes-modules, and `$SPIPES_ROOT=$PROJECT_ROOT/../s-pipes`). 
 
-To run the editor, do the following steps:
+There are two ways to run the editor, [using docker-compose](#run-editor-using-docker-compose) and [using spe](#run-editor-using-spe-script).
+
+#### Run editor using docker-compose
+To run the editor using `docker-compose`, do the following steps:
 - `cd $PROJECT_ROOT`
-- if on Windows, create `$PROJECT_ROOT/.env` file with variable assignment `SHARED_ROOT=/host_mnt`
+- if on Windows, if not setup create `$PROJECT_ROOT/.env` according to [Windows setup .env and .env.custom-script-paths](#windows-setup-env-and-envcustom-script-paths)
 - `docker-compose up`
 - open the editor in browser at `http://localhost:3000`. The editor should be showing [example scripts from SPipes repository](https://github.com/kbss-cvut/s-pipes/doc/examples).
+
+#### Run editor using spe script
+
+To run the editor using `spe` script, do the following steps:
+- if on Windows, if not setup create `$PROJECT_ROOT/.env.custom-script-paths` according to [Windows setup .env and .env.custom-script-paths](#windows-setup-env-and-envcustom-script-paths)
+- `$PROJECT_ROOT/bin/spe <paths-to-script-folders>`
+- open the editor in browser at `http://localhost:3000`. The editor should be showing [example scripts from SPipes repository](https://github.com/kbss-cvut/s-pipes/doc/examples).
+
+Use the correct spe script extension:
+- Use `spe.sh` if in bash (both linux or wsl distribution).
+- Use `spe.bat` if in  windows (both command prompt and powershell)
+
+Note that in windows if using git with `core.autocrlf=true` (set by default) `spe.sh` (and other files) git will replace 
+line endings (`LF`) for windows line endings (`CRLF`). In this case the spe.sh script will not be executable in wsl. 
+To make the script executable line endings should be replaced.
+
+
+#### Windows setup .env and .env.custom-script-paths
+  `.env` file is used by docker compose by default. The `.env.custom-script-paths` is used by the `spe` script.
+  - if running docker-compose.exe or spe.bat in windows  (not docker in wsl distribution) add the :
+    - `SHARED_ROOT=/host_mnt/c`
+    - `PWD=/host_mnt/$PROJECT_ROOT` _should be absolute path_
+  - if running docker-compose or spe.sh in wsl distribution, set variables as follows:
+    - `SHARED_ROOT=/mnt/c`
+
 
 To override default configuration create `$PROJECT_ROOT/.env` and use following variables:
 - `CUSTOM_SCRIPT_PATHS` -- to show different SPipes scripts (defaults to `${PROJECT_ROOT}/../s-pipes/doc/examples`).
