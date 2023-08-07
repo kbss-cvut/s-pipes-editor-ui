@@ -11,7 +11,7 @@ services:
     depends_on:
       - s-pipes-editor-rest
     environment:
-      - SERVICE_URL=${SPIPES_EDITOR_REST:-s-pipes-editor-rest:18115}
+      - SERVICE_URL=${SPIPES_EDITOR_REST:-http://s-pipes-editor-rest:18115}
 
   s-pipes-editor-rest:
     image: 'ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest'
