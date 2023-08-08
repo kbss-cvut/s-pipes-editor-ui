@@ -27,6 +27,8 @@ To run the editor using `docker-compose`, do the following steps:
 
 #### Run editor using spe script
 
+`spe` script can be used to execute the editor from a command line by specifying one or more directories from which SPipes scripts should be loaded. Internally the script uses [docker-compose.yml](https://github.com/kbss-cvut/s-pipes-editor-ui/blob/master/docker-compose.yml) file and environment variables specified in `$PROJECT_ROOT/.env.custom-script-paths`. 
+
 To run the editor using `spe` script, do the following steps:
 - if on Windows, create `$PROJECT_ROOT/.env.custom-script-paths` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
 - `$PROJECT_ROOT/bin/spe <paths-to-script-folders>`
