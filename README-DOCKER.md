@@ -40,15 +40,11 @@ To install docker, follow the instructions below:
 
   output:`> your_username`
 
-* edit /etc/group file in a text editor, for example:
+* add `your_username` to group `docker`:
 
-  `> sudo vim /etc/group`
+  `> sudo usermod -a -G docker your_username`
 
-* find the line `docker:x:999:`
-
-* changed it to
-  `docker:x:999:your_username`
-* save and exit the editor.
+* **exit the command line**.  Note, this is important because the effect of adding the username to the group docker will be visible only in a new shell.
 
 ## Docker on Windows
 Docker can be installed and used on windows in several ways. For example:
