@@ -16,7 +16,7 @@ Default configuration assumes that:
 - you have **at least** docker-compose v2.20.2 (due to https://github.com/docker/cli/issues/4265; earlier versions were not tested)
 - all relevant projects are "git cloned" as sibling directories to `$PROJECT_ROOT` (i.e. `$SPIPES_EDITOR_ROOT=$PROJECT_ROOT/../s-pipes-editor`, $SPIPES_MODULES_ROOT=$PROJECT_ROOT/../s-pipes-modules, and `$SPIPES_ROOT=$PROJECT_ROOT/../s-pipes`). 
 
-There are two ways to run the editor, [using docker-compose](#run-editor-using-docker-compose) and [using spe](#run-editor-using-spe-script).
+There are two ways to run the editor, [using docker-compose](#running-editor-using-docker-compose) and [using spe](#running-editor-using-spe-script).
 
 #### Running editor using docker-compose
 To run the editor using `docker-compose`, do the following steps:
