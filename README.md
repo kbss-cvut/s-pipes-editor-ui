@@ -41,7 +41,7 @@ line endings (`LF`) for windows line endings (`CRLF`). In this case the spe.sh s
 To make the script executable line endings should be replaced.
 
 
-#### Windows setup .env and .env.custom-script-paths
+#### Configuration of environment variables in Windows
   `.env` file is used by docker compose by default. The `.env.custom-script-paths` is used by the `spe` script.
   - if running docker-compose.exe or spe.bat in windows  (not docker in wsl distribution) add the :
     - `SHARED_ROOT=/host_mnt/c`
