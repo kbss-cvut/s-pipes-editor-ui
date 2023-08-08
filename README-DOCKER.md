@@ -14,7 +14,7 @@ Contents:
   * [Working with WSL](#working-with-wsl) - summarizes 
 
 ## Install Docker Engine and Docker Compose in Linux
-To install docker Follow instructions below:
+To install docker, follow the instructions below:
 * Note: Copy and paste all shell commands in each code block. Do not copy and paste the commands in a code block line by line.
 1. https://docs.docker.com/engine/install/ubuntu/
 	* Note: If you do not have Ubuntu check installing on a different linux distributions here https://docs.docker.com/engine/install/
