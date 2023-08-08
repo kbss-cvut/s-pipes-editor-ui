@@ -28,7 +28,7 @@ To run the editor using `docker-compose`, do the following steps:
 #### Run editor using spe script
 
 To run the editor using `spe` script, do the following steps:
-- if on Windows, if not setup create `$PROJECT_ROOT/.env.custom-script-paths` according to [Windows setup .env and .env.custom-script-paths](#windows-setup-env-and-envcustom-script-paths)
+- if on Windows, create `$PROJECT_ROOT/.env.custom-script-paths` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
 - `$PROJECT_ROOT/bin/spe <paths-to-script-folders>`
 - open the editor in browser at `http://localhost:3000`. The editor should be showing [example scripts from SPipes repository](https://github.com/kbss-cvut/s-pipes/doc/examples).
 
