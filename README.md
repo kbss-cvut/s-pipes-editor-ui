@@ -31,7 +31,7 @@ To run the editor using `docker-compose`, do the following steps:
 
 To run the editor using `spe` script, do the following steps:
 - if on Windows, create `$PROJECT_ROOT/.env.custom-script-paths` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
-- `$PROJECT_ROOT/bin/spe <paths-to-script-folders>`
+- `$PROJECT_ROOT/bin/spe.$EXTENSION <paths-to-script-folders>`
 - open the editor in a browser at `http://localhost:3000`. The editor should show the script from folders specified in <paths-to-script-folders> and the folder $PROJECT_ROOT/../s-pipes-modules.
 
 Use the correct spe script extension:
