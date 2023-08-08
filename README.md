@@ -21,7 +21,7 @@ There are two ways to run the editor, [using docker-compose](#running-editor-usi
 #### Running editor using docker-compose
 To run the editor using `docker-compose`, do the following steps:
 - `cd $PROJECT_ROOT`
-- if on Windows, if not setup create `$PROJECT_ROOT/.env` according to [Windows setup .env and .env.custom-script-paths](#windows-setup-env-and-envcustom-script-paths)
+- if on Windows, create `$PROJECT_ROOT/.env` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
 - `docker-compose up`
 - open the editor in browser at `http://localhost:3000`. The editor should be showing [example scripts from SPipes repository](https://github.com/kbss-cvut/s-pipes/doc/examples).
 
