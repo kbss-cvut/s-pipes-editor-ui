@@ -18,7 +18,7 @@ Default configuration assumes that:
 
 There are two ways to run the editor, [using docker-compose](#run-editor-using-docker-compose) and [using spe](#run-editor-using-spe-script).
 
-#### Run editor using docker-compose
+#### Running editor using docker-compose
 To run the editor using `docker-compose`, do the following steps:
 - `cd $PROJECT_ROOT`
 - if on Windows, if not setup create `$PROJECT_ROOT/.env` according to [Windows setup .env and .env.custom-script-paths](#windows-setup-env-and-envcustom-script-paths)
