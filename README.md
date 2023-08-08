@@ -39,7 +39,7 @@ Use the correct spe script extension:
 - Use `spe.bat` if in  windows (both command prompt and powershell)
 
 Note that in windows if using git with `core.autocrlf=true` (set by default) `spe.sh` (and other files) git will replace 
-line endings (`LF`) for windows line endings (`CRLF`). In this case the spe.sh script will not be executable in wsl. 
+line endings (`LF`) for windows line endings (`CRLF`). In this case, the `spe.sh` script will not be executable in wsl. 
 To make the script executable line endings should be replaced.
 
 
