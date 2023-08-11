@@ -92,6 +92,20 @@ Run development server
 $ npm run dev
 ```
 
+## Development with Docker Compose
+Here is the common procedure to debug individual services of the s-pipes-editor-ui. `<service-name>` can be replaced 
+by one of the values `s-pipes-editor-ui`, `s-pipes-editor-rest` and `s-pipes-engine`. 
+1. cd to `$PROJECT_ROOT`.
+2. Run `docker-compose -f docker-compose-dev.yml up` if not running already. Otherwise, run 
+`docker-compose -f docker-compose-dev.yml start`.
+3. Stop the service which you want to develop `docker-compose -f docker-compose-dev.yml stop <service-name>` 
+4. Start `<service-name>` in development environment
+   - `s-pipes-editor-ui` - run `npm run dev`
+   - `s-pipes-editor-rest` - start run/debug springboot configuration in IntelliJ IDEA
+   - `s-pipes-engine` - start run/debug springboot configuration in IntelliJ IDEA
+
+Composing up, start and stop can also be done trough docker desktop and intellij idea service tab.
+
 ### Dockerization
 The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-editor-ui .`
 
