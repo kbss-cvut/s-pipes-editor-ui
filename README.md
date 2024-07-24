@@ -2,7 +2,7 @@
 
 We will use `$PROJECT_ROOT` as the root directory of this project, i.e., the directory where this README is located. Similarly, we will define:
 - `$SPIPES_EDITOR_ROOT` -- root folder of cloned repository [s-pipes-editor](https://github.com/kbss-cvut/s-pipes-editor)
-- `$SPIPES_MODULES_ROOT` -- root folder of cloned repository [s-pipes-modules](https://kbss.felk.cvut.cz/gitblit/summary/s-pipes-modules.git) 
+- `$SPIPES_MODULES_ROOT` -- root folder of cloned repository [s-pipes-modules](https://github.com/blcham/s-pipes-modules) 
 - `$SPIPES_ROOT` -- root folder of cloned repository [s-pipes](https://github.com/kbss-cvut/s-pipes)
 - `$SHARED_ROOT` -- root folder that you want to share between docker services and your host system. It is the folder that
   will be visible from docker services as well as from host filesytem and paths to all files will be the same.
