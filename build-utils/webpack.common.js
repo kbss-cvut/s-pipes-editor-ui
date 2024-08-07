@@ -2,7 +2,7 @@ const commonPaths = require('./common-paths');
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FlowWebpackPlugin = require('flow-webpack-plugin')
+
 
 const config = {
   entry: {
@@ -44,7 +44,6 @@ const config = {
       template: `public/index.html`,
       favicon: `public/favicon.ico`
     }),
-    new FlowWebpackPlugin(),
   ]
 };
 
