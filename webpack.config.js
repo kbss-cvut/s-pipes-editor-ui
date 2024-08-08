@@ -16,11 +16,19 @@ module.exports = env => {
   }
 
   const envConfig = require(`./build-utils/webpack.${env.env}.js`);
-  const mergedConfig = webpackMerge(
-    commonConfig,
-    envConfig,
-    ...addons(env.addons)
-  );
 
-  return mergedConfig;
+  const resolveConfig = {
+    resolve: {
+      fallback: {
+        "util": false
+      }
+    }
+  }
+
+  return webpackMerge(
+      commonConfig,
+      envConfig,
+      resolveConfig,
+      ...addons(env.addons)
+  );
 };
