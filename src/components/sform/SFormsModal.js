@@ -1,5 +1,5 @@
 import React from 'react';
-import SForms from 's-forms';
+import SForms from '@kbss-cvut/s-forms';
 
 import {Button, Modal} from "react-bootstrap";
 import {Rest} from "../rest/Rest";
