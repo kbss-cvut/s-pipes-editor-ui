@@ -6,8 +6,6 @@ services:
     container_name: s-pipes-editor-ui
     ports:
       - '3000:80'
-    networks:
-      - overlay
     depends_on:
       - s-pipes-editor-rest
     environment:
@@ -18,16 +16,14 @@ services:
     container_name: s-pipes-editor-rest
     expose:
       - "18115"
-    networks:
-      - overlay
     depends_on:
       - s-pipes-engine
-      - rdf4j
+      - db-server
     environment:
       - SCRIPTPATHS=${SCRIPTPATHS:-${PWD}/../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../s-pipes/doc/examples}}
       - SCRIPTRULES=${SCRIPTRULES:-${PWD}/../s-pipes-editor/src/main/resources/rules}
       - ENGINEURL=${SPIPES_ENGINE:-http://s-pipes-engine:8080/s-pipes}/
-      - RDF4J_REPOSITORYURL=${RDF4J_SERVER_URL:-http://rdf4j:8080/rdf4j-server}/repositories
+      - RDF4J_REPOSITORYURL=${RDF4J_SERVER_URL:-http://db-server:7200}/repositories
       - RDF4J_REPOSITORYNAME=${RDF4J_REPOSITORYNAME:-s-pipes-hello-world}
       - RDF4J_PCONFIGURL=${RDF4J_PCONFIGURL:-../s-pipes/doc/examples/hello-world/config.ttl}
     volumes:
@@ -41,10 +37,8 @@ services:
 #    container_name: s-pipes-engine
     expose:
       - "8080"
-    networks:
-      - overlay
     depends_on:
-      - rdf4j
+      - db-server
     environment:
       - CONTEXTS_SCRIPTPATHS=${SCRIPTPATHS:-${PWD}/../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../s-pipes/doc/examples}}
     volumes:
@@ -52,22 +46,16 @@ services:
       - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
-  rdf4j:
-    image: 'eclipse/rdf4j-workbench:3.7.7'
-    container_name: rdf4j
+  db-server:
+    build:
+      context: ./deploy/db-server
     expose:
-      - "8080"
-    networks:
-      - overlay
-    environment:
-      - JAVA_OPTS=-Xms1g -Xmx4g
+      - "7200"
     volumes:
-      - data:/var/rdf4j
-      - logs:/usr/local/tomcat/logs
+      - ./deploy/db-server/init-config:/repo-config:ro
+      - db-server:/opt/graphdb/home
 
 volumes:
   data:
   logs:
-
-networks:
-  overlay:
+  db-server:
