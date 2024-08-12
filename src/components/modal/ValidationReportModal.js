@@ -1,5 +1,4 @@
 import React from 'react';
-import SForms from 's-forms';
 
 import {Alert, Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {
