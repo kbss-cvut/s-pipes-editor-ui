@@ -1,4 +1,9 @@
-version: '3'
+version: '3.9'
+
+# Expose port to access s-pipes-editor-rest directly
+x-access-db-server-development-port: &s-pipes-editor-rest-dev-port
+  ports:
+    - "127.0.0.1:${EDITOR_REST_PORT:-18115}:18115"
 
 services:
   s-pipes-editor-ui:
@@ -12,6 +17,7 @@ services:
       - SERVICE_URL=${SPIPES_EDITOR_REST:-http://s-pipes-editor-rest:18115}
 
   s-pipes-editor-rest:
+    #    <<: *s-pipes-editor-rest-dev-port
     image: 'ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest'
     container_name: s-pipes-editor-rest
     expose:
