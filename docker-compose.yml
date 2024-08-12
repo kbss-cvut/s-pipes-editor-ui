@@ -5,7 +5,7 @@ services:
     image: 'ghcr.io/kbss-cvut/s-pipes-editor-ui/s-pipes-editor-ui:latest'
     container_name: s-pipes-editor-ui
     ports:
-      - '3000:80'
+      - "127.0.0.1:${INTERNAL_HOST_PORT:-3000}:80"
     depends_on:
       - s-pipes-editor-rest
     environment:
