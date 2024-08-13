@@ -135,6 +135,11 @@ You can run editor together with backend using docker orchestration. The docker-
 ![GitHub Logo](public/architecture.png)
 Architecture images
 
+### Prettier
+
+We use [Prettier](https://prettier.io/) to keep the codebase formatting consistent.
+To simplify this process, a pre-commit Git hook is set up with [Husky](https://github.com/typicode/husky).
+
 ### Note
 > Skeleton is from - React Starter Boilerplate with Hot Module Replacement and Webpack 4
 
