@@ -1,11 +1,11 @@
-version: '3'
+version: "3"
 
 services:
   s-pipes-editor-ui:
-    image: 'ghcr.io/kbss-cvut/s-pipes-editor-ui/s-pipes-editor-ui:latest'
+    image: "ghcr.io/kbss-cvut/s-pipes-editor-ui/s-pipes-editor-ui:latest"
     container_name: s-pipes-editor-ui
     ports:
-      - '3000:80'
+      - "3000:80"
     networks:
       - overlay
     depends_on:
@@ -14,7 +14,7 @@ services:
       - SERVICE_URL=${SPIPES_EDITOR_REST:-http://host.docker.internal:18115}
 
   s-pipes-editor-rest:
-    image: 'ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest'
+    image: "ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest"
     container_name: s-pipes-editor-rest
     ports:
       - ${EDITOR_REST_PORT:-18115}:18115
@@ -37,10 +37,9 @@ services:
       - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
-
   s-pipes-engine:
-    image: 'ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest'
-#    container_name: s-pipes-engine
+    image: "ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest"
+    #    container_name: s-pipes-engine
     ports:
       - ${SPIPES_PORT:-8081}:8080
     expose:
@@ -57,7 +56,7 @@ services:
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   rdf4j:
-    image: 'eclipse/rdf4j-workbench:3.7.7'
+    image: "eclipse/rdf4j-workbench:3.7.7"
     container_name: rdf4j
     expose:
       - "8080"

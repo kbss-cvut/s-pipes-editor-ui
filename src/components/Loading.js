@@ -1,7 +1,7 @@
-import React from 'react';
-import { Loader } from 'semantic-ui-react';
-import ReactDelayRender from 'react-delay-render';
-import { LoopCircleLoading } from 'react-loadingg';
+import React from "react";
+import { Loader } from "semantic-ui-react";
+import ReactDelayRender from "react-delay-render";
+import { LoopCircleLoading } from "react-loadingg";
 
 const Loading = () => <LoopCircleLoading />;
 

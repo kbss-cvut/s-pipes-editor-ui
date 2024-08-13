@@ -1,28 +1,26 @@
-import React from 'react';
-import { Container, Icon } from 'semantic-ui-react';
+import React from "react";
+import { Container, Icon } from "semantic-ui-react";
 
-import {Nav, Navbar} from "react-bootstrap";
-import NavbarMenu from './NavbarMenu'
+import { Nav, Navbar } from "react-bootstrap";
+import NavbarMenu from "./NavbarMenu";
 
 const Layout = ({ children }) => {
   return (
-      <div>
-        <NavbarMenu />
+    <div>
+      <NavbarMenu />
 
-        <Container>
-            {children}
-        </Container>
+      <Container>{children}</Container>
 
-          <div className="fixed-bottom">
-              <Navbar color="dark">
-                  <Container>
-                      <p className="pull-right">
-                        Made with <Icon name="heart" color="red" />
-                      </p>
-                  </Container>
-              </Navbar>
-          </div>
+      <div className="fixed-bottom">
+        <Navbar color="dark">
+          <Container>
+            <p className="pull-right">
+              Made with <Icon name="heart" color="red" />
+            </p>
+          </Container>
+        </Navbar>
       </div>
+    </div>
   );
 };
 

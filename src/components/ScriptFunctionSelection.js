@@ -1,51 +1,49 @@
-import React from 'react'
-import { Dropdown } from 'semantic-ui-react'
-import {FUNCTION, FUNCTION_NAME, Rest} from './rest/Rest'
-import {ICONS_MAP} from "./dagre/DagreIcons";
+import React from "react";
+import { Dropdown } from "semantic-ui-react";
+import { FUNCTION, FUNCTION_NAME, Rest } from "./rest/Rest";
+import { ICONS_MAP } from "./dagre/DagreIcons";
 
 class ScriptFunctionSelection extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      moduleOptions: [],
+    };
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            moduleOptions: []
-        }
-    }
+  componentDidMount() {
+    Rest.getModulesFunctions(this.props.scriptPath).then((res) => {
+      const options = res.map((r) => {
+        return {
+          key: r[FUNCTION],
+          text: r[FUNCTION_NAME],
+          value: r[FUNCTION],
+          image: { avatar: true, src: "/public/icons/fire-extinguisher.png" },
+        };
+      });
+      this.setState({
+        moduleOptions: options,
+      });
+    });
+  }
 
-    componentDidMount() {
-        Rest.getModulesFunctions(this.props.scriptPath).then((res) => {
-            const options = res.map((r) => {
-                return ({
-                    key: r[FUNCTION],
-                    text: r[FUNCTION_NAME],
-                    value: r[FUNCTION],
-                    image: { avatar: true, src: '/public/icons/fire-extinguisher.png' }
-                })
-            })
-            this.setState({
-                moduleOptions: options
-            })
-        })
-    }
-
-    render() {
-        return (
-            <Dropdown
-                text='Call function'
-                fluid
-                search
-                selection
-                multiple
-                value={[null]}
-                options={this.state.moduleOptions}
-                onChange={(e, {value}) => {
-                    console.log("value: " + value)
-                    this.props.onChange(value)
-                }}
-            />
-        );
-    }
-
+  render() {
+    return (
+      <Dropdown
+        text="Call function"
+        fluid
+        search
+        selection
+        multiple
+        value={[null]}
+        options={this.state.moduleOptions}
+        onChange={(e, { value }) => {
+          console.log("value: " + value);
+          this.props.onChange(value);
+        }}
+      />
+    );
+  }
 }
 
-export default ScriptFunctionSelection
+export default ScriptFunctionSelection;

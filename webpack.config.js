@@ -1,16 +1,16 @@
-const buildValidations = require('./build-utils/build-validations');
-const commonConfig = require('./build-utils/webpack.common');
+const buildValidations = require("./build-utils/build-validations");
+const commonConfig = require("./build-utils/webpack.common");
 
-const webpackMerge = require('webpack-merge');
+const webpackMerge = require("webpack-merge");
 
 const addons = (/* string | string[] */ addonsArg) => {
   let addons = [...[addonsArg]] // Normalize array of addons (flatten)
     .filter(Boolean); // If addons is undefined, filter it out
 
-  return addons.map(addonName => require(`./build-utils/addons/webpack.${addonName}.js`));
+  return addons.map((addonName) => require(`./build-utils/addons/webpack.${addonName}.js`));
 };
 
-module.exports = env => {
+module.exports = (env) => {
   if (!env) {
     throw new Error(buildValidations.ERR_NO_ENV_FLAG);
   }
@@ -20,15 +20,10 @@ module.exports = env => {
   const resolveConfig = {
     resolve: {
       fallback: {
-        "util": false
-      }
-    }
-  }
+        util: false,
+      },
+    },
+  };
 
-  return webpackMerge(
-      commonConfig,
-      envConfig,
-      resolveConfig,
-      ...addons(env.addons)
-  );
+  return webpackMerge(commonConfig, envConfig, resolveConfig, ...addons(env.addons));
 };

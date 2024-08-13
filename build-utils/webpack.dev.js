@@ -46,16 +46,16 @@ const config = {
     hot: true,
     open: true,
     proxy: {
-      '/rest': {
-        target: 'http://localhost:18115/og_spipes',
-        ws: true
+      "/rest": {
+        target: "http://localhost:18115/og_spipes",
+        ws: true,
       },
-      '/notifications': {
-        target: 'ws://localhost:18115/og_spipes/rest',
+      "/notifications": {
+        target: "ws://localhost:18115/og_spipes/rest",
         changeOrigin: true,
-        ws: true
-      }
-    }
+        ws: true,
+      },
+    },
   },
 };
 

@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 # Expose port to access s-pipes-editor-rest directly
 x-access-db-server-development-port: &s-pipes-editor-rest-dev-port
@@ -7,7 +7,7 @@ x-access-db-server-development-port: &s-pipes-editor-rest-dev-port
 
 services:
   s-pipes-editor-ui:
-    image: 'ghcr.io/kbss-cvut/s-pipes-editor-ui/s-pipes-editor-ui:latest'
+    image: "ghcr.io/kbss-cvut/s-pipes-editor-ui/s-pipes-editor-ui:latest"
     container_name: s-pipes-editor-ui
     ports:
       - "127.0.0.1:${INTERNAL_HOST_PORT:-3000}:80"
@@ -18,7 +18,7 @@ services:
 
   s-pipes-editor-rest:
     #    <<: *s-pipes-editor-rest-dev-port
-    image: 'ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest'
+    image: "ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest"
     container_name: s-pipes-editor-rest
     expose:
       - "18115"
@@ -37,10 +37,9 @@ services:
       - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
       - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
-
   s-pipes-engine:
-    image: 'ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest'
-#    container_name: s-pipes-engine
+    image: "ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest"
+    #    container_name: s-pipes-engine
     expose:
       - "8080"
     depends_on:

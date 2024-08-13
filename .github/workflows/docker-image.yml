@@ -2,25 +2,23 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 env:
   IMAGE_NAME: s-pipes-editor-ui
   MAIN_BRANCH_NAME: master
 jobs:
-  
   build-and-publish:
-  
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
 
       #- name: Build application archive
       #  run: mvn clean package -B
-        
+
       - name: Build docker image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
