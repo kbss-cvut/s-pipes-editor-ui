@@ -1,9 +1,8 @@
 import React from "react";
 import SForms from "@kbss-cvut/s-forms";
-
 import { Button, Modal } from "react-bootstrap";
 import { Rest } from "../rest/Rest";
-import { SemipolarLoading } from "react-loadingg";
+import Loading from "../Loading";
 import "@triply/yasgui/build/yasgui.min.css";
 import ErrorModal from "../modal/ErrorModal";
 
@@ -88,9 +87,7 @@ class SFormsModal extends React.Component {
     if (this.state.errorMessage) {
       return <ErrorModal errorMessage={this.state.errorMessage} handleErrorModal={this.handleErrorModal} />;
     } else if (this.state.isLoading) {
-      return (
-        <SemipolarLoading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />
-      );
+      return <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />;
     } else if (this.state.isLoaded) {
       return (
         <Modal
