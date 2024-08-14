@@ -30,7 +30,7 @@ import ScriptExecutionModal from "../modal/ScriptExecutionModal";
 import "@triply/yasgui/build/yasgui.min.css";
 import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "@kbss-cvut/s-forms/css";
-import { SemipolarLoading } from "react-loadingg";
+import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
 import toast from "toasted-notes";
 
@@ -626,10 +626,7 @@ class Dagre extends React.Component {
     return (
       <div>
         {this.state.isLoaded === false && (
-          <SemipolarLoading
-            size={"large"}
-            style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }}
-          />
+          <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />
         )}
         <NavbarMenu />
         <div>
