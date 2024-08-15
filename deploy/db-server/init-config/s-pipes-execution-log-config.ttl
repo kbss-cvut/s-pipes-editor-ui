@@ -4,8 +4,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix graphdb: <http://www.ontotext.com/config/graphdb#>.
 
-<#s-pipes-hello-world> a rep:Repository;
-  rep:repositoryID "s-pipes-hello-world";
+<#s-pipes-execution-log> a rep:Repository;
+  rep:repositoryID "s-pipes-execution-log";
   rep:repositoryImpl [
       rep:repositoryType "graphdb:SailRepository";
       <http://www.openrdf.org/config/repository/sail#sailImpl> [
@@ -30,4 +30,4 @@
           sail:sailType "graphdb:Sail"
         ]
     ];
-  rdfs:label "SPipes Hello World repository" .
+  rdfs:label "SPipes Execution Log" .
