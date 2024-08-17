@@ -2,6 +2,6 @@ import React from "react";
 import Spinner from "./spinner/Spinner";
 import { DelayRender } from "./DelayRender";
 
-const Loading = DelayRender(Spinner, 400);
+const Loading = DelayRender(Spinner, 0);
 
 export default Loading;

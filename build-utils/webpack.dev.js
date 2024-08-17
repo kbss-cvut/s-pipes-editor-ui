@@ -13,9 +13,7 @@ const config = {
     filename: "[name].[hash].js",
   },
   resolve: {
-    alias: {
-      "react-dom": "@hot-loader/react-dom",
-    },
+    alias: {},
   },
   devtool: "inline-source-map",
   module: {

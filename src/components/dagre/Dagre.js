@@ -32,8 +32,6 @@ import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "@kbss-cvut/s-forms/css";
 import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
-import toast from "toasted-notes";
-
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
 const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
 const X = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-x-coordinate";
@@ -141,21 +139,6 @@ class Dagre extends React.Component {
         this.renderCytoscapeElement();
       });
     });
-  }
-
-  componentWillMount() {
-    client.onopen = () => {
-      console.log("Open websocket");
-      client.send(this.state.file);
-      this._keepAlive(20000);
-    };
-    client.onmessage = (message) => {
-      console.log(message["data"] + "; Page should be reloaded; ");
-      toast.notify(message["data"] + "; Page should be reloaded; ", {
-        duration: 15000,
-        position: "top",
-      });
-    };
   }
 
   //prevent session timeout
