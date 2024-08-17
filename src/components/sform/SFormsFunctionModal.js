@@ -48,7 +48,7 @@ class SFormsFunctionModal extends React.Component {
 
   handleSubmit() {
     let data =
-      this.refForm.current.context.getFormQuestionsData()[0][
+      this.refForm.current.getFormQuestionsData()[0][
         "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"
       ];
     let functionUri = "";
