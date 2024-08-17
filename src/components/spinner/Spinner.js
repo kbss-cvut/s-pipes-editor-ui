@@ -16,18 +16,29 @@ const Spinner = ({ color = "#3498db", size = "middle", style }) => {
     }
   `;
 
-  const defaultStyle = {
+  const spinnerStyle = {
     border: "4px solid rgba(0, 0, 0, 0.1)",
     borderTop: `4px solid ${color}`,
     borderRadius: "50%",
     width: spinnerSize,
     height: spinnerSize,
     animation: "spin 1s linear infinite",
-    ...style,
+  };
+
+  const containerStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    width: "100vw",
+    position: "absolute",
+    top: 0,
+    left: 0,
   };
 
   return (
-    <div style={defaultStyle}>
+    <div style={containerStyle}>
+      <div style={{ ...spinnerStyle, ...style }}></div>
       <style>{spinnerKeyframes}</style>
     </div>
   );
