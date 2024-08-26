@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Icon } from "semantic-ui-react";
 
 import { Nav, Navbar } from "react-bootstrap";
-import NavbarMenu from "./NavbarMenu";
+import NavbarMenu from "./NavbarMenu.jsx";
 
 const Layout = ({ children }) => {
   return (

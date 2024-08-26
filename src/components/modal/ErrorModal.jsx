@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button, Form, Modal } from "react-bootstrap";
-import { Rest } from "../rest/Rest";
+import { Rest } from "../rest/Rest.jsx";
 
 class ErrorModal extends React.Component {
   constructor(props) {

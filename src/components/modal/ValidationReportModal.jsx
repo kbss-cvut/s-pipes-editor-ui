@@ -12,7 +12,7 @@ import {
   RULE_COMMENT,
   START_DATE_UNIX,
   TRANSFORMATION,
-} from "../rest/Rest";
+} from "../rest/Rest.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Moment from "react-moment";

@@ -13,25 +13,25 @@ import {
   MODULE_VARIABLES,
   Rest,
   SCRIPT_PATH,
-} from "../rest/Rest";
-import NavbarMenu from "../NavbarMenu";
-import SFormsModal from "../sform/SFormsModal";
-import ModuleTypesSelection from "../ModuleTypesSelection";
-import ScriptInputOutputModal from "../sform/ScriptInputOutputModal";
+} from "../rest/Rest.jsx";
+import NavbarMenu from "../NavbarMenu.jsx";
+import SFormsModal from "../sform/SFormsModal.jsx";
+import ModuleTypesSelection from "../ModuleTypesSelection.jsx";
+import ScriptInputOutputModal from "../sform/ScriptInputOutputModal.jsx";
 import { Dropdown } from "semantic-ui-react";
-import { ICONS_MAP } from "./DagreIcons";
-import ScriptFunctionSelection from "../ScriptFunctionSelection";
+import { ICONS_MAP } from "./DagreIcons.jsx";
+import ScriptFunctionSelection from "../ScriptFunctionSelection.jsx";
 import { Button } from "react-bootstrap";
-import ValidationReportModal from "../modal/ValidationReportModal";
+import ValidationReportModal from "../modal/ValidationReportModal.jsx";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import MoveModuleModal from "../modal/MoveModuleModal";
-import ScriptOntologyModal from "../modal/ScriptOntologyModal";
-import ScriptExecutionModal from "../modal/ScriptExecutionModal";
+import MoveModuleModal from "../modal/MoveModuleModal.jsx";
+import ScriptOntologyModal from "../modal/ScriptOntologyModal.jsx";
+import ScriptExecutionModal from "../modal/ScriptExecutionModal.jsx";
 import "@triply/yasgui/build/yasgui.min.css";
-import SFormsFunctionModal from "../sform/SFormsFunctionModal";
+import SFormsFunctionModal from "../sform/SFormsFunctionModal.jsx";
 import "@kbss-cvut/s-forms/css";
-import Loading from "../Loading";
-import ErrorModal from "../modal/ErrorModal";
+import Loading from "../Loading.jsx";
+import ErrorModal from "../modal/ErrorModal.jsx";
 const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
 const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
 const X = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-x-coordinate";
