@@ -1,8 +1,8 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
 
-import Layout from "./Layout";
-import ScriptsTree from "./treebeard/ScriptsTree";
+import Layout from "./Layout.jsx";
+import ScriptsTree from "./treebeard/ScriptsTree.jsx";
 import { Link } from "react-router-dom";
 
 class Scripts extends React.Component {

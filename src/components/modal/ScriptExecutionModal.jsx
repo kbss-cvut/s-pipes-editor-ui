@@ -13,7 +13,7 @@ import {
   MODULE_VARIABLES,
   MODULE_VARIABLE_NAME,
   MODULE_VARIABLE_VALUE,
-} from "../rest/Rest";
+} from "../rest/Rest.jsx";
 import { faDownload, faMugHot } from "@fortawesome/free-solid-svg-icons";
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

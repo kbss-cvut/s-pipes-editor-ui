@@ -1,14 +1,14 @@
 import React, { Fragment } from "react";
 import { includes } from "lodash";
 
-import styles from "./styles";
-import Header from "./Header";
+import styles from "./styles.jsx";
+import Header from "./Header.jsx";
 import { Treebeard, decorators } from "react-treebeard";
-import { Rest } from "../rest/Rest";
+import { Rest } from "../rest/Rest.jsx";
 import { withRouter } from "react-router-dom";
-import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
-import Loading from "../Loading";
-import ErrorModal from "../modal/ErrorModal";
+import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal.jsx";
+import Loading from "../Loading.jsx";
+import ErrorModal from "../modal/ErrorModal.jsx";
 
 class ScriptsTree extends React.Component {
   constructor(props) {

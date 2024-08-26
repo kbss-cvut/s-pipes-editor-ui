@@ -1,45 +1,48 @@
 import React from "react";
 import SForms from "@kbss-cvut/s-forms";
-
 import { Button, Modal } from "react-bootstrap";
-import { Rest } from "../rest/Rest";
+import { Rest } from "../rest/Rest.jsx";
+import Loading from "../Loading.jsx";
 import "@triply/yasgui/build/yasgui.min.css";
-import ErrorModal from "../modal/ErrorModal";
-import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
+import ErrorModal from "../modal/ErrorModal.jsx";
 
-class SFormsFunctionModal extends React.Component {
+class SFormsModal extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isLoaded: false,
+      isLoading: false,
       modalVisible: false,
       selectedForm: null,
       moduleTypeUri: null,
       moduleUri: null,
-      scriptPath: null,
       errorMessage: null,
+      scriptPath: null,
     };
     this.refForm = React.createRef();
     this.handleErrorModal = this.handleErrorModal.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.scriptPath && newProps.functionUri) {
-      Rest.getFunctionForm(newProps.scriptPath, newProps.functionUri).then((response) => {
+    if (newProps.moduleTypeUri && newProps.scriptPath) {
+      this.setState({ isLoading: true });
+      Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath).then((response) => {
         this.setState({
           isLoaded: true,
+          isLoading: false,
           selectedForm: response,
           modalVisible: true,
-          moduleTypeUri: newProps.scriptPath,
-          moduleUri: newProps.functionUri,
+          moduleTypeUri: newProps.moduleTypeUri,
+          moduleUri: newProps.moduleUri,
+          scriptPath: newProps.scriptPath,
         });
       });
     }
   }
 
   handleClose() {
-    this.setState({ modalVisible: false });
+    this.setState({ modalVisible: false, isLoaded: false, isLoading: false });
   }
 
   handleErrorModal() {
@@ -47,36 +50,19 @@ class SFormsFunctionModal extends React.Component {
   }
 
   handleSubmit() {
-    let data =
-      this.refForm.current.context.getFormQuestionsData()[0][
-        "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"
-      ];
-    let functionUri = "";
-    let params = [];
-    data.forEach((q) => {
-      let label = q["http://www.w3.org/2000/01/rdf-schema#label"] + "=";
-      let value =
-        q["http://onto.fel.cvut.cz/ontologies/documentation/has_answer"][0][
-          "http://onto.fel.cvut.cz/ontologies/documentation/has_data_value"
-        ];
-      if (value["@value"] !== undefined) {
-        params.push(label + value["@value"]);
-      } else if (label === "URI=") {
-        functionUri = value;
-      }
-    });
+    let form = this.state.selectedForm;
+    form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] =
+      this.refForm.current.context.getFormQuestionsData();
 
-    Rest.executeFunction(functionUri, params.join("&")).then((response) => {
-      console.log(response);
-      console.log(response.status);
+    this.setState({ isLoading: true, isLoaded: false });
+    Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
+      this.setState({ isLoading: false });
       if (response.status === 200) {
-        console.log(response);
-        window.location.href = "/executions";
+        window.location.reload(false);
       } else {
-        console.log("ERROR during script execution");
+        console.log("ERROR on script update");
         this.setState({ errorMessage: "ERROR during script execution" });
       }
-      this.setState({ isLoaded: false, modalVisible: false });
     });
   }
 
@@ -100,6 +86,8 @@ class SFormsFunctionModal extends React.Component {
 
     if (this.state.errorMessage) {
       return <ErrorModal errorMessage={this.state.errorMessage} handleErrorModal={this.handleErrorModal} />;
+    } else if (this.state.isLoading) {
+      return <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />;
     } else if (this.state.isLoaded) {
       return (
         <Modal
@@ -130,4 +118,4 @@ class SFormsFunctionModal extends React.Component {
   }
 }
 
-export default SFormsFunctionModal;
+export default SFormsModal;
