@@ -2,7 +2,7 @@
   "name": "react-starter-boilerplate-hmr",
   "version": "1.0.0",
   "description": "SPipes editor UI",
-  "main": "index.jsx",
+  "main": "index.js",
   "author": "Petr Jordan",
   "license": "MIT",
   "scripts": {

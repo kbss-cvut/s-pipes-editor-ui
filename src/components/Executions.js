@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import Layout from "./Layout.jsx";
+import Layout from "./Layout";
 import {
   ABSOLUTE_PATH,
   DISPLAY_NAME,
@@ -9,7 +9,7 @@ import {
   Rest,
   START_DATE_UNIX,
   TRANSFORMATION,
-} from "./rest/Rest.jsx";
+} from "./rest/Rest";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot, faTrash, faRunning, faPlayCircle, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";

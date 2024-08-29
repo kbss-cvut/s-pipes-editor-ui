@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
 
-import Layout from "./Layout.jsx";
+import Layout from "./Layout";
 
 const DynamicPage = () => {
   return (

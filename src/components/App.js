@@ -2,22 +2,22 @@ import React, { Component } from "react";
 import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
 import importedComponent from "react-imported-component";
 
-import Home from "./Home.jsx";
-import Loading from "./Loading.jsx";
+import Home from "./Home";
+import Loading from "./Loading";
 
-const Scripts = importedComponent(() => import(/* webpackChunkName:'Scripts' */ "./Scripts.jsx"), {
+const Scripts = importedComponent(() => import(/* webpackChunkName:'Scripts' */ "./Scripts"), {
   LoadingComponent: Loading,
 });
-const Executions = importedComponent(() => import(/* webpackChunkName:'Executions' */ "./Executions.jsx"), {
+const Executions = importedComponent(() => import(/* webpackChunkName:'Executions' */ "./Executions"), {
   LoadingComponent: Loading,
 });
-const AsyncDynamicPAge = importedComponent(() => import(/* webpackChunkName:'DynamicPage' */ "./DynamicPage.jsx"), {
+const AsyncDynamicPAge = importedComponent(() => import(/* webpackChunkName:'DynamicPage' */ "./DynamicPage"), {
   LoadingComponent: Loading,
 });
-const AsyncDagre = importedComponent(() => import(/* webpackChunkName:'Dagre' */ "./dagre/Dagre.jsx"), {
+const AsyncDagre = importedComponent(() => import(/* webpackChunkName:'Dagre' */ "./dagre/Dagre.js"), {
   LoadingComponent: Loading,
 });
-const AsyncNoMatch = importedComponent(() => import(/* webpackChunkName:'NoMatch' */ "./NoMatch.jsx"), {
+const AsyncNoMatch = importedComponent(() => import(/* webpackChunkName:'NoMatch' */ "./NoMatch"), {
   LoadingComponent: Loading,
 });
 

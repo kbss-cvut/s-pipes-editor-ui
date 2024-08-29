@@ -1,7 +1,7 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
-import { Rest } from "./rest/Rest.jsx";
-import { ICONS_MAP } from "./dagre/DagreIcons.jsx";
+import { Rest } from "./rest/Rest";
+import { ICONS_MAP } from "./dagre/DagreIcons";
 
 class ModuleTypesSelection extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from "react";
-import Spinner from "./spinner/Spinner.jsx";
-import { DelayRender } from "./DelayRender.jsx";
+import Spinner from "./spinner/Spinner";
+import { DelayRender } from "./DelayRender";
 
 const Loading = DelayRender(Spinner, 0);
 

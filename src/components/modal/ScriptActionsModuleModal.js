@@ -14,12 +14,12 @@ import {
   SCRIPT_PATH,
   START_DATE_UNIX,
   TRANSFORMATION,
-} from "../rest/Rest.jsx";
+} from "../rest/Rest";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
-import Layout from "../Layout.jsx";
+import Layout from "../Layout";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {
