@@ -22,6 +22,7 @@ export default defineConfig({
   define: {
     "process.env": process.env,
   },
+  envPrefix: "S_PIPES_",
   resolve: {
     mainFields: [],
   },
