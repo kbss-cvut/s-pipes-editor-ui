@@ -19,7 +19,7 @@ class ModuleTypesSelection extends React.Component {
           key: r["@id"],
           text: r["http://www.w3.org/2000/01/rdf-schema#label"],
           value: r["@id"],
-          image: { avatar: true, src: "/public/icons/" + icon },
+          image: { avatar: true, src: "/icons/" + icon },
         };
       });
       this.setState({

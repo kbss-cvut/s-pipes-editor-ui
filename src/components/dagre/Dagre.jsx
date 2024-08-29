@@ -180,7 +180,7 @@ class Dagre extends React.Component {
             input: n[INPUT_PARAMETER],
             output: n[OUTPUT_PARAMETER],
             variables: n[MODULE_VARIABLES],
-            icon: "/public/icons/" + icon,
+            icon: "/icons/" + icon,
             menu: true,
             scriptPath: n[SCRIPT_PATH],
             parent: n[GROUP],

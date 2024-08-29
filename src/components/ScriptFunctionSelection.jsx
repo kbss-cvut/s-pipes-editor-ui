@@ -18,7 +18,7 @@ class ScriptFunctionSelection extends React.Component {
           key: r[FUNCTION],
           text: r[FUNCTION_NAME],
           value: r[FUNCTION],
-          image: { avatar: true, src: "/public/icons/fire-extinguisher.png" },
+          image: { avatar: true, src: "/icons/fire-extinguisher.png" },
         };
       });
       this.setState({
