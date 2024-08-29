@@ -16,20 +16,17 @@ export default defineConfig({
       include: ["websocket", "tty", "http"],
     }),
   ],
+  build: {
+    sourcemap: true,
+  },
   define: {
     "process.env": process.env,
   },
   resolve: {
     mainFields: [],
   },
-
   server: {
     proxy: {
-      "/public/icons": {
-        target: "http://localhost:3000",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/public\/icons/, "/public/icons"),
-      },
       "/rest": {
         target: "http://localhost:18115/og_spipes",
         ws: true,
