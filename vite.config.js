@@ -25,6 +25,9 @@ export default defineConfig({
   envPrefix: "S_PIPES_",
   resolve: {
     mainFields: [],
+    alias: {
+      "@config": "/src/config",
+    },
   },
   server: {
     proxy: {

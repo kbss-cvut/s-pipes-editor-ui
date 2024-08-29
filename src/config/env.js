@@ -40,3 +40,5 @@ export const getEnv = (name, defaultValue) => {
 
   throw new Error(`Missing environment variable: ${name}`);
 };
+
+export const APP_TITLE = getEnv("APP_TITLE", "SPipes Editor");
