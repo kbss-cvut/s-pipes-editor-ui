@@ -52,7 +52,7 @@ class SFormsModal extends React.Component {
   handleSubmit() {
     let form = this.state.selectedForm;
     form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] =
-      this.refForm.current.context.getFormQuestionsData();
+      this.refForm.current.getFormQuestionsData();
 
     this.setState({ isLoading: true, isLoaded: false });
     Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
