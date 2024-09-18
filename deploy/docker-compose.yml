@@ -14,7 +14,7 @@ services:
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: "/etc/nginx"
       APP_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
-      SERVICE_URL: "${SPIPES_EDITOR_REST:-http://s-pipes-editor-rest:18115}"
+      SPIPES_EDITOR_REST_SERVICE_URL: "${SPIPES_EDITOR_REST:-http://s-pipes-editor-rest:18115}"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
       - ./nginx/error.html:/usr/share/nginx/html/error.html:ro
