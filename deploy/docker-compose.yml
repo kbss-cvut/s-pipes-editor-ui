@@ -53,7 +53,7 @@ services:
 
   db-server:
     build:
-      context: ./deploy/db-server
+      context: db-server
     expose:
       - "7200"
     volumes:
