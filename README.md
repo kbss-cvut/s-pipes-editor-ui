@@ -22,19 +22,19 @@ There are two ways to run the editor, [using docker-compose](#running-editor-usi
 
 #### Running editor using docker-compose
 To run the editor using `docker-compose`, do the following steps:
-- `cd $PROJECT_ROOT`
-- if on Windows, create `$PROJECT_ROOT/.env` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
+- `cd $PROJECT_ROOT/deploy
+- if on Windows, create `$PROJECT_ROOT/deploy/.env` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
 - `docker-compose up`
-- open the editor in browser at `http://localhost:3000`. The editor should be showing [example scripts from SPipes repository](https://github.com/kbss-cvut/s-pipes/doc/examples).
+- open the editor in browser at `http://localhost:1235`. The editor should be showing [example scripts from SPipes repository](https://github.com/kbss-cvut/s-pipes/doc/examples).
 
 #### Run editor using spe script
 
-`spe` script can be used to execute the editor from a command line by specifying one or more directories from which SPipes scripts should be loaded. Internally the script uses [docker-compose.yml](https://github.com/kbss-cvut/s-pipes-editor-ui/blob/master/docker-compose.yml) file and environment variables specified in `$PROJECT_ROOT/.env.custom-script-paths`. 
+`spe` script can be used to execute the editor from a command line by specifying one or more directories from which SPipes scripts should be loaded. Internally the script uses [docker-compose.yml](https://github.com/kbss-cvut/s-pipes-editor-ui/blob/master/docker-compose.yml) file and environment variables specified in `$PROJECT_ROOT/deploy/.env.custom-script-paths`. 
 
 To run the editor using `spe` script, do the following steps:
-- if on Windows, create `$PROJECT_ROOT/.env.custom-script-paths` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
+- if on Windows, create `$PROJECT_ROOT/deploy/.env.custom-script-paths` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
 - `$PROJECT_ROOT/bin/spe.$EXTENSION <paths-to-script-folders>`
-- open the editor in a browser at `http://localhost:3000`. The editor should show the script from folders specified in <paths-to-script-folders> and the folder $PROJECT_ROOT/../s-pipes-modules.
+- open the editor in a browser at `http://localhost:1235`. The editor should show the script from folders specified in <paths-to-script-folders> and the folder $PROJECT_ROOT/../s-pipes-modules.
 
 Use the correct spe script extension:
 - Use `spe.sh` if in bash (both linux or wsl distribution).
@@ -54,13 +54,13 @@ To make the script executable line endings should be replaced.
     - `SHARED_ROOT=/mnt/c`
 
 
-To override default configuration create `$PROJECT_ROOT/.env` and use following variables:
+To override default configuration create `$PROJECT_ROOT/deploy/.env` and use following variables:
 - `CUSTOM_SCRIPT_PATHS` -- to show different SPipes scripts (defaults to `${PROJECT_ROOT}/../s-pipes/doc/examples`).
   Use separator ";" to add multiple paths. The path must be absolute and the same as in host filesystem.
 - `SCRIPTRULES` --  to set up different rules to validate SPipes scripts
   (defaults to `${PROJECT_ROOT}/../s-pipes-editor/src/main/resources/rules`),
-- `RDF4J_SERVER_URL` -- to set up different Rdf4j server (defaults to internal docker service at `http://rdf4j:8080/rdf4j-server`).
-  **Note that this variable must be consistent with variable `RDF4J_PCONFIGURL`**.
+- `RDF4J_SERVER_URL` -- to set up different Rdf4j server (defaults to internal docker service at `http://db-server:7200/`).
+    **Note that this variable must be consistent with variable `RDF4J_PCONFIGURL`**.
 - `RDF4J_REPOSITORYNAME` -- to set up different Rdf4j repository name where SPipes logs from execution are created
   (defaults to `s-pipes-hello-world`). **Note that this variable must be consistent with
   variable `RDF4J_PCONFIGURL`**.
@@ -69,7 +69,8 @@ To override default configuration create `$PROJECT_ROOT/.env` and use following 
   variables `RDF4J_SERVER_URL` and `RDF4J_REPOSITORYNAME`**.
 - `SPIPES_ENGINE` -- to set up different s-pipes engine (defaults to internal docker service `http://s-pipes-engine:8080/s-pipes/`),
 - `SPIPES_EDITOR_REST` -- to set up different s-pipes-editor backend (defaults to internal docker service `s-pipes-editor-rest:18115`).
-
+- `INTERNAL_HOST_PORT` -- to set the port number on which application will be accessible within the internal network (defaults to internal docker service `1235`)
+- `PUBLIC_ORIGIN` -- to set the base URL or domain where the application is publicly accessible.
 
 ### Building
 
@@ -95,10 +96,10 @@ $ npm run dev
 ## Development with Docker Compose
 Here is the common procedure to debug individual services of the s-pipes-editor-ui. `<service-name>` can be replaced 
 by one of the values `s-pipes-editor-ui`, `s-pipes-editor-rest` and `s-pipes-engine`. 
-1. cd to `$PROJECT_ROOT`.
-2. Run `docker-compose -f docker-compose-dev.yml up` if not running already. Otherwise, run 
-`docker-compose -f docker-compose-dev.yml start`.
-3. Stop the service which you want to develop `docker-compose -f docker-compose-dev.yml stop <service-name>` 
+1. cd to `$PROJECT_ROOT/deploy`.
+2. Run `docker-compose up` if not running already. Otherwise, run 
+`docker-compose start`.
+3. Stop the service which you want to develop `docker-compose stop <service-name>` 
 4. Start `<service-name>` in development environment
    - `s-pipes-editor-ui` - run `npm run dev`
    - `s-pipes-editor-rest` - start run/debug springboot configuration in IntelliJ IDEA
@@ -115,16 +116,16 @@ where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 ### Docker-compose
 
 You can run editor together with backend using docker orchestration. The docker-compose is composed of 4 services and can be run via `docker-compose up`:
-* [chlupnoha/s-pipes-editor-ui:latest](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-ui) - accessible on `http://localhost:3000`
-* [chlupnoha/s-pipes-editor-rest:latest](https://hub.docker.com/repository/docker/chlupnoha/s-pipes-editor-rest) - accessible on `http://localhost:18115` with [configuration options](https://github.com/kbss-cvut/s-pipes-editor#dockerization)
-* [chlupnoha/spipes-engine:latest](https://hub.docker.com/repository/docker/chlupnoha/spipes-engine) - accessible on `http://localhost:8081` with [configuration options](https://github.com/kbss-cvut/s-pipes#dockerization) 
-* [eclipse/rdf4j-workbench:amd64-3.5.0](https://hub.docker.com/r/eclipse/rdf4j-workbench) - accessible on `http://localhost:8080/rdf4j-workbench`
+* [kbss-cvut/s-pipes-editor-ui:latest](https://ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor-ui:latest) - accessible on `http://localhost:1235`
+* [kbss-cvut/s-pipes-editor-rest:latest](https://ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest) - accessible on `http://localhost:1235/rest`
+* [kbss-cvut/spipes-engine:latest](https://ghcr.io/kbss-cvut/s-pipes-engine/s-pipes-engine:latest) - accessible on `http://localhost:1235/services/s-pipes`
+* [graphdb](./deploy/db-server) - accessible on `http://localhost:1235/services/db-server`
 
 **Required manual steps:** 
 * s-pipes-engine
-    * The service does not automatically create the repository in RDF4J, so manual creation of a repository is required (after running `docker-compose up`).
-      * First open the RDF4J Workbench: `http://localhost:<port>/rdf4j-workbench` where `<port>` is the RDF4J service port specified in `docker-compose.yml`.
-      * Then follow these instructions: [Creating a Repository](https://rdf4j.org/documentation/tools/server-workbench/#:~:text=for%20the%20repository.-,Creating%20a%20Repository,-Click%20on%20%E2%80%9CNew) (For repository type use for example Native Store.)
+    * The service does not automatically create the repository in GraphDB, so manual creation of a repository is required (after running `docker-compose up`).
+      * First open the GraphDB Workbench: `http://localhost:<INTERNAL_HOST_PORT>/services/db-server/repository` where `<INTERNAL_HOST_PORT>` is the port specified in `.env`.
+      * Then follow these [instructions](https://graphdb.ontotext.com/documentation/10.0/creating-a-repository.html).
     * The logging configuration for RDF4j is hardcoded in the image, but it could override via `_pConfigURL` param. However, it is not a convenient format to work. Also both servies must to share volume or the config has to be exposed.
 
 * Notes

@@ -11,7 +11,7 @@ WORKDIR /app
 # will be cached unless changes to one of those two files
 # are made.
 COPY package.json package-lock.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 # Copy the main application
 COPY ./ /app/
@@ -33,12 +33,12 @@ COPY --from=build /app/dist /var/www
 COPY ./public /var/www/public
 
 # Copy our custom nginx config
-COPY nginx.conf /etc/nginx/nginx.conf.template
+COPY deploy/.docker/nginx.conf /etc/nginx/nginx.conf.template
 
 # Expose port 80 to the Docker host, so we can access it
 # from the outside.
 EXPOSE 80
 
-COPY docker-entrypoint.sh /
+COPY deploy/.docker/docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
