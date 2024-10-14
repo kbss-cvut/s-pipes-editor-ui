@@ -23,7 +23,6 @@ import { ICONS_MAP } from "./DagreIcons";
 import ScriptFunctionSelection from "../ScriptFunctionSelection";
 import { Button } from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 import MoveModuleModal from "../modal/MoveModuleModal";
 import ScriptOntologyModal from "../modal/ScriptOntologyModal";
 import ScriptExecutionModal from "../modal/ScriptExecutionModal";
@@ -57,10 +56,6 @@ const rankDirOptions = [
   { text: "LeftRight", key: "LR", value: "LR" },
   { text: "TopBottom", key: "TB", value: "TB" },
 ];
-
-const websocketURL = new URL("/rest/notifications", window.location.href);
-websocketURL.protocol = websocketURL.protocol.replace("http", "ws");
-const client = new W3CWebSocket(websocketURL);
 
 const cyLayout = (rank) => {
   return {
@@ -122,7 +117,6 @@ class Dagre extends React.Component {
     cytoscape.use(navigator);
     cytoscape.use(expandCollapse);
     cytoscape.warnings(false);
-    this._keepAlive = this._keepAlive.bind(this);
     this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
     this.handleRenderChange = this.handleRenderChange.bind(this);
     this.handleValidateReport = this.handleValidateReport.bind(this);
@@ -140,16 +134,6 @@ class Dagre extends React.Component {
         });
       });
     });
-  }
-
-  //prevent session timeout
-  _keepAlive(timeout = 20000) {
-    if (client.readyState === client.OPEN) {
-      client.send("");
-    }
-    setTimeout(() => {
-      this._keepAlive(20000);
-    }, timeout);
   }
 
   _addNode(n, newNodes, newGroups) {
