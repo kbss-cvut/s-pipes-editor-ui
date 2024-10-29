@@ -4,13 +4,15 @@ import { Container, Icon } from "semantic-ui-react";
 import { Nav, Navbar } from "react-bootstrap";
 import NavbarMenu from "./NavbarMenu";
 
+import { Outlet } from "react-router-dom";
+
 const Layout = ({ children }) => {
   return (
     <div>
       <NavbarMenu />
-
-      <Container>{children}</Container>
-
+      <Container>
+        <Outlet />
+      </Container>
       <div className="fixed-bottom">
         <Navbar color="dark">
           <Container>
