@@ -15,7 +15,6 @@ import {
   MODULE_VARIABLE_VALUE,
 } from "../rest/Rest";
 import { faDownload, faMugHot } from "@fortawesome/free-solid-svg-icons";
-import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ScriptOntologyModal extends React.Component {
@@ -96,16 +95,6 @@ class ScriptOntologyModal extends React.Component {
                       </td>
                       <td>{data[MODULE_EXECUTION_DURATION]}ms</td>
                       {/*<td><Moment unix format="DD.MM.YYYY">{data[MODULE_EXECUTION_START_DATE]/1000}</Moment></td>*/}
-                      <td>
-                        <Moment unix format="HH:mm:ss">
-                          {data[MODULE_EXECUTION_START_DATE] / 1000}
-                        </Moment>
-                      </td>
-                      <td>
-                        <Moment unix format="HH:mm:ss">
-                          {data[MODULE_EXECUTION_FINISH_DATE] / 1000}
-                        </Moment>
-                      </td>
                       <td>
                         {data[MODULE_INPUT_PATH].map((d, k) => {
                           return (

@@ -45,7 +45,6 @@
     "react-dom": "^18.2.0",
     "react-imported-component": "^6.5.4",
     "react-json-pretty": "^2.2.0",
-    "react-moment": "^1.1.1",
     "react-router-dom": "^5.1.2",
     "react-spring": "^8.0.27",
     "react-treebeard": "^3.2.4",
