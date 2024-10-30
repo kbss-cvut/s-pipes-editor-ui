@@ -1,7 +1,7 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
-import { FUNCTION, FUNCTION_NAME, Rest } from "./rest/Rest";
-import { ICONS_MAP } from "./dagre/DagreIcons";
+import { Rest } from "../api/Rest.jsx";
+import * as Vocabulary from "../vocabularies/Vocabulary.js";
 
 class ScriptFunctionSelection extends React.Component {
   constructor(props) {
@@ -15,9 +15,9 @@ class ScriptFunctionSelection extends React.Component {
     Rest.getModulesFunctions(this.props.scriptPath).then((res) => {
       const options = res.map((r) => {
         return {
-          key: r[FUNCTION],
-          text: r[FUNCTION_NAME],
-          value: r[FUNCTION],
+          key: r[Vocabulary.FUNCTION],
+          text: r[Vocabulary.FUNCTION_NAME],
+          value: r[Vocabulary.FUNCTION],
           image: { avatar: true, src: "/icons/fire-extinguisher.png" },
         };
       });

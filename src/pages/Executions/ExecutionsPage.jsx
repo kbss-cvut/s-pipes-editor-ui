@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  EXECUTION_DURATION,
-  FINISH_DATE_UNIX,
-  Rest,
-  START_DATE_UNIX,
-  TRANSFORMATION,
-} from "../../components/rest/Rest.jsx";
+import { Rest } from "../../api/Rest.jsx";
+import * as Vocabulary from "../../vocabularies/Vocabulary.js";
 import {
   Table,
   TableBody,
@@ -87,14 +80,14 @@ const ExecutionsPage = () => {
                     <TableCell align="center">
                       <AccessTimeIcon />
                     </TableCell>
-                    <TableCell>{data[DISPLAY_NAME]}</TableCell>
-                    <TableCell>{data[START_DATE_UNIX] || "N/A"}</TableCell>
-                    <TableCell>{data[FINISH_DATE_UNIX] || "N/A"}</TableCell>
-                    <TableCell>{data[EXECUTION_DURATION]} ms</TableCell>
+                    <TableCell>{data[Vocabulary.DISPLAY_NAME]}</TableCell>
+                    <TableCell>{data[Vocabulary.START_DATE_UNIX] || "N/A"}</TableCell>
+                    <TableCell>{data[Vocabulary.FINISH_DATE_UNIX] || "N/A"}</TableCell>
+                    <TableCell>{data[Vocabulary.EXECUTION_DURATION]} ms</TableCell>
                     <TableCell align="center">
                       <IconButton
                         component={Link}
-                        to={`/script?file=${data[ABSOLUTE_PATH]}&transformation=${data[TRANSFORMATION]}`}
+                        to={`/script?file=${data[Vocabulary.ABSOLUTE_PATH]}&transformation=${data[Vocabulary.TRANSFORMATION]}`}
                       >
                         <EditIcon />
                       </IconButton>

@@ -1,20 +1,8 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  ERROR_MESSAGE,
-  EXECUTION_DURATION,
-  FINISH_DATE_UNIX,
-  MODULE_URI,
-  ONTOLOGY_URI,
-  Rest,
-  RULE_COMMENT,
-  SCRIPT_PATH,
-  START_DATE_UNIX,
-  TRANSFORMATION,
-} from "../rest/Rest";
+import { Rest } from "../../api/Rest.jsx";
+import * as Vocabulary from "../../vocabularies/Vocabulary.js";
 
 class MoveModuleModal extends React.Component {
   constructor(props) {
@@ -87,13 +75,13 @@ class MoveModuleModal extends React.Component {
                 {this.state.ontologies.map((data, key) => {
                   return (
                     <Row key={key}>
-                      <Col>{data[ONTOLOGY_URI]}</Col>
-                      <Col>{data[SCRIPT_PATH].replace(/^.*[\\\/]/, "")}</Col>
+                      <Col>{data[Vocabulary.ONTOLOGY_URI]}</Col>
+                      <Col>{data[Vocabulary.SCRIPT_PATH].replace(/^.*[\\\/]/, "")}</Col>
                       <Col>
                         <Row key={"o" + key}>
                           <Col>
                             <Alert
-                              onClick={() => this.handleModuleMove(data[SCRIPT_PATH], true)}
+                              onClick={() => this.handleModuleMove(data[Vocabulary.SCRIPT_PATH], true)}
                               variant="info"
                               style={{ cursor: "pointer" }}
                             >
@@ -102,7 +90,7 @@ class MoveModuleModal extends React.Component {
                           </Col>
                           <Col>
                             <Alert
-                              onClick={() => this.handleModuleMove(data[SCRIPT_PATH], false)}
+                              onClick={() => this.handleModuleMove(data[Vocabulary.SCRIPT_PATH], false)}
                               variant="info"
                               style={{ cursor: "pointer" }}
                             >

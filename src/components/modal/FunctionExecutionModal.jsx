@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button, Form, Modal } from "react-bootstrap";
-import { Rest } from "../rest/Rest";
+import { Rest } from "../../api/Rest.jsx";
 
 class FunctionExecutionModal extends React.Component {
   constructor(props) {

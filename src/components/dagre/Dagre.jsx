@@ -6,15 +6,14 @@ import cxtmenu from "cytoscape-cxtmenu";
 import popper from "cytoscape-popper";
 import navigator from "cytoscape-navigator";
 import expandCollapse from "cytoscape-expand-collapse";
+import { Rest } from "../../api/Rest.jsx";
 import {
   MODULE_URI,
   MODULE_VARIABLE_NAME,
   MODULE_VARIABLE_VALUE,
   MODULE_VARIABLES,
-  Rest,
   SCRIPT_PATH,
-} from "../rest/Rest";
-
+} from "../../vocabularies/Vocabulary.js";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
 import ScriptInputOutputModal from "../sform/ScriptInputOutputModal";

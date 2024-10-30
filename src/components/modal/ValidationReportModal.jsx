@@ -1,21 +1,7 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  ERROR_MESSAGE,
-  EXECUTION_DURATION,
-  FINISH_DATE_UNIX,
-  MODULE_URI,
-  Rest,
-  RULE_COMMENT,
-  START_DATE_UNIX,
-  TRANSFORMATION,
-} from "../rest/Rest";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import * as Vocabulary from "../../vocabularies/Vocabulary.js";
 
 class FunctionExecutionModal extends React.Component {
   constructor(props) {
@@ -85,18 +71,18 @@ class FunctionExecutionModal extends React.Component {
                     <Row key={key}>
                       <Col>
                         <Alert
-                          onClick={() => this.handleNodeZoom(data[MODULE_URI])}
+                          onClick={() => this.handleNodeZoom(data[Vocabulary.MODULE_URI])}
                           variant="info"
                           style={{ cursor: "pointer" }}
                         >
-                          {data[MODULE_URI]}
+                          {data[Vocabulary.MODULE_URI]}
                         </Alert>
                       </Col>
                       <Col>
-                        <Alert variant="info">{data[RULE_COMMENT]}</Alert>
+                        <Alert variant="info">{data[Vocabulary.RULE_COMMENT]}</Alert>
                       </Col>
                       <Col>
-                        <Alert variant="danger">{data[ERROR_MESSAGE]}</Alert>
+                        <Alert variant="danger">{data[Vocabulary.ERROR_MESSAGE]}</Alert>
                       </Col>
                     </Row>
                   );
