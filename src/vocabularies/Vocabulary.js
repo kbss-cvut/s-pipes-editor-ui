@@ -3,6 +3,7 @@ export const S_PIPES_VIEW = "http://onto.fel.cvut.cz/ontologies/s-pipes-view";
 
 export const SCRIPT_DTO = `${S_PIPES}/script-dto`;
 export const QUESTION_DTO = `${S_PIPES}/question-dto`;
+export const EXECUTION_FUNCTION_DTO = `${S_PIPES}/execution-function-dto`;
 export const ROOT_QUESTION = `${S_PIPES}/has-root-question`;
 export const SCRIPT_PATH = `${S_PIPES}/has-script-path`;
 export const MODULE_DTO = `${S_PIPES}/module-dto`;
@@ -22,6 +23,8 @@ export const FINISH_DATE_UNIX = `${S_PIPES}/has-pipeline-execution-finish-date-u
 export const EXECUTION_DURATION = `${S_PIPES}/has-pipeline-execution-duration`;
 export const TRANSFORMATION = "http://onto.fel.cvut.cz/ontologies/dataset-descriptor/transformation"; // left unchanged
 export const FUNCTION = `${S_PIPES}/has-function-uri`;
+export const PARAMETER = `${S_PIPES}/has-parameter`;
+export const INPUT_PARAMETER = `${S_PIPES}/has-input-parameter`;
 export const FUNCTION_NAME = `${S_PIPES}/has-function-local-name`;
 export const ONTOLOGY_URI = `${S_PIPES}/has-ontology-uri`;
 export const SCRIPT_NAME = `${S_PIPES}/has-name`;
