@@ -101,8 +101,6 @@ class ScriptsTree extends React.Component {
     } else {
       return (
         <Fragment>
-          <h3>Scripts</h3>
-          <p>Right click on directory/file to add/remove file</p>
           <div style={styles.component}>
             <Treebeard
               data={this.state.data}
