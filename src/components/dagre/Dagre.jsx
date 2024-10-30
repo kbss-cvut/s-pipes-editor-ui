@@ -14,7 +14,7 @@ import {
   Rest,
   SCRIPT_PATH,
 } from "../rest/Rest";
-import NavbarMenu from "../NavbarMenu";
+
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
 import ScriptInputOutputModal from "../sform/ScriptInputOutputModal";
@@ -599,7 +599,6 @@ class Dagre extends React.Component {
         {this.state.isLoaded === false && (
           <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />
         )}
-        <NavbarMenu />
         <div>
           <div key={"cyKey"} style={cyStyle} id="cy" />
         </div>

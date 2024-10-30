@@ -15,10 +15,6 @@ import {
   START_DATE_UNIX,
   TRANSFORMATION,
 } from "../rest/Rest";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import Layout from "../Layout";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {

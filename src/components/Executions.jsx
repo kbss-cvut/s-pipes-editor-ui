@@ -1,6 +1,4 @@
 import React, { Fragment } from "react";
-
-import Layout from "./Layout";
 import {
   ABSOLUTE_PATH,
   DISPLAY_NAME,

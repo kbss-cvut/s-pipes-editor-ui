@@ -5,7 +5,7 @@ import Executions from "./components/Executions.jsx";
 import Scripts from "./components/Scripts.jsx";
 import Dagre from "./components/dagre/Dagre.jsx";
 import NoMatch from "./components/NoMatch.jsx";
-import Layout from "./components/Layout/Layout.jsx";
+import Layout from "./layouts/Layout.jsx";
 
 const Router = () => {
   return (
