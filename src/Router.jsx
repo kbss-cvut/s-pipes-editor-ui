@@ -4,7 +4,7 @@ import HomePage from "./pages/Home/HomePage.jsx";
 import Executions from "./components/Executions.jsx";
 import ScriptsPage from "./pages/Script/ScriptsPage.jsx";
 import Dagre from "./components/dagre/Dagre.jsx";
-import NoMatch from "./components/NoMatch.jsx";
+import NotFoundPage from "./pages/Error/NotFoundPage.jsx";
 import Layout from "./layouts/Layout.jsx";
 
 const Router = () => {
@@ -16,7 +16,7 @@ const Router = () => {
           <Route path="scripts" element={<ScriptsPage />} />
           <Route path="executions" element={<Executions />} />
           <Route path="script" element={<Dagre />} />
-          <Route path="*" element={<NoMatch />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
