@@ -18,7 +18,7 @@
   "dependencies": {
     "vite-plugin-env-compatible": "^2.0.1",
     "@vitejs/plugin-react": "^4.3.1",
-    "vite": "^5.4.2",
+    "vite": "^5.4.10",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
