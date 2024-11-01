@@ -6,15 +6,26 @@ import cxtmenu from "cytoscape-cxtmenu";
 import popper from "cytoscape-popper";
 import navigator from "cytoscape-navigator";
 import expandCollapse from "cytoscape-expand-collapse";
+import { Rest } from "../../api/Rest.jsx";
 import {
   MODULE_URI,
   MODULE_VARIABLE_NAME,
   MODULE_VARIABLE_VALUE,
   MODULE_VARIABLES,
-  Rest,
   SCRIPT_PATH,
-} from "../rest/Rest";
-import NavbarMenu from "../NavbarMenu";
+  MODULE_TYPE,
+  X_COORDINATE,
+  Y_COORDINATE,
+  EDGE,
+  SOURCE_NODE,
+  DESTINATION_NODE,
+  NODE,
+  COMPONENT,
+  INPUT_PARAMETER,
+  OUTPUT_PARAMETER,
+  GROUP,
+  LABEL,
+} from "../../vocabularies/Vocabulary.js";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";
 import ScriptInputOutputModal from "../sform/ScriptInputOutputModal";
@@ -31,24 +42,7 @@ import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "@kbss-cvut/s-forms/css";
 import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
-const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
-const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
-const X = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-x-coordinate";
-const Y = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-y-coordinate";
-const EDGE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/consists-of-edge";
-const SOURCE_NODE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-source-node";
-const DESTINATION_NODE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-destination-node";
-const NODE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/consists-of-node";
-const ICON = "http://topbraid.org/sparqlmotion#icon";
-const COMMENT = "http://www.w3.org/2000/01/rdf-schema#comment";
-const ANSWERS = "http://onto.fel.cvut.cz/ontologies/documentation/has_answer";
-const OBJECT_VALUE = "http://onto.fel.cvut.cz/ontologies/documentation/has_object_value";
-const COMPONENT = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/component";
-const FUNCTION_LOCAL_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-local-name";
-const FUNCTION_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri";
-const INPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-input-parameter";
-const OUTPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-output-parameter";
-const GROUP = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/group";
+import { useLocation } from "react-router-dom";
 
 const rankDirOptions = [
   // preset
@@ -83,10 +77,9 @@ const modalInputs = {
   errorMessage: null,
 };
 
-class Dagre extends React.Component {
+class DagrePage extends React.Component {
   constructor(props) {
     super(props);
-
     const params = new URLSearchParams(props.location.search);
     this.state = {
       isLoaded: false,
@@ -129,6 +122,7 @@ class Dagre extends React.Component {
       let result = new Map(validation.map((i) => [i[MODULE_URI], i]));
       this.setState({ validationMap: result, validationOrigin: validation });
       Rest.getScript(this.state.file, this.state.transformation).then((response) => {
+        console.log(response);
         this._processGraph(response).then(() => {
           this.renderCytoscapeElement();
         });
@@ -154,7 +148,7 @@ class Dagre extends React.Component {
         id: n["@id"],
         label: label,
         component: n[COMPONENT],
-        type: n[TYPE],
+        type: n[MODULE_TYPE],
         input: n[INPUT_PARAMETER],
         output: n[OUTPUT_PARAMETER],
         variables: n[MODULE_VARIABLES],
@@ -165,7 +159,7 @@ class Dagre extends React.Component {
         validation: this.state.validationMap.get(n["@id"]),
       },
       selectable: false,
-      position: { x: n[X], y: n[Y] },
+      position: { x: n[X_COORDINATE], y: n[Y_COORDINATE] },
     });
   }
 
@@ -176,16 +170,16 @@ class Dagre extends React.Component {
       const newGroups = new Set(this.state.groups);
 
       data[NODE].forEach((n) => {
-        if (n[TYPE] !== undefined) {
+        if (n[MODULE_TYPE] !== undefined) {
           this._addNode(n, newNodes, newGroups);
         }
       });
 
       data[EDGE].forEach((e) => {
-        if (e[SOURCE_NODE][TYPE] !== undefined) {
+        if (e[SOURCE_NODE][MODULE_TYPE] !== undefined) {
           this._addNode(e[SOURCE_NODE], newNodes, newGroups);
         }
-        if (e[DESTINATION_NODE][TYPE] !== undefined) {
+        if (e[DESTINATION_NODE][MODULE_TYPE] !== undefined) {
           this._addNode(e[DESTINATION_NODE], newNodes, newGroups);
         }
       });
@@ -599,7 +593,6 @@ class Dagre extends React.Component {
         {this.state.isLoaded === false && (
           <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />
         )}
-        <NavbarMenu />
         <div>
           <div key={"cyKey"} style={cyStyle} id="cy" />
         </div>
@@ -730,5 +723,10 @@ class Dagre extends React.Component {
     );
   }
 }
+
+const Dagre = (props) => {
+  const location = useLocation();
+  return <DagrePage {...props} location={location} />;
+};
 
 export default Dagre;

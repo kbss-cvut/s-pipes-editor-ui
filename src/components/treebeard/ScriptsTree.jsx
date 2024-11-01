@@ -4,8 +4,7 @@ import { includes } from "lodash";
 import styles from "./styles";
 import Header from "./Header";
 import { Treebeard, decorators } from "react-treebeard";
-import { Rest } from "../rest/Rest";
-import { withRouter } from "react-router-dom";
+import { Rest } from "../../api/Rest.jsx";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
@@ -102,8 +101,6 @@ class ScriptsTree extends React.Component {
     } else {
       return (
         <Fragment>
-          <h3>Scripts</h3>
-          <p>Right click on directory/file to add/remove file</p>
           <div style={styles.component}>
             <Treebeard
               data={this.state.data}
@@ -127,4 +124,4 @@ class ScriptsTree extends React.Component {
   }
 }
 
-export default withRouter(ScriptsTree);
+export default ScriptsTree;

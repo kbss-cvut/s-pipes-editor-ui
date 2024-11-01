@@ -1,21 +1,10 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Modal, Row, Table } from "react-bootstrap";
-import {
-  MODULE_EXECUTION_FINISH_DATE,
-  MODULE_EXECUTION_START_DATE,
-  MODULE_EXECUTION_DURATION,
-  MODULE_URI,
-  Rest,
-  MODULE_INPUT_PATH,
-  MODULE_OUTPUT_PATH,
-  EXECUTION_VARIABLE,
-  MODULE_VARIABLES,
-  MODULE_VARIABLE_NAME,
-  MODULE_VARIABLE_VALUE,
-} from "../rest/Rest";
+import { Rest } from "../../api/Rest.jsx";
 import { faDownload, faMugHot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as Vocabulary from "../../vocabularies/Vocabulary.js";
 
 class ScriptOntologyModal extends React.Component {
   constructor(props) {
@@ -90,13 +79,16 @@ class ScriptOntologyModal extends React.Component {
                   return (
                     <tr key={key}>
                       <td>{key}</td>
-                      <td onClick={() => this.handleNodeZoom(data[MODULE_URI])} style={{ cursor: "pointer" }}>
-                        {data[MODULE_URI].replace(/^.*[\\\/]/, "")}
+                      <td
+                        onClick={() => this.handleNodeZoom(data[Vocabulary.MODULE_URI])}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {data[Vocabulary.MODULE_URI].replace(/^.*[\\\/]/, "")}
                       </td>
-                      <td>{data[MODULE_EXECUTION_DURATION]}ms</td>
+                      <td>{data[Vocabulary.MODULE_EXECUTION_DURATION]}ms</td>
                       {/*<td><Moment unix format="DD.MM.YYYY">{data[MODULE_EXECUTION_START_DATE]/1000}</Moment></td>*/}
                       <td>
-                        {data[MODULE_INPUT_PATH].map((d, k) => {
+                        {data[Vocabulary.MODULE_INPUT_PATH].map((d, k) => {
                           return (
                             <span
                               key={"input" + k}
@@ -109,7 +101,7 @@ class ScriptOntologyModal extends React.Component {
                         })}
                       </td>
                       <td>
-                        {data[MODULE_OUTPUT_PATH].map((d, k) => {
+                        {data[Vocabulary.MODULE_OUTPUT_PATH].map((d, k) => {
                           return (
                             <span
                               key={"output" + k}
@@ -122,15 +114,18 @@ class ScriptOntologyModal extends React.Component {
                         })}
                       </td>
                       <td>
-                        {data[MODULE_VARIABLES].sort((a, b) =>
-                          a[MODULE_VARIABLE_NAME].localeCompare(b[MODULE_VARIABLE_NAME]),
-                        ).map((d, k) => {
-                          return (
-                            <div key={"variable" + k}>
-                              {d[MODULE_VARIABLE_NAME]}: {d[MODULE_VARIABLE_VALUE].replace(/^.*[\\\/]/, "")}
-                            </div>
-                          );
-                        })}
+                        {data[Vocabulary.MODULE_VARIABLES]
+                          .sort((a, b) =>
+                            a[Vocabulary.MODULE_VARIABLE_NAME].localeCompare(b[Vocabulary.MODULE_VARIABLE_NAME]),
+                          )
+                          .map((d, k) => {
+                            return (
+                              <div key={"variable" + k}>
+                                {d[Vocabulary.MODULE_VARIABLE_NAME]}:{" "}
+                                {d[Vocabulary.MODULE_VARIABLE_VALUE].replace(/^.*[\\\/]/, "")}
+                              </div>
+                            );
+                          })}
                       </td>
                     </tr>
                   );
