@@ -1,9 +1,9 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
-import { FUNCTION, FUNCTION_NAME, Rest } from "./rest/Rest";
+import { Rest } from "./rest/Rest";
 import { ICONS_MAP } from "./dagre/DagreIcons";
 
-class ScriptFunctionSelection extends React.Component {
+class ModuleTypesSelection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,13 +12,14 @@ class ScriptFunctionSelection extends React.Component {
   }
 
   componentDidMount() {
-    Rest.getModulesFunctions(this.props.scriptPath).then((res) => {
+    Rest.getModulesTypes(this.props.scriptPath).then((res) => {
       const options = res.map((r) => {
+        const icon = ICONS_MAP[r["@id"]] === undefined ? "beer.png" : ICONS_MAP[r["@id"]];
         return {
-          key: r[FUNCTION],
-          text: r[FUNCTION_NAME],
-          value: r[FUNCTION],
-          image: { avatar: true, src: "/public/icons/fire-extinguisher.png" },
+          key: r["@id"],
+          text: r["http://www.w3.org/2000/01/rdf-schema#label"],
+          value: r["@id"],
+          image: { avatar: true, src: "/icons/" + icon },
         };
       });
       this.setState({
@@ -30,7 +31,7 @@ class ScriptFunctionSelection extends React.Component {
   render() {
     return (
       <Dropdown
-        text="Call function"
+        text="Add module"
         fluid
         search
         selection
@@ -38,7 +39,6 @@ class ScriptFunctionSelection extends React.Component {
         value={[null]}
         options={this.state.moduleOptions}
         onChange={(e, { value }) => {
-          console.log("value: " + value);
           this.props.onChange(value);
         }}
       />
@@ -46,4 +46,4 @@ class ScriptFunctionSelection extends React.Component {
   }
 }
 
-export default ScriptFunctionSelection;
+export default ModuleTypesSelection;

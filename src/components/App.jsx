@@ -14,7 +14,7 @@ const Executions = importedComponent(() => import(/* webpackChunkName:'Execution
 const AsyncDynamicPAge = importedComponent(() => import(/* webpackChunkName:'DynamicPage' */ "./DynamicPage"), {
   LoadingComponent: Loading,
 });
-const AsyncDagre = importedComponent(() => import(/* webpackChunkName:'Dagre' */ "./dagre/Dagre.js"), {
+const AsyncDagre = importedComponent(() => import(/* webpackChunkName:'Dagre' */ "./dagre/Dagre.jsx"), {
   LoadingComponent: Loading,
 });
 const AsyncNoMatch = importedComponent(() => import(/* webpackChunkName:'NoMatch' */ "./NoMatch"), {

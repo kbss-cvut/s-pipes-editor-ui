@@ -13,7 +13,6 @@ import {
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot, faTrash, faRunning, faPlayCircle, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
-import Moment from "react-moment";
 import { Link } from "react-router-dom";
 
 class Executions extends React.Component {
@@ -61,16 +60,6 @@ class Executions extends React.Component {
                         <FontAwesomeIcon icon={faMugHot} />
                       </td>
                       <td>{data[DISPLAY_NAME]}</td>
-                      <td>
-                        <Moment unix format="DD.MM.YYYY - HH:mm:ss">
-                          {data[START_DATE_UNIX] / 1000}
-                        </Moment>
-                      </td>
-                      <td>
-                        <Moment unix format="DD.MM.YYYY - HH:mm:ss">
-                          {data[FINISH_DATE_UNIX] / 1000}
-                        </Moment>
-                      </td>
                       <td>{data[EXECUTION_DURATION]}ms</td>
                       <td>
                         <Container>

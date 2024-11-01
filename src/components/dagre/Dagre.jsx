@@ -23,7 +23,6 @@ import { ICONS_MAP } from "./DagreIcons";
 import ScriptFunctionSelection from "../ScriptFunctionSelection";
 import { Button } from "react-bootstrap";
 import ValidationReportModal from "../modal/ValidationReportModal";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 import MoveModuleModal from "../modal/MoveModuleModal";
 import ScriptOntologyModal from "../modal/ScriptOntologyModal";
 import ScriptExecutionModal from "../modal/ScriptExecutionModal";
@@ -57,10 +56,6 @@ const rankDirOptions = [
   { text: "LeftRight", key: "LR", value: "LR" },
   { text: "TopBottom", key: "TB", value: "TB" },
 ];
-
-const websocketURL = new URL("/rest/notifications", window.location.href);
-websocketURL.protocol = websocketURL.protocol.replace("http", "ws");
-const client = new W3CWebSocket(websocketURL);
 
 const cyLayout = (rank) => {
   return {
@@ -122,7 +117,6 @@ class Dagre extends React.Component {
     cytoscape.use(navigator);
     cytoscape.use(expandCollapse);
     cytoscape.warnings(false);
-    this._keepAlive = this._keepAlive.bind(this);
     this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
     this.handleRenderChange = this.handleRenderChange.bind(this);
     this.handleValidateReport = this.handleValidateReport.bind(this);
@@ -135,94 +129,88 @@ class Dagre extends React.Component {
       let result = new Map(validation.map((i) => [i[MODULE_URI], i]));
       this.setState({ validationMap: result, validationOrigin: validation });
       Rest.getScript(this.state.file, this.state.transformation).then((response) => {
-        this._processGraph(response);
-        this.renderCytoscapeElement();
+        this._processGraph(response).then(() => {
+          this.renderCytoscapeElement();
+        });
       });
     });
   }
 
-  //prevent session timeout
-  _keepAlive(timeout = 20000) {
-    if (client.readyState === client.OPEN) {
-      client.send("");
-    }
-    setTimeout(() => {
-      this._keepAlive(20000);
-    }, timeout);
-  }
-
-  _addNode(n) {
+  _addNode(n, newNodes, newGroups) {
     if (n[GROUP] !== undefined) {
-      if (!this.state.groups.has(n[GROUP])) {
-        this.state.groups.add(n[GROUP]);
-        this.setState({
-          nodes: [
-            ...this.state.nodes,
-            {
-              data: { id: n[GROUP], label: n[GROUP], input: [], output: [] },
-            },
-          ],
+      if (!newGroups.has(n[GROUP])) {
+        newGroups.add(n[GROUP]);
+        newNodes.push({
+          data: { id: n[GROUP], label: n[GROUP], input: [], output: [] },
         });
       }
     }
 
     const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
     const icon = ICONS_MAP[n[COMPONENT]] === undefined ? "beer.png" : ICONS_MAP[n[COMPONENT]];
-    this.setState({
-      nodes: [
-        ...this.state.nodes,
-        {
-          data: {
-            id: n["@id"],
-            label: label,
-            component: n[COMPONENT],
-            type: n[TYPE],
-            input: n[INPUT_PARAMETER],
-            output: n[OUTPUT_PARAMETER],
-            variables: n[MODULE_VARIABLES],
-            icon: "/public/icons/" + icon,
-            menu: true,
-            scriptPath: n[SCRIPT_PATH],
-            parent: n[GROUP],
-            validation: this.state.validationMap.get(n["@id"]),
-          },
-          selectable: false,
-          position: { x: n[X], y: n[Y] },
-        },
-      ],
+
+    newNodes.push({
+      data: {
+        id: n["@id"],
+        label: label,
+        component: n[COMPONENT],
+        type: n[TYPE],
+        input: n[INPUT_PARAMETER],
+        output: n[OUTPUT_PARAMETER],
+        variables: n[MODULE_VARIABLES],
+        icon: "/icons/" + icon,
+        menu: true,
+        scriptPath: n[SCRIPT_PATH],
+        parent: n[GROUP],
+        validation: this.state.validationMap.get(n["@id"]),
+      },
+      selectable: false,
+      position: { x: n[X], y: n[Y] },
     });
   }
 
   _processGraph(data) {
-    data[NODE].map((n) => {
-      if (n[TYPE] !== undefined) {
-        this._addNode(n);
-      }
-    });
-    data[EDGE].map((e) => {
-      if (e[SOURCE_NODE][TYPE] !== undefined) {
-        let n = e[SOURCE_NODE];
-        this._addNode(n);
-      }
-      if (e[DESTINATION_NODE][TYPE] !== undefined) {
-        let n = e[DESTINATION_NODE];
-        this._addNode(n);
-      }
-    });
-    data[EDGE].map((e) => {
-      let from = typeof e[SOURCE_NODE] === "object" ? e[SOURCE_NODE]["@id"] : e[SOURCE_NODE];
-      let to = typeof e[DESTINATION_NODE] === "object" ? e[DESTINATION_NODE]["@id"] : e[DESTINATION_NODE];
-      this.setState({
-        edges: [
-          ...this.state.edges,
-          {
-            data: { source: from, target: to, menu: true },
-            selectable: false,
-          },
-        ],
+    return new Promise((resolve) => {
+      const newNodes = [];
+      const newEdges = [];
+      const newGroups = new Set(this.state.groups);
+
+      data[NODE].forEach((n) => {
+        if (n[TYPE] !== undefined) {
+          this._addNode(n, newNodes, newGroups);
+        }
       });
+
+      data[EDGE].forEach((e) => {
+        if (e[SOURCE_NODE][TYPE] !== undefined) {
+          this._addNode(e[SOURCE_NODE], newNodes, newGroups);
+        }
+        if (e[DESTINATION_NODE][TYPE] !== undefined) {
+          this._addNode(e[DESTINATION_NODE], newNodes, newGroups);
+        }
+      });
+
+      data[EDGE].forEach((e) => {
+        let from = typeof e[SOURCE_NODE] === "object" ? e[SOURCE_NODE]["@id"] : e[SOURCE_NODE];
+        let to = typeof e[DESTINATION_NODE] === "object" ? e[DESTINATION_NODE]["@id"] : e[DESTINATION_NODE];
+        newEdges.push({
+          data: { source: from, target: to, menu: true },
+          selectable: false,
+        });
+      });
+      this.setState(
+        (prevState) => ({
+          nodes: [...prevState.nodes, ...newNodes],
+          edges: [...prevState.edges, ...newEdges],
+          groups: newGroups,
+          isLoaded: true,
+        }),
+        () => {
+          this.renderCytoscapeElement();
+          resolve();
+        },
+      );
     });
-    this.setState({ isLoaded: true });
   }
 
   handleErrorModal() {
