@@ -10,7 +10,7 @@ SPipes Editor UI is editor of [SPipes](https://github.com/kbss-cvut/s-pipes) scr
   - receive notifications if a script file changes outside the editor
   - use custom editors for specific modules (e.g., an SPARQL query editor)
   - directly edit .ttl files using a built-in editor
-- execution of the scripts
+-  script execution
   - execute scripts with specified parameters
   - browse the history of previous executions
 
