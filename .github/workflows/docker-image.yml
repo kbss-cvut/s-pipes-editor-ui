@@ -11,6 +11,8 @@ env:
   MAIN_BRANCH_NAME: master
 jobs:
   build-and-publish:
+    if: github.actor != 'dependabot[bot]'
+
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +28,6 @@ jobs:
         run: echo "${{ github.token }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
       - name: Push image
-        if: ${{ github.actor != 'dependabot[bot]' }}
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
           # Change all uppercase to lowercase
