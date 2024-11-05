@@ -24,6 +24,7 @@ import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "@kbss-cvut/s-forms/css";
 import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
+import { useLocation } from "react-router-dom";
 import {
   TYPE,
   LABEL,
@@ -77,7 +78,7 @@ const modalInputs = {
   errorMessage: null,
 };
 
-class Dagre extends React.Component {
+class DagrePage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -724,5 +725,10 @@ class Dagre extends React.Component {
     );
   }
 }
+
+const Dagre = () => {
+  const location = useLocation();
+  return <DagrePage location={location} />;
+};
 
 export default Dagre;
