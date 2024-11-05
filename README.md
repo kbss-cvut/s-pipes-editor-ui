@@ -1,18 +1,18 @@
 # SPipes Editor UI
 
 SPipes Editor UI is editor of [SPipes](https://github.com/kbss-cvut/s-pipes) scripts with following features:
-- visualization of the scripts
-  - exploration of the related filesystem structure where scripts are located
-  - represent the pipelines as graphs
-  - collapse/expand groups of nodes based on the source file they come from
-  - automatic layout of graph nodes
-- modification of the scripts
-  - notification if script file changes outside of the editor
-  - custom editors for specific modules (e.g. SPARQL query editor)
-  - editor to edit ttl directly
+- script visualization
+  - browse the related filesystem structure where the scripts are stored
+  - represent pipelines as interactive graphs
+  - collapse/expand groups of nodes based on the source file
+  - automatically layout graph nodes
+- script modification
+  - receive notifications if a script file changes outside the editor
+  - use custom editors for specific modules (e.g., an SPARQL query editor)
+  - directly edit .ttl files using a built-in editor
 - execution of the scripts
-  - execute scripts with parameters
-  - explore the history of executions
+  - execute scripts with specified parameters
+  - browse the history of previous executions
 
 We will use `$PROJECT_ROOT` as the root directory of this project, i.e., the directory where this README is located. Similarly, we will define:
 - `$SPIPES_EDITOR_ROOT` -- root folder of cloned repository [s-pipes-editor](https://github.com/kbss-cvut/s-pipes-editor)
