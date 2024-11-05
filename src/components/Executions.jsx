@@ -27,7 +27,7 @@ class Executions extends React.Component {
       return <h3>Loading</h3>;
     } else {
       return (
-        <Layout>
+        <>
           <h3>Executions</h3>
           <Table striped bordered hover>
             <thead>
@@ -81,7 +81,7 @@ class Executions extends React.Component {
                 })}
             </tbody>
           </Table>
-        </Layout>
+        </>
       );
     }
   }
