@@ -8,11 +8,11 @@ import {
   EXECUTION_DURATION,
   FINISH_DATE_UNIX,
   MODULE_URI,
-  Rest,
   RULE_COMMENT,
   START_DATE_UNIX,
   TRANSFORMATION,
-} from "../rest/Rest";
+} from "../../constants/Vocabulary.js";
+import Rest from "../rest/Rest.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";

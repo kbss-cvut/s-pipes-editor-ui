@@ -4,7 +4,7 @@ import { includes } from "lodash";
 import styles from "./styles";
 import Header from "./Header";
 import { Treebeard, decorators } from "react-treebeard";
-import { Rest } from "../rest/Rest";
+import Rest from "../rest/Rest";
 import { withRouter } from "react-router-dom";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 import Loading from "../Loading";

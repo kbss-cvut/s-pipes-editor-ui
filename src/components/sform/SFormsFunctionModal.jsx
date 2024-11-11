@@ -2,7 +2,7 @@ import React from "react";
 import SForms from "@kbss-cvut/s-forms";
 
 import { Button, Modal } from "react-bootstrap";
-import { Rest } from "../rest/Rest";
+import Rest from "../rest/Rest";
 import "@triply/yasgui/build/yasgui.min.css";
 import ErrorModal from "../modal/ErrorModal";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
