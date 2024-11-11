@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 
 class ErrorModal extends React.Component {
   constructor(props) {

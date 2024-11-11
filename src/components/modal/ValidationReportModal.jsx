@@ -1,21 +1,7 @@
 import React from "react";
 
-import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  ERROR_MESSAGE,
-  EXECUTION_DURATION,
-  FINISH_DATE_UNIX,
-  MODULE_URI,
-  RULE_COMMENT,
-  START_DATE_UNIX,
-  TRANSFORMATION,
-} from "../../constants/Vocabulary.js";
-import Rest from "../rest/Rest.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Alert, Button, Col, Container, Modal, Row } from "react-bootstrap";
+import { ERROR_MESSAGE, MODULE_URI, RULE_COMMENT } from "../../constants/Vocabulary.js";
 
 class FunctionExecutionModal extends React.Component {
   constructor(props) {
