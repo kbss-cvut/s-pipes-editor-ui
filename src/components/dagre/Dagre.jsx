@@ -6,13 +6,6 @@ import cxtmenu from "cytoscape-cxtmenu";
 import popper from "cytoscape-popper";
 import navigator from "cytoscape-navigator";
 import expandCollapse from "cytoscape-expand-collapse";
-import {
-  MODULE_URI,
-  MODULE_VARIABLE_NAME,
-  MODULE_VARIABLE_VALUE,
-  MODULE_VARIABLES,
-  SCRIPT_PATH,
-} from "../../constants/Vocabulary.js";
 import Rest from "../rest/Rest.jsx";
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
@@ -31,24 +24,31 @@ import SFormsFunctionModal from "../sform/SFormsFunctionModal";
 import "@kbss-cvut/s-forms/css";
 import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
-const TYPE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-module-type";
-const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
-const X = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-x-coordinate";
-const Y = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-y-coordinate";
-const EDGE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/consists-of-edge";
-const SOURCE_NODE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-source-node";
-const DESTINATION_NODE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-destination-node";
-const NODE = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/consists-of-node";
-const ICON = "http://topbraid.org/sparqlmotion#icon";
-const COMMENT = "http://www.w3.org/2000/01/rdf-schema#comment";
-const ANSWERS = "http://onto.fel.cvut.cz/ontologies/documentation/has_answer";
-const OBJECT_VALUE = "http://onto.fel.cvut.cz/ontologies/documentation/has_object_value";
-const COMPONENT = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/component";
-const FUNCTION_LOCAL_NAME = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-local-name";
-const FUNCTION_URI = "http://onto.fel.cvut.cz/ontologies/s-pipes/has-function-uri";
-const INPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-input-parameter";
-const OUTPUT_PARAMETER = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/has-output-parameter";
-const GROUP = "http://onto.fel.cvut.cz/ontologies/s-pipes-view/group";
+import {
+  TYPE,
+  LABEL,
+  X,
+  Y,
+  EDGE,
+  SOURCE_NODE,
+  DESTINATION_NODE,
+  NODE,
+  ICON,
+  COMMENT,
+  ANSWERS,
+  OBJECT_VALUE,
+  COMPONENT,
+  FUNCTION_LOCAL_NAME,
+  FUNCTION_URI,
+  INPUT_PARAMETER,
+  OUTPUT_PARAMETER,
+  GROUP,
+  MODULE_URI,
+  MODULE_VARIABLE_NAME,
+  MODULE_VARIABLE_VALUE,
+  MODULE_VARIABLES,
+  SCRIPT_PATH,
+} from "../../constants/Vocabulary.js";
 
 const rankDirOptions = [
   // preset

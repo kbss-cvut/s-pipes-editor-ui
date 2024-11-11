@@ -41,7 +41,24 @@ export const MODULE_EXECUTION_FINISH_DATE = `${S_PIPES}/has-module-execution-fin
 export const MODULE_INPUT_PATH = `${S_PIPES}/has-module-input-path`;
 export const MODULE_OUTPUT_PATH = `${S_PIPES}/has-module-output-path`;
 export const PARAMETER = `${S_PIPES}/has-parameter`;
-export const INPUT_PARAMETER = `${S_PIPES}/has-input-parameter`;
+export const FUNCTION_LOCAL_NAME = `${S_PIPES}/has-function-local-name`;
 
+export const X = `${S_PIPES_VIEW}/has-x-coordinate`;
+export const Y = `${S_PIPES_VIEW}/has-y-coordinate`;
+export const EDGE = `${S_PIPES_VIEW}/consists-of-edge`;
+export const SOURCE_NODE = `${S_PIPES_VIEW}/has-source-node`;
+export const DESTINATION_NODE = `${S_PIPES_VIEW}/has-destination-node`;
+export const NODE = `${S_PIPES_VIEW}/consists-of-node`;
+export const COMPONENT = `${S_PIPES_VIEW}/component`;
+export const OUTPUT_PARAMETER = `${S_PIPES_VIEW}/has-output-parameter`;
+export const INPUT_PARAMETER = `${S_PIPES_VIEW}/has-input-parameter`;
+export const GROUP = `${S_PIPES_VIEW}/group`;
 export const MODULE_VARIABLE_NAME = `${S_PIPES_VIEW}/has-variable-name`;
 export const MODULE_VARIABLE_VALUE = `${S_PIPES_VIEW}/has-variable-value`;
+export const TYPE = `${S_PIPES_VIEW}/has-module-type`;
+
+export const LABEL = "http://www.w3.org/2000/01/rdf-schema#label";
+export const ICON = "http://topbraid.org/sparqlmotion#icon";
+export const COMMENT = "http://www.w3.org/2000/01/rdf-schema#comment";
+export const ANSWERS = "http://onto.fel.cvut.cz/ontologies/documentation/has_answer";
+export const OBJECT_VALUE = "http://onto.fel.cvut.cz/ontologies/documentation/has_object_value";
