@@ -6,14 +6,13 @@ import {
   MODULE_EXECUTION_START_DATE,
   MODULE_EXECUTION_DURATION,
   MODULE_URI,
-  Rest,
   MODULE_INPUT_PATH,
   MODULE_OUTPUT_PATH,
   EXECUTION_VARIABLE,
   MODULE_VARIABLES,
   MODULE_VARIABLE_NAME,
   MODULE_VARIABLE_VALUE,
-} from "../rest/Rest";
+} from "../../constants/Vocabulary.js";
 import { faDownload, faMugHot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

@@ -11,9 +11,9 @@ import {
   MODULE_VARIABLE_NAME,
   MODULE_VARIABLE_VALUE,
   MODULE_VARIABLES,
-  Rest,
   SCRIPT_PATH,
-} from "../rest/Rest";
+} from "../../constants/Vocabulary.js";
+import Rest from "../rest/Rest.jsx";
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";

@@ -6,10 +6,10 @@ import {
   DISPLAY_NAME,
   EXECUTION_DURATION,
   FINISH_DATE_UNIX,
-  Rest,
   START_DATE_UNIX,
   TRANSFORMATION,
-} from "./rest/Rest";
+} from "../constants/Vocabulary.js";
+import Rest from "./rest/Rest.jsx";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot, faTrash, faRunning, faPlayCircle, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
