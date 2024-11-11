@@ -1,24 +1,7 @@
 import React from "react";
 
-import { Alert, Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  ERROR_MESSAGE,
-  EXECUTION_DURATION,
-  FINISH_DATE_UNIX,
-  MODULE_URI,
-  ONTOLOGY_URI,
-  Rest,
-  RULE_COMMENT,
-  SCRIPT_PATH,
-  START_DATE_UNIX,
-  TRANSFORMATION,
-} from "../rest/Rest";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import Layout from "../Layout";
+import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Rest } from "../rest/Rest";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {

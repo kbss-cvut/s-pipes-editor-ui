@@ -1,5 +1,3 @@
-import React from "react";
-
 //TODO - refactor to separate
 export const SCRIPT_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/script-dto";
 export const QUESTION_DTO = "http://onto.fel.cvut.cz/ontologies/s-pipes/question-dto";

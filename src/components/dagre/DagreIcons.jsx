@@ -1,5 +1,3 @@
-import React from "react";
-
 export const ICONS_MAP = {
   "http://onto.fel.cvut.cz/ontologies/lib/module/improve-spo-with-marginals": "battery.png",
   "http://onto.fel.cvut.cz/ontologies/lib/module/import-e5x": "angle-up.png",

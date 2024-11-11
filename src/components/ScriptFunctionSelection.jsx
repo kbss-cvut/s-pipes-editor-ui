@@ -1,7 +1,6 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
 import { FUNCTION, FUNCTION_NAME, Rest } from "./rest/Rest";
-import { ICONS_MAP } from "./dagre/DagreIcons";
 
 class ScriptFunctionSelection extends React.Component {
   constructor(props) {
