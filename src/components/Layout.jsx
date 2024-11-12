@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Icon } from "semantic-ui-react";
-
-import { Nav, Navbar } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 import NavbarMenu from "./NavbarMenu";
 
 const Layout = ({ children }) => {

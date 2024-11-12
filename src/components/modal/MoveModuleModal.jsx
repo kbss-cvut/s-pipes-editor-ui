@@ -1,24 +1,8 @@
 import React from "react";
 
-import { Alert, Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  ERROR_MESSAGE,
-  EXECUTION_DURATION,
-  FINISH_DATE_UNIX,
-  MODULE_URI,
-  ONTOLOGY_URI,
-  RULE_COMMENT,
-  SCRIPT_PATH,
-  START_DATE_UNIX,
-  TRANSFORMATION,
-} from "../../constants/Vocabulary.js";
+import { Alert, Button, Col, Container, Modal, Row } from "react-bootstrap";
+import { ONTOLOGY_URI, SCRIPT_PATH } from "../../constants/Vocabulary.js";
 import Rest from "../rest/Rest.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faMugHot, faPlayCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import Layout from "../Layout";
 
 class MoveModuleModal extends React.Component {
   constructor(props) {

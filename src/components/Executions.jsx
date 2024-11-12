@@ -1,18 +1,10 @@
-import React, { Fragment } from "react";
-
+import React from "react";
 import Layout from "./Layout";
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  EXECUTION_DURATION,
-  FINISH_DATE_UNIX,
-  START_DATE_UNIX,
-  TRANSFORMATION,
-} from "../constants/Vocabulary.js";
+import { ABSOLUTE_PATH, DISPLAY_NAME, EXECUTION_DURATION, TRANSFORMATION } from "../constants/Vocabulary.js";
 import Rest from "./rest/Rest.jsx";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMugHot, faTrash, faRunning, faPlayCircle, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faMugHot, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 class Executions extends React.Component {

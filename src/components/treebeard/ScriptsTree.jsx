@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { includes } from "lodash";
-
 import styles from "./styles";
 import Header from "./Header";
 import { Treebeard, decorators } from "react-treebeard";

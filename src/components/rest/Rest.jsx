@@ -1,4 +1,3 @@
-import React from "react";
 import * as Vocabulary from "../../constants/Vocabulary.js";
 
 const postRequestOptions = {

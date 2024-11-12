@@ -1,19 +1,16 @@
 import React from "react";
 
-import { Alert, Button, Col, Container, Modal, Row, Table } from "react-bootstrap";
+import { Button, Modal, Table } from "react-bootstrap";
 import {
-  MODULE_EXECUTION_FINISH_DATE,
-  MODULE_EXECUTION_START_DATE,
   MODULE_EXECUTION_DURATION,
   MODULE_URI,
   MODULE_INPUT_PATH,
   MODULE_OUTPUT_PATH,
-  EXECUTION_VARIABLE,
   MODULE_VARIABLES,
   MODULE_VARIABLE_NAME,
   MODULE_VARIABLE_VALUE,
 } from "../../constants/Vocabulary.js";
-import { faDownload, faMugHot } from "@fortawesome/free-solid-svg-icons";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ScriptOntologyModal extends React.Component {
