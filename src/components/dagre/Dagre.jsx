@@ -6,7 +6,7 @@ import cxtmenu from "cytoscape-cxtmenu";
 import popper from "cytoscape-popper";
 import navigator from "cytoscape-navigator";
 import expandCollapse from "cytoscape-expand-collapse";
-import Rest from "../rest/Rest.jsx";
+import Rest from "../../rest/Rest.jsx";
 import NavbarMenu from "../NavbarMenu";
 import SFormsModal from "../sform/SFormsModal";
 import ModuleTypesSelection from "../ModuleTypesSelection";

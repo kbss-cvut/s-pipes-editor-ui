@@ -2,7 +2,7 @@ import React from "react";
 
 import { Alert, Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { ONTOLOGY_URI, SCRIPT_PATH } from "../../constants/Vocabulary.js";
-import Rest from "../rest/Rest.jsx";
+import Rest from "../../rest/Rest.jsx";
 
 class MoveModuleModal extends React.Component {
   constructor(props) {

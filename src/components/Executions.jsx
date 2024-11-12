@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "./Layout";
 import { ABSOLUTE_PATH, DISPLAY_NAME, EXECUTION_DURATION, TRANSFORMATION } from "../constants/Vocabulary.js";
-import Rest from "./rest/Rest.jsx";
+import Rest from "../rest/Rest.jsx";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
