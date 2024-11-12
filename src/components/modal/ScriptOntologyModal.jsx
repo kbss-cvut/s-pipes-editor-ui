@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import Rest from "../../rest/Rest.jsx";
 
 class ScriptOntologyModal extends React.Component {
   constructor(props) {
