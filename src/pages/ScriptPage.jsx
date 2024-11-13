@@ -43,7 +43,7 @@ import {
   MODULE_VARIABLE_VALUE,
   MODULE_VARIABLES,
   SCRIPT_PATH,
-} from "../../constants/Vocabulary.js";
+} from "../constants/vocabulary.js";
 
 const rankDirOptions = [
   // preset

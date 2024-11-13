@@ -9,7 +9,7 @@ import {
   MODULE_VARIABLES,
   MODULE_VARIABLE_NAME,
   MODULE_VARIABLE_VALUE,
-} from "../../constants/Vocabulary.js";
+} from "../../constants/vocabulary.js";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
