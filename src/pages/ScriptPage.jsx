@@ -6,24 +6,24 @@ import cxtmenu from "cytoscape-cxtmenu";
 import popper from "cytoscape-popper";
 import navigator from "cytoscape-navigator";
 import expandCollapse from "cytoscape-expand-collapse";
-import Rest from "../../rest/Rest.jsx";
-import NavbarMenu from "../../components/NavbarMenu.jsx";
-import SFormsModal from "../../components/sform/SFormsModal.jsx";
-import ModuleTypesSelection from "../../components/ModuleTypesSelection.jsx";
-import ScriptInputOutputModal from "../../components/sform/ScriptInputOutputModal.jsx";
+import Rest from "../rest/Rest.jsx";
+import NavbarMenu from "../components/NavbarMenu.jsx";
+import SFormsModal from "../components/sform/SFormsModal.jsx";
+import ModuleTypesSelection from "../components/ModuleTypesSelection.jsx";
+import ScriptInputOutputModal from "../components/sform/ScriptInputOutputModal.jsx";
 import { Dropdown } from "semantic-ui-react";
 import { ICONS_MAP } from "../constants/dagreIcons.js";
 import ScriptFunctionSelection from "../components/ScriptFunctionSelection.jsx";
 import { Button } from "react-bootstrap";
-import ValidationReportModal from "../../components/modal/ValidationReportModal.jsx";
-import MoveModuleModal from "../../components/modal/MoveModuleModal.jsx";
-import ScriptOntologyModal from "../../components/modal/ScriptOntologyModal.jsx";
-import ScriptExecutionModal from "../../components/modal/ScriptExecutionModal.jsx";
+import ValidationReportModal from "../components/modal/ValidationReportModal.jsx";
+import MoveModuleModal from "../components/modal/MoveModuleModal.jsx";
+import ScriptOntologyModal from "../components/modal/ScriptOntologyModal.jsx";
+import ScriptExecutionModal from "../components/modal/ScriptExecutionModal.jsx";
 import "@triply/yasgui/build/yasgui.min.css";
-import SFormsFunctionModal from "../../components/sform/SFormsFunctionModal.jsx";
+import SFormsFunctionModal from "../components/sform/SFormsFunctionModal.jsx";
 import "@kbss-cvut/s-forms/css";
-import Loading from "../../components/Loading.jsx";
-import ErrorModal from "../../components/modal/ErrorModal.jsx";
+import Loading from "../components/Loading.jsx";
+import ErrorModal from "../components/modal/ErrorModal.jsx";
 import { useLocation } from "react-router-dom";
 import {
   TYPE,
@@ -78,7 +78,7 @@ const modalInputs = {
   errorMessage: null,
 };
 
-class Dagre extends React.Component {
+class Script extends React.Component {
   constructor(props) {
     super(props);
 
@@ -726,9 +726,9 @@ class Dagre extends React.Component {
   }
 }
 
-const DagrePage = () => {
+const ScriptPage = () => {
   const location = useLocation();
-  return <Dagre location={location} />;
+  return <Script location={location} />;
 };
 
-export default DagrePage;
+export default ScriptPage;
