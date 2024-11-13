@@ -1,5 +1,5 @@
 import URLs from "./apiUrls.js";
-import * as Vocabulary from "../constants/Vocabulary.js";
+import * as Vocabulary from "../constants/vocabulary.js";
 import { getFetcher, postFetcher } from "./fetchers";
 
 export const Rest = {

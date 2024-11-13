@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Icon } from "semantic-ui-react";
 import { Navbar } from "react-bootstrap";
-import NavbarMenu from "./NavbarMenu";
+import NavbarMenu from "../components/NavbarMenu.jsx";
 import { Outlet } from "react-router-dom";
 
 const Layout = ({ children }) => {
