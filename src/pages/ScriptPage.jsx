@@ -14,7 +14,7 @@ import ScriptInputOutputModal from "../components/sform/ScriptInputOutputModal.j
 import { Dropdown } from "semantic-ui-react";
 import { ICONS_MAP } from "../constants/dagreIcons.js";
 import ScriptFunctionSelection from "../components/ScriptFunctionSelection.jsx";
-import { Button } from "react-bootstrap";
+import { Button, Toast, ToastContainer } from "react-bootstrap";
 import ValidationReportModal from "../components/modal/ValidationReportModal.jsx";
 import MoveModuleModal from "../components/modal/MoveModuleModal.jsx";
 import ScriptOntologyModal from "../components/modal/ScriptOntologyModal.jsx";
@@ -44,6 +44,7 @@ import {
   MODULE_VARIABLES,
   SCRIPT_PATH,
 } from "../constants/vocabulary.js";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const rankDirOptions = [
   // preset
@@ -78,6 +79,10 @@ const modalInputs = {
   errorMessage: null,
 };
 
+const websocketURL = new URL("/rest/notifications", window.location.href);
+websocketURL.protocol = websocketURL.protocol.replace("http", "ws");
+const client = new W3CWebSocket(websocketURL);
+
 class Script extends React.Component {
   constructor(props) {
     super(props);
@@ -103,6 +108,8 @@ class Script extends React.Component {
       rankDir: "TB",
       popperItems: [],
       cytoscape: null,
+      showNotification: false,
+      notificationData: null,
     };
 
     cytoscape.use(dagre);
@@ -112,10 +119,43 @@ class Script extends React.Component {
     cytoscape.use(navigator);
     cytoscape.use(expandCollapse);
     cytoscape.warnings(false);
+    this._keepAlive = this._keepAlive.bind(this);
     this.renderCytoscapeElement = this.renderCytoscapeElement.bind(this);
     this.handleRenderChange = this.handleRenderChange.bind(this);
     this.handleValidateReport = this.handleValidateReport.bind(this);
     this.handleErrorModal = this.handleErrorModal.bind(this);
+  }
+
+  componentWillMount() {
+    client.onopen = () => {
+      console.log("Open websocket");
+      client.send(this.state.file);
+      this._keepAlive(20000);
+    };
+    client.onmessage = (message) => {
+      const msg = `${message["data"]}. Page should be reloaded!`;
+      console.log(msg);
+      this.setState({
+        showNotification: true,
+        notificationData: msg,
+      });
+    };
+  }
+
+  //prevent session timeout
+  _keepAlive(timeout = 20000) {
+    if (client.readyState === client.OPEN) {
+      client.send("");
+    }
+    setTimeout(() => {
+      this._keepAlive(20000);
+    }, timeout);
+  }
+
+  componentWillUnmount() {
+    if (client.readyState === client.OPEN || client.readyState === client.CONNECTING) {
+      client.close();
+    }
   }
 
   componentDidMount() {
@@ -594,6 +634,25 @@ class Script extends React.Component {
           <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />
         )}
         <NavbarMenu />
+
+        <ToastContainer position="top-end" className="p-3" style={{ zIndex: 100 }}>
+          <Toast
+            onClose={() => {
+              this.setState({
+                showNotification: false,
+              });
+            }}
+            show={this.state.showNotification}
+            delay={5000}
+            autohide
+          >
+            <Toast.Header className="bg-warning">
+              <strong className="me-auto">Notification</strong>
+            </Toast.Header>
+            <Toast.Body>{this.state.notificationData}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+
         <div>
           <div key={"cyKey"} style={cyStyle} id="cy" />
         </div>
