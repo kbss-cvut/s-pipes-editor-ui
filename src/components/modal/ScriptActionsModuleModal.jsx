@@ -114,7 +114,7 @@ class ScriptActionsModuleModal extends React.Component {
 
               {this.state.createScriptVisible === true && (
                 <Form onSubmit={this.handleCreateScript}>
-                  <Form.Group controlId="scriptName">
+                  <Form.Group controlId="scriptName" className="mb-3">
                     <Form.Label>Script name</Form.Label>
                     <Form.Control
                       required
@@ -123,7 +123,7 @@ class ScriptActionsModuleModal extends React.Component {
                       onChange={(e) => this.setState({ scriptName: e.target.value })}
                     />
                   </Form.Group>
-                  <Form.Group controlId="ontologyURI">
+                  <Form.Group controlId="ontologyURI" className="mb-3">
                     <Form.Label>Ontology URI</Form.Label>
                     <Form.Control
                       required
