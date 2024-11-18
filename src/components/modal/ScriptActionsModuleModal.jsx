@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
+import Rest from "../../rest/Rest.jsx";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {
@@ -34,35 +35,39 @@ class ScriptActionsModuleModal extends React.Component {
     }
   }
 
-  handleCreateScript(event) {
+  async handleCreateScript(event) {
     event.preventDefault();
-    console.log(this.state.scriptPath);
-    console.log(this.state.ontologyURI);
-    console.log(this.state.scriptName);
-    Rest.createScript(this.state.ontologyURI, this.state.scriptName, this.state.scriptPath).then((response) => {
-      if (response.status === 200) {
-        this.props.handleRefresh();
-        this.setState({ isLoaded: false, modalVisible: false });
-        this.setState({ isLoaded: false, modalVisible: false, createScriptVisible: false });
-      } else {
-        response.json().then((r) => alert("Can not be created. " + r.message));
-      }
-    });
+    const { scriptPath, ontologyURI, scriptName } = this.state;
+    console.log(scriptPath, ontologyURI, scriptName);
+    try {
+      const response = await Rest.createScript(ontologyURI, scriptName, scriptPath);
+
+      this.props.handleRefresh();
+
+      this.setState({
+        isLoaded: false,
+        modalVisible: false,
+        createScriptVisible: false,
+      });
+    } catch (error) {
+      alert("An error occurred during script creation.");
+      console.error(`An error occurred during script creation: ${error}`);
+    }
   }
 
   handleEditScript() {
     window.location.href = "/script?file=" + this.state.scriptPath;
   }
 
-  handleDeleteScript() {
-    Rest.deleteScript(this.state.scriptPath).then((response) => {
-      if (response.status === 200) {
-        this.props.handleRefresh();
-        this.setState({ isLoaded: false, modalVisible: false });
-      } else {
-        alert("Can not be deleted");
-      }
-    });
+  async handleDeleteScript() {
+    try {
+      await Rest.deleteScript(this.state.scriptPath);
+      this.props.handleRefresh();
+      this.setState({ isLoaded: false, modalVisible: false });
+    } catch (error) {
+      alert("An error occurred during script deletion.");
+      console.error(`An error occurred during script deletion: ${error}`);
+    }
   }
 
   handleClose() {

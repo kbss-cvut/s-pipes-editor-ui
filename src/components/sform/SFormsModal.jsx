@@ -49,21 +49,22 @@ class SFormsModal extends React.Component {
     this.setState({ errorMessage: null });
   }
 
-  handleSubmit() {
-    let form = this.state.selectedForm;
-    form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] =
-      this.refForm.current.getFormQuestionsData();
+  async handleSubmit() {
+    try {
+      let form = this.state.selectedForm;
+      form["http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"] =
+        this.refForm.current.getFormQuestionsData();
 
-    this.setState({ isLoading: true, isLoaded: false });
-    Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath).then((response) => {
+      this.setState({ isLoading: true, isLoaded: false });
+
+      await Rest.updateScriptForm(this.state.moduleTypeUri, form, this.state.scriptPath);
+
       this.setState({ isLoading: false });
-      if (response.status === 200) {
-        window.location.reload(false);
-      } else {
-        console.log("ERROR on script update");
-        this.setState({ errorMessage: "ERROR during script execution" });
-      }
-    });
+      window.location.reload(false);
+    } catch (error) {
+      this.setState({ errorMessage: "An error occurred during script update." });
+      console.error(`An error occurred during script update: ${error}`);
+    }
   }
 
   render() {

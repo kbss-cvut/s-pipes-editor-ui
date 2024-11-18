@@ -45,7 +45,7 @@ class SFormsFunctionModal extends React.Component {
     this.setState({ errorMessage: null });
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     let data =
       this.refForm.current.getFormQuestionsData()[0][
         "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"
@@ -65,18 +65,15 @@ class SFormsFunctionModal extends React.Component {
       }
     });
 
-    Rest.executeFunction(functionUri, params.join("&")).then((response) => {
+    try {
+      const response = await Rest.executeFunction(functionUri, params.join("&"));
       console.log(response);
-      console.log(response.status);
-      if (response.status === 200) {
-        console.log(response);
-        window.location.href = "/executions";
-      } else {
-        console.log("ERROR during script execution");
-        this.setState({ errorMessage: "ERROR during script execution" });
-      }
-      this.setState({ isLoaded: false, modalVisible: false });
-    });
+      window.location.href = "/executions";
+    } catch (error) {
+      this.setState({ errorMessage: "An error occurred during script execution" });
+      console.error(`An error occurred during script execution: ${error}`);
+    }
+    this.setState({ isLoaded: false, modalVisible: false });
   }
 
   render() {
