@@ -365,15 +365,15 @@ class Script extends React.Component {
           content: '<span class="fa fa-trash fa-2x"/>',
           select: (ele) => {
             this.setState({ isLoaded: false });
-            Rest.deleteScriptNode(filepath, ele.data("id")).then((response) => {
-              this.setState({ isLoaded: true });
-              if (response.status === 204) {
+            Rest.deleteScriptNode(filepath, ele.data("id"))
+              .then(() => {
+                this.setState({ isLoaded: true });
                 ele.remove();
-              } else {
-                console.log("Node can not be deleted.");
-                this.setState({ errorMessage: "Node can not be deleted." });
-              }
-            });
+              })
+              .catch((error) => {
+                this.setState({ errorMessage: "An error occurred during node deletion." });
+                console.error(`An error occurred during node deletion: ${error}`);
+              });
           },
         },
         {
@@ -461,15 +461,15 @@ class Script extends React.Component {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
             this.setState({ isLoaded: false });
-            Rest.deleteScriptEdge(filepath, sourceNode, targetNode).then((response) => {
-              this.setState({ isLoaded: true });
-              if (response.status === 204) {
+            Rest.deleteScriptEdge(filepath, sourceNode, targetNode)
+              .then(() => {
+                this.setState({ isLoaded: true });
                 ele.remove();
-              } else {
-                console.log("Edge can not be deleted.");
-                this.setState({ errorMessage: "Edge can not be deleted." });
-              }
-            });
+              })
+              .catch((error) => {
+                this.setState({ errorMessage: "An error occurred during edge deletion." });
+                console.error(`An error occurred during edge deletion: ${error}`);
+              });
           },
         },
       ],
@@ -485,15 +485,14 @@ class Script extends React.Component {
         console.log(targetNode.data("id"));
         if (sourceNode.data("menu") !== undefined && targetNode.data("menu")) {
           this.setState({ isLoaded: false });
-          Rest.addModuleDependency(this.state.file, sourceNode.data("id"), targetNode.data("id")).then((res) => {
-            this.setState({ isLoaded: true });
-            if (res.status === 204) {
-              //TODO reload?
-            } else {
-              console.log("ERROR add edge/dependency");
-              this.setState({ errorMessage: "ERROR add edge/dependency." });
-            }
-          });
+          Rest.addModuleDependency(this.state.file, sourceNode.data("id"), targetNode.data("id"))
+            .then((res) => {
+              this.setState({ isLoaded: true });
+            })
+            .catch((error) => {
+              this.setState({ errorMessage: "An error occurred while adding edge/dependency." });
+              console.error(`An error occurred while adding edge/dependency: ${error}`);
+            });
         } else {
           this.cy.remove("edge[source='" + sourceNode.data("id") + "']");
           this.cy.remove("edge[target='" + targetNode.data("id") + "']");

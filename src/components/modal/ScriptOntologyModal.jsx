@@ -30,37 +30,35 @@ class ScriptOntologyModal extends React.Component {
     }
   }
 
-  handleRemoveOntology(ontologyURI) {
-    console.log(this.state.scriptPath + " #### " + ontologyURI);
-    Rest.removeScriptOwnOntology(this.state.scriptPath, ontologyURI).then((response) => {
-      if (response.status === 200) {
-        Rest.getScriptOwnOntology(this.state.scriptPath).then((response2) => {
-          this.setState({
-            scriptPath: this.state.scriptPath,
-            ontologies: response2,
-          });
-        });
-      } else {
-        alert(ontologyURI + " can not be deleted.");
-      }
-    });
+  async handleRemoveOntology(ontologyURI) {
+    try {
+      console.log(this.state.scriptPath + " #### " + ontologyURI);
+      await Rest.removeScriptOwnOntology(this.state.scriptPath, ontologyURI);
+      const response = await Rest.getScriptOwnOntology(this.state.scriptPath);
+      this.setState({
+        scriptPath: this.state.scriptPath,
+        ontologies: response,
+      });
+    } catch (error) {
+      alert("An error occurred while removing the ontology.");
+      console.error(`An error occurred while removing the ontology ${ontologyURI}: ${error}`);
+    }
   }
 
-  handleAddScriptOntology(event) {
-    event.preventDefault();
-    Rest.addScriptOwnOntology(this.state.scriptPath, this.state.newOntologyName).then((response) => {
-      if (response.status === 200) {
-        Rest.getScriptOwnOntology(this.state.scriptPath).then((response2) => {
-          this.setState({
-            scriptPath: this.state.scriptPath,
-            newOntologyName: null,
-            ontologies: response2,
-          });
-        });
-      } else {
-        alert(ontologyURI + " can not be deleted.");
-      }
-    });
+  async handleAddScriptOntology(event) {
+    try {
+      event.preventDefault();
+      await Rest.addScriptOwnOntology(this.state.scriptPath, this.state.newOntologyName);
+      const response = await Rest.getScriptOwnOntology(this.state.scriptPath);
+      this.setState({
+        scriptPath: this.state.scriptPath,
+        newOntologyName: null,
+        ontologies: response,
+      });
+    } catch (error) {
+      alert(`An error occurred while adding the ontology.`);
+      console.error(`An error occurred while adding the ontology: ${error}`);
+    }
   }
 
   handleClose() {

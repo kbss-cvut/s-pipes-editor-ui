@@ -35,8 +35,8 @@ class MoveModuleModal extends React.Component {
     }
   }
 
-  handleModuleMove(toScript, rename) {
-    Rest.moveModule(this.state.moduleScriptPath, toScript, this.state.moduleURI, rename);
+  async handleModuleMove(toScript, rename) {
+    await Rest.moveModule(this.state.moduleScriptPath, toScript, this.state.moduleURI, rename);
     window.location.href = "?file=" + this.state.sourceScriptPath;
   }
 

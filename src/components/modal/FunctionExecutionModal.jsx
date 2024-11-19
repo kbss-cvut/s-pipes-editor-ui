@@ -33,17 +33,17 @@ class FunctionExecutionModal extends React.Component {
     this.setState({ functionUri: false, isLoaded: false });
   }
 
-  handleSubmit() {
-    Rest.executeFunction(this.state.functionUri, this.state.params).then((response) => {
+  async handleSubmit() {
+    try {
+      const { functionUri, params } = this.state;
+      const response = await Rest.executeFunction(functionUri, params);
       console.log(response);
-      console.log(response.status);
-      if (response.status === 200) {
-        window.location.href = "/executions";
-      } else {
-        console.log("ERROR during script execution");
-      }
-      this.setState({ isLoaded: false, modalVisible: false });
-    });
+      window.location.href = "/executions";
+    } catch (error) {
+      alert("An error occurred during script execution.");
+      console.error(`An error occurred during script execution: ${error}`);
+    }
+    this.setState({ isLoaded: false, modalVisible: false });
   }
 
   render() {
