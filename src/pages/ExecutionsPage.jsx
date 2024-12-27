@@ -1,10 +1,18 @@
 import React from "react";
-import { ABSOLUTE_PATH, DISPLAY_NAME, EXECUTION_DURATION, TRANSFORMATION } from "../constants/vocabulary.js";
+import {
+  ABSOLUTE_PATH,
+  DISPLAY_NAME,
+  EXECUTION_DURATION,
+  MODULE_EXECUTION_FINISH_DATE,
+  MODULE_EXECUTION_START_DATE,
+  TRANSFORMATION,
+} from "../constants/vocabulary.js";
 import Rest from "../rest/Rest.jsx";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 class ExecutionsPage extends React.Component {
   constructor(props) {
@@ -51,6 +59,8 @@ class ExecutionsPage extends React.Component {
                         <FontAwesomeIcon icon={faMugHot} />
                       </td>
                       <td>{data[DISPLAY_NAME]}</td>
+                      <td>{dayjs(data[MODULE_EXECUTION_START_DATE]).format("HH:mm:ss")}</td>
+                      <td>{dayjs(data[MODULE_EXECUTION_FINISH_DATE]).format("HH:mm:ss")}</td>
                       <td>{data[EXECUTION_DURATION]}ms</td>
                       <td>
                         <Container>
