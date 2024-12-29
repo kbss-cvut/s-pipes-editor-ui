@@ -5,6 +5,7 @@ import {
   EXECUTION_DURATION,
   MODULE_EXECUTION_FINISH_DATE,
   MODULE_EXECUTION_START_DATE,
+  RDF4j_TRANSFORMATION_ID,
   TRANSFORMATION,
 } from "../constants/vocabulary.js";
 import Rest from "../rest/Rest.jsx";
@@ -67,10 +68,7 @@ const ExecutionsPage = () => {
                       </Col>
                       <Col
                         onClick={() => {
-                          window.open(
-                            data["http://onto.fel.cvut.cz/ontologies/s-pipes/rdf4j-transformation-id"],
-                            "_blank",
-                          );
+                          window.open(data[RDF4j_TRANSFORMATION_ID], "_blank");
                         }}
                       >
                         <FontAwesomeIcon icon={faQuestion} />
