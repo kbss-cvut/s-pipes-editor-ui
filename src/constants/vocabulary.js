@@ -40,10 +40,10 @@ export const MODULE_EXECUTION_START_DATE = `${S_PIPES}/has-module-execution-star
 export const MODULE_EXECUTION_FINISH_DATE = `${S_PIPES}/has-module-execution-finish-date-unix`;
 export const MODULE_INPUT_PATH = `${S_PIPES}/has-module-input-path`;
 export const MODULE_OUTPUT_PATH = `${S_PIPES}/has-module-output-path`;
-export const PARAMETER = `${S_PIPES}/has-parameter`;
 export const FUNCTION_LOCAL_NAME = `${S_PIPES}/has-function-local-name`;
 export const RDF4j_TRANSFORMATION_ID = `${S_PIPES}/rdf4j-transformation-id`;
 
+export const PARAMETER = `${S_PIPES_VIEW}/has-parameter`;
 export const X = `${S_PIPES_VIEW}/has-x-coordinate`;
 export const Y = `${S_PIPES_VIEW}/has-y-coordinate`;
 export const EDGE = `${S_PIPES_VIEW}/consists-of-edge`;
