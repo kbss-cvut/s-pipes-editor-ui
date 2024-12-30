@@ -34,6 +34,6 @@ done
 
 
 cd $PROJECT_DIR/deploy
-CUSTOM_SCRIPT_PATHS="$CUSTOM_SCRIPT_PATHS" docker-compose --env-file=.env.custom-script-paths up
+CUSTOM_SCRIPT_PATHS="$CUSTOM_SCRIPT_PATHS" docker-compose --env-file=.env up
 cd
 
