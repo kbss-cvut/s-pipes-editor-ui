@@ -43,10 +43,10 @@ To run the editor using `docker-compose`, do the following steps:
 
 #### Run editor using spe script
 
-`spe` script can be used to execute the editor from a command line by specifying one or more directories from which SPipes scripts should be loaded. Internally the script uses [docker-compose.yml](https://github.com/kbss-cvut/s-pipes-editor-ui/blob/master/docker-compose.yml) file and environment variables specified in `$PROJECT_ROOT/deploy/.env.custom-script-paths`. 
+`spe` script can be used to execute the editor from a command line by specifying one or more directories from which SPipes scripts should be loaded. Internally the script uses [docker-compose.yml](https://github.com/kbss-cvut/s-pipes-editor-ui/blob/master/docker-compose.yml) file and environment variables specified in `$PROJECT_ROOT/deploy/.env`. 
 
 To run the editor using `spe` script, do the following steps:
-- if on Windows, create `$PROJECT_ROOT/deploy/.env.custom-script-paths` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
+- if on Windows, create `$PROJECT_ROOT/deploy/.env` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
 - `$PROJECT_ROOT/bin/spe.$EXTENSION <paths-to-script-folders>`
 - open the editor in a browser at `http://localhost:1235`. The editor should show the script from folders specified in <paths-to-script-folders> and the folder $PROJECT_ROOT/../s-pipes-modules.
 
@@ -60,31 +60,29 @@ To make the script executable line endings should be replaced.
 
 
 #### Configuration of environment variables in Windows
-  `.env` file is used by docker compose by default. The `.env.custom-script-paths` is used by the `spe` script.
+  `.env` file is used by docker compose by default.
   - if running docker-compose.exe or spe.bat in windows  (not docker in wsl distribution) add the :
     - `SHARED_ROOT=/host_mnt/c`
     - `PWD=/host_mnt/$PROJECT_ROOT` _should be absolute path_
   - if running docker-compose or spe.sh in wsl distribution, set variables as follows:
     - `SHARED_ROOT=/mnt/c`
 
+    
+### Environment Variables
 
-To override default configuration create `$PROJECT_ROOT/deploy/.env` and use following variables:
-- `CUSTOM_SCRIPT_PATHS` -- to show different SPipes scripts (defaults to `${PROJECT_ROOT}/../s-pipes/doc/examples`).
-  Use separator ";" to add multiple paths. The path must be absolute and the same as in host filesystem.
-- `SCRIPTRULES` --  to set up different rules to validate SPipes scripts
-  (defaults to `${PROJECT_ROOT}/../s-pipes-editor/src/main/resources/rules`),
-- `RDF4J_SERVER_URL` -- to set up different Rdf4j server (defaults to internal docker service at `http://db-server:7200/`).
-    **Note that this variable must be consistent with variable `RDF4J_PCONFIGURL`**.
-- `RDF4J_REPOSITORYNAME` -- to set up different Rdf4j repository name where SPipes logs from execution are created
-  (defaults to `s-pipes-execution-log`). **Note that this variable must be consistent with
-  variable `RDF4J_PCONFIGURL`**.
-- `RDF4J_PCONFIGURL` -- to set up configuration of Rdf4j repository where SPipes logs from execution are created
-  (defaults to `$SPIPES_ROOT/doc/examples/hello-world/config.ttl`). **Note that this variable must be consistent with
-  variables `RDF4J_SERVER_URL` and `RDF4J_REPOSITORYNAME`**.
-- `SPIPES_ENGINE` -- to set up different s-pipes engine (defaults to internal docker service `http://s-pipes-engine:8080/s-pipes/`),
-- `SPIPES_EDITOR_REST` -- to set up different s-pipes-editor backend (defaults to internal docker service `s-pipes-editor-rest:18115`).
-- `INTERNAL_HOST_PORT` -- to set the port number on which application will be accessible within the internal network (defaults to internal docker service `1235`)
-- `PUBLIC_ORIGIN` -- to set the base URL or domain where the application is publicly accessible.
+To override the default configuration, create `$PROJECT_ROOT/deploy/.env` and use the following variables:
+
+| Variable               | Description                                                                                                                                     | Default Value                                                    |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| `CUSTOM_SCRIPT_PATHS`  | Specifies different SPipes scripts. Use `;` as a separator to add multiple absolute paths matching the host filesystem.                         | `${PROJECT_ROOT}/../s-pipes/doc/examples`                        |
+| `SCRIPTRULES`          | Defines rules for validating SPipes scripts.                                                                                                    | `${PROJECT_ROOT}/../s-pipes-editor/src/main/resources/rules`     |
+| `RDF4J_SERVER_URL`     | Sets the Rdf4j server URL. **Must be consistent with `RDF4J_PCONFIGURL`**.                                                                      | Internal Docker service at `http://db-server:7200/`              |
+| `RDF4J_REPOSITORYNAME` | Configures the Rdf4j repository name where SPipes logs are stored. **Must be consistent with `RDF4J_PCONFIGURL`**.                              | `s-pipes-execution-log`                                          |
+| `RDF4J_PCONFIGURL`     | Specifies the configuration of the Rdf4j repository for SPipes logs. **Must be consistent with `RDF4J_SERVER_URL` and `RDF4J_REPOSITORYNAME`**. | `$SPIPES_ROOT/doc/examples/hello-world/config.ttl`               |
+| `SPIPES_ENGINE_URL`    | Sets the SPipes engine endpoint.                                                                                                                | Internal Docker service at `http://s-pipes-engine:8080/s-pipes/` |
+| `SPIPES_EDITOR_REST`   | Configures the SPipes editor backend endpoint.                                                                                                  | Internal Docker service at `s-pipes-editor-rest:18115`           |
+| `INTERNAL_HOST_PORT`   | Defines the port number accessible within the internal network.                                                                                 | `1235`                                                           |
+| `PUBLIC_ORIGIN`        | Specifies the base URL or domain for public access.                                                                                             | None                                                             |
 
 ### Building
 
