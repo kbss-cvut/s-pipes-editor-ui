@@ -76,7 +76,7 @@ To override default configuration create `$PROJECT_ROOT/deploy/.env` and use fol
 - `RDF4J_SERVER_URL` -- to set up different Rdf4j server (defaults to internal docker service at `http://db-server:7200/`).
     **Note that this variable must be consistent with variable `RDF4J_PCONFIGURL`**.
 - `RDF4J_REPOSITORYNAME` -- to set up different Rdf4j repository name where SPipes logs from execution are created
-  (defaults to `s-pipes-hello-world`). **Note that this variable must be consistent with
+  (defaults to `s-pipes-execution-log`). **Note that this variable must be consistent with
   variable `RDF4J_PCONFIGURL`**.
 - `RDF4J_PCONFIGURL` -- to set up configuration of Rdf4j repository where SPipes logs from execution are created
   (defaults to `$SPIPES_ROOT/doc/examples/hello-world/config.ttl`). **Note that this variable must be consistent with
