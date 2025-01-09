@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   nginx:
     image: nginx:latest
@@ -19,8 +17,6 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
       - ./nginx/error.html:/usr/share/nginx/html/error.html:ro
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
   s-pipes-editor-ui:
     image: "ghcr.io/kbss-cvut/s-pipes-editor-ui/s-pipes-editor-ui:latest"

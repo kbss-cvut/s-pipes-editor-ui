@@ -1,0 +1,7 @@
+services:
+  nginx:
+    environment:
+      SPIPES_ENGINE_URL: "${SPIPES_ENGINE_URL:-http://host.docker.internal:8080}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
+
