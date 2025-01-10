@@ -22,7 +22,7 @@ We will use `$PROJECT_ROOT` as the root directory of this project, i.e., the dir
   will be visible from docker services as well as from host filesytem and paths to all files will be the same.
   Thus one can copy absolute path to a file from docker service and open it from host filesystem and other way around.
   For linux the typical value would be `/home` or `/home/$user` and for windows the typical value would be `/host_mnt` or
-  `/host_mnt/c/Users/user1/code`.
+  `/host_mnt/c/Users/user1/code`, for MacOS typical value would be `/Users` or `/Users/$user`.
   
 ### Running Editor UI
 
