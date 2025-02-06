@@ -43,7 +43,7 @@ services:
       ENGINEURL: "${SPIPES_ENGINE_URL:-http://s-pipes-engine:8080/s-pipes}/"
       RDF4J_REPOSITORYURL: "${RDF4J_SERVER_URL:-http://db-server:7200}/repositories"
       RDF4J_REPOSITORYNAME: "${RDF4J_REPOSITORYNAME:-s-pipes-execution-log}"
-      RDF4J_PCONFIGURL: "${RDF4J_PCONFIGURL:-./s-pipes-engine/config.ttl}"
+      RDF4J_PCONFIGURL: "${RDF4J_PCONFIGURL:-${PWD}/../../s-pipes-editor-ui/deploy/s-pipes-engine/config.ttl}"
     volumes:
       - /tmp:/tmp
       - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
