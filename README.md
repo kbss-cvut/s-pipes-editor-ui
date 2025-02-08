@@ -27,23 +27,23 @@ We will use `$PROJECT_ROOT` as the root directory of this project, i.e., the dir
 ### Running Editor UI
 
 Default configuration assumes that:
-- you have **at least** docker-compose v2.20.2 (due to https://github.com/docker/cli/issues/4265; earlier versions were not tested)
+- you have **at least** Docker Compose v2.20.2 (due to https://github.com/docker/cli/issues/4265; earlier versions were not tested). If you have version 1.X.X, see the migration guide https://docs.docker.com/compose/releases/migrate/.
 - all relevant projects are "git cloned" as sibling directories to `$PROJECT_ROOT` (i.e. `$SPIPES_EDITOR_ROOT=$PROJECT_ROOT/../s-pipes-editor`, $SPIPES_MODULES_ROOT=$PROJECT_ROOT/../s-pipes-modules, and `$SPIPES_ROOT=$PROJECT_ROOT/../s-pipes`). 
 
 Installing docker is summarized in [using-docker.md](./doc/using-docker.md).
 
-There are two ways to run the editor, [using docker-compose](#running-editor-using-docker-compose) and [using spe](#running-editor-using-spe-script).
+There are two ways to run the editor, [using docker compose](#running-editor-using-docker-compose) and [using spe](#running-editor-using-spe-script).
 
-#### Running editor using docker-compose
-To run the editor using `docker-compose`, do the following steps:
+#### Running editor using Docker Compose
+To run the editor using `Docker Compose`, do the following steps:
 - `cd $PROJECT_ROOT/deploy
 - if on Windows, create `$PROJECT_ROOT/deploy/.env` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
-- `docker-compose up`
+- `docker compose up`
 - open the editor in browser at `http://localhost:1235`. The editor should be showing [example scripts from SPipes repository](https://github.com/kbss-cvut/s-pipes/doc/examples).
 
 #### Run editor using spe script
 
-`spe` script can be used to execute the editor from a command line by specifying one or more directories from which SPipes scripts should be loaded. Internally the script uses [docker-compose.yml](https://github.com/kbss-cvut/s-pipes-editor-ui/blob/master/docker-compose.yml) file and environment variables specified in `$PROJECT_ROOT/deploy/.env`. 
+`spe` script can be used to execute the editor from a command line by specifying one or more directories from which SPipes scripts should be loaded. Internally the script uses [docker-compose.yml](https://github.com/kbss-cvut/s-pipes-editor-ui/blob/master/deploy/docker-compose.yml) file and environment variables specified in `$PROJECT_ROOT/deploy/.env`. 
 
 To run the editor using `spe` script, do the following steps:
 - if on Windows, create `$PROJECT_ROOT/deploy/.env` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
@@ -60,12 +60,13 @@ To make the script executable line endings should be replaced.
 
 
 #### Configuration of environment variables in Windows
-  `.env` file is used by docker compose by default.
-  - if running docker-compose.exe or spe.bat in windows  (not docker in wsl distribution) add the :
+`.env` file is used by Docker Compose by default.
+- If running `docker compose` or `spe.bat` in Windows (not in a WSL distribution), add:
     - `SHARED_ROOT=/host_mnt/c`
     - `PWD=/host_mnt/$PROJECT_ROOT` _should be absolute path_
-  - if running docker-compose or spe.sh in wsl distribution, set variables as follows:
+- If running `docker compose` or `spe.sh` in a WSL distribution, set variables as follows:
     - `SHARED_ROOT=/mnt/c`
+
 
     
 ### Environment Variables
@@ -109,9 +110,9 @@ $ npm run dev
 Here is the common procedure to debug individual services of the s-pipes-editor-ui. `<service-name>` can be replaced 
 by one of the values `s-pipes-editor-ui`, `s-pipes-editor-rest` and `s-pipes-engine`. 
 1. cd to `$PROJECT_ROOT/deploy`.
-2. Run `docker-compose up` if not running already. Otherwise, run 
-`docker-compose start`.
-3. Stop the service which you want to develop `docker-compose stop <service-name>` 
+2. Run `docker compose up` if not running already. Otherwise, run 
+`docker compose start`.
+3. Stop the service which you want to develop `docker compose stop <service-name>` 
 4. Start `<service-name>` in development environment
    - `s-pipes-editor-ui` - run `npm run dev`
    - `s-pipes-editor-rest` - start run/debug springboot configuration in IntelliJ IDEA
@@ -125,9 +126,9 @@ The docker image of SPipes Editor UI can be built by `docker build -t s-pipes-ed
 Then, SPipes Editor UI can be run as `docker run -e SERVICE_URL=<SPIPES_BACKEND_URL> -p 3000:80 s-pipes-editor-ui`   
 where <SPIPES_BACKEND_URL> denotes the URL where SPipes backend is running.
 
-### Docker-compose
+### Docker Compose
 
-You can run editor together with backend using docker orchestration. The docker-compose is composed of 4 services and can be run via `docker-compose up`:
+You can run editor together with backend using docker orchestration. The docker compose is composed of 4 services and can be run via `docker compose up`:
 * [kbss-cvut/s-pipes-editor-ui:latest](https://ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor-ui:latest) - accessible on `http://localhost:1235`
 * [kbss-cvut/s-pipes-editor-rest:latest](https://ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest) - accessible on `http://localhost:1235/rest`
 * [kbss-cvut/spipes-engine:latest](https://ghcr.io/kbss-cvut/s-pipes-engine/s-pipes-engine:latest) - accessible on `http://localhost:1235/services/s-pipes`
@@ -135,7 +136,7 @@ You can run editor together with backend using docker orchestration. The docker-
 
 **Required manual steps:** 
 * s-pipes-engine
-    * The service does not automatically create the repository in GraphDB, so manual creation of a repository is required (after running `docker-compose up`).
+    * The service does not automatically create the repository in GraphDB, so manual creation of a repository is required (after running `docker compose up`).
       * First open the GraphDB Workbench: `http://localhost:<INTERNAL_HOST_PORT>/services/db-server/repository` where `<INTERNAL_HOST_PORT>` is the port specified in `.env`.
       * Then follow these [instructions](https://graphdb.ontotext.com/documentation/10.0/creating-a-repository.html).
     * The logging configuration for RDF4j is hardcoded in the image, but it could override via `_pConfigURL` param. However, it is not a convenient format to work. Also both servies must to share volume or the config has to be exposed.
