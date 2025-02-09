@@ -35,7 +35,7 @@ Installing docker is summarized in [using-docker.md](./doc/using-docker.md).
 There are two ways to run the editor, [using docker compose](#running-editor-using-docker-compose) and [using spe](#running-editor-using-spe-script).
 
 #### Running editor using Docker Compose
-To run the editor using `Docker Compose`, do the following steps:
+To run the editor using `docker compose`, do the following steps:
 - `cd $PROJECT_ROOT/deploy
 - if on Windows, create `$PROJECT_ROOT/deploy/.env` according to [Configuration of environment variables in Windows](#configuration-of-environment-variables-in-windows)
 - `docker compose up`
