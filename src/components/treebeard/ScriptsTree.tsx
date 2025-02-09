@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { includes } from "lodash";
 
 import styles from "./styles";
@@ -9,76 +9,82 @@ import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 import Loading from "../Loading.js";
 import ErrorModal from "../modal/ErrorModal";
 
-class ScriptsTree extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      scriptPath: null,
-      displayName: null,
-      type: null,
-      errorMessage: null,
-      isLoaded: null,
-    };
-    this.handleRefresh = this.handleRefresh.bind(this);
-    this.handleErrorModal = this.handleErrorModal.bind(this);
-    this.onToggle = this.onToggle.bind(this);
-    this.onSelect = this.onSelect.bind(this);
-  }
+const ScriptsTree = () => {
+  const [data, setData] = useState([]);
+  const [cursor, setCursor] = useState(null);
+  const [scriptPath, setScriptPath] = useState(null);
+  const [displayName, setDisplayName] = useState(null);
+  const [type, setType] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  componentDidMount() {
-    Rest.getScripts().then((response) => {
-      if (response.status === 404 || response["children"] === undefined) {
-        console.log("ERROR when loading scripts! Check configuration.");
-        this.setState({ errorMessage: "ERROR when loading scripts! Check configuration." });
-      } else {
-        response["toggled"] = true;
-        if (response["children"][0] !== undefined) {
-          response["children"][0]["toggled"] = true;
+  useEffect(() => {
+    loadScripts();
+
+    const handleContextMenu = (e) => {
+      const dataId = e.target.getAttribute("data-id");
+      if (dataId !== undefined) {
+        e.preventDefault();
+        if (dataId !== "") {
+          const childrenId = e.target.getAttribute("data-children");
+          const displayName = e.target.innerText;
+          setScriptPath(dataId);
+          setDisplayName(displayName);
+          setType(childrenId);
         }
-        this.setState({ data: response });
-
-        document.addEventListener("contextmenu", (e) => {
-          let dataId = e.target.getAttribute("data-id");
-          if (dataId !== undefined) {
-            e.preventDefault();
-            if (dataId !== "") {
-              let childrenId = e.target.getAttribute("data-children");
-              let displayName = e.target.innerText;
-              this.setState({ scriptPath: dataId, displayName: displayName, type: childrenId });
-            }
-          }
-        });
       }
-    });
-  }
+    };
 
-  handleErrorModal() {
-    this.setState({ errorMessage: null });
-  }
+    document.addEventListener("contextmenu", handleContextMenu);
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
 
-  onToggle(node, toggled) {
-    const { cursor, data } = this.state;
+  const loadScripts = async () => {
+    try {
+      const response = await Rest.getScripts();
+      if (response.status === 404 || !response.children) {
+        console.error("ERROR when loading scripts! Check configuration.");
+        setErrorMessage("ERROR when loading scripts! Check configuration.");
+      } else {
+        response.toggled = true;
+        if (response.children[0]) {
+          response.children[0].toggled = true;
+        }
+        setData(response);
+        setIsLoaded(true);
+      }
+    } catch (error) {
+      console.error("Failed to load scripts", error);
+      setErrorMessage("An error occurred while loading scripts.");
+    }
+  };
 
+  const handleErrorModal = () => {
+    setErrorMessage(null);
+  };
+
+  const onToggle = (node, toggled) => {
     if (cursor) {
-      this.setState(() => ({ cursor, active: false }));
+      cursor.active = false;
     }
 
     node.active = true;
     if (node.children) {
       node.toggled = toggled;
     } else {
-      window.location.href = "/script?file=" + node.id;
+      window.location.href = `/script?file=${node.id}`;
     }
 
-    this.setState(() => ({ cursor: node, data: Object.assign({}, data), scriptPath: null }));
-  }
+    setCursor(node);
+    setData({ ...data });
+    setScriptPath(null);
+  };
 
-  onSelect(node) {
-    const { cursor, data } = this.state;
-
+  const onSelect = (node) => {
     if (cursor) {
-      this.setState(() => ({ cursor, active: false }));
+      cursor.active = false;
       if (!includes(cursor.children, node)) {
         cursor.toggled = false;
         cursor.selected = false;
@@ -86,44 +92,42 @@ class ScriptsTree extends React.Component {
     }
 
     node.selected = true;
+    setCursor(node);
+    setData({ ...data });
+    setScriptPath(null);
+  };
 
-    this.setState(() => ({ cursor: node, data: Object.assign({}, data), scriptPath: null }));
+  const handleRefresh = () => {
+    setDisplayName(null);
+    loadScripts();
+  };
+
+  if (!isLoaded) {
+    return <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />;
   }
 
-  handleRefresh() {
-    this.setState({ displayName: null });
-    this.componentDidMount();
-  }
-
-  render() {
-    if (this.state.data.length === 0) {
-      return <Loading />;
-    } else {
-      return (
-        <Fragment>
-          <h3>Scripts</h3>
-          <p>Right click on directory/file to add/remove file</p>
-          <div style={styles.component}>
-            <Treebeard
-              data={this.state.data}
-              onToggle={this.onToggle}
-              onSelect={this.onSelect}
-              decorators={{ ...decorators, Header }}
-              style={styles.treeStyle}
-            />
-          </div>
-
-          <ScriptActionsModuleModal
-            scriptPath={this.state.scriptPath}
-            displayName={this.state.displayName}
-            type={this.state.type}
-            handleRefresh={this.handleRefresh}
-          />
-          <ErrorModal errorMessage={this.state.errorMessage} handleErrorModal={this.handleErrorModal} />
-        </Fragment>
-      );
-    }
-  }
-}
+  return (
+    <Fragment>
+      <h3>Scripts</h3>
+      <p>Right click on directory/file to add/remove file</p>
+      <div style={styles.component}>
+        <Treebeard
+          data={data}
+          onToggle={onToggle}
+          onSelect={onSelect}
+          decorators={{ ...decorators, Header }}
+          style={styles.treeStyle}
+        />
+      </div>
+      <ScriptActionsModuleModal
+        scriptPath={scriptPath}
+        displayName={displayName}
+        type={type}
+        handleRefresh={handleRefresh}
+      />
+      <ErrorModal errorMessage={errorMessage} handleErrorModal={handleErrorModal} />
+    </Fragment>
+  );
+};
 
 export default ScriptsTree;
