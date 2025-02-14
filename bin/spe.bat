@@ -39,7 +39,7 @@ for %%A in (%*) do (
 )
 cd %PROJECT_DIR%/deploy
 echo starting s-pipes-editor-ui with scripts %CUSTOM_SCRIPT_PATHS%
-docker-compose --env-file=.env up
+docker compose --env-file=.env up
 :eof
 
 
