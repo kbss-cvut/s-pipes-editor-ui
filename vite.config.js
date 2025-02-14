@@ -16,12 +16,4 @@ export default defineConfig({
       "@config": "/src/config",
     },
   },
-  server: {
-    proxy: {
-      "/rest": {
-        target: "http://localhost:18115/og_spipes",
-        ws: true,
-      },
-    },
-  },
 });
