@@ -33,7 +33,8 @@ COPY --from=build /app/dist /var/www
 COPY ./public /var/www/public
 
 # Copy our custom nginx config
-COPY deploy/.docker/nginx.conf /etc/nginx/nginx.conf.template
+COPY deploy/.docker/config.js.template /etc/nginx/config.js.template
+COPY deploy/.docker/nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 80 to the Docker host, so we can access it
 # from the outside.
