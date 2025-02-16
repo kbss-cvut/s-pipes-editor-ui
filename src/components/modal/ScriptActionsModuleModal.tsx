@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Alert, Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Modal, Row, Table, InputGroup } from "react-bootstrap";
 import Rest from "../../rest/Rest.tsx";
 
 class ScriptActionsModuleModal extends React.Component {
@@ -16,6 +16,7 @@ class ScriptActionsModuleModal extends React.Component {
       ontologyURI: false,
       scriptName: false,
       modalVisible: false,
+      scriptType: ".ttl",
     };
 
     this.handleCreateScript = this.handleCreateScript.bind(this);
@@ -37,10 +38,12 @@ class ScriptActionsModuleModal extends React.Component {
 
   async handleCreateScript(event) {
     event.preventDefault();
-    const { scriptPath, ontologyURI, scriptName } = this.state;
-    console.log(scriptPath, ontologyURI, scriptName);
+    const { scriptPath, ontologyURI, scriptName, scriptType } = this.state;
+    console.log(scriptPath, ontologyURI, scriptName, scriptType);
+    const fileName = `${scriptName}${scriptType}`;
+    console.log(fileName);
     try {
-      const response = await Rest.createScript(ontologyURI, scriptName, scriptPath);
+      const response = await Rest.createScript(ontologyURI, fileName, scriptPath);
 
       this.props.handleRefresh();
 
@@ -94,7 +97,15 @@ class ScriptActionsModuleModal extends React.Component {
                   {this.state.type === "folder" && (
                     <Col>
                       <Alert
-                        onClick={() => this.setState({ createScriptVisible: true })}
+                        onClick={() => {
+                          const folderName = this.state.displayName || "";
+                          const ontologyURI = process.env.S_PIPES_DEFAULT_ONTOLOGY_URI || "";
+                          this.setState({
+                            createScriptVisible: true,
+                            scriptName: folderName,
+                            ontologyURI: `${ontologyURI}/${folderName}`,
+                          });
+                        }}
                         variant="info"
                         style={{ cursor: "pointer" }}
                       >
@@ -121,19 +132,37 @@ class ScriptActionsModuleModal extends React.Component {
                 <Form onSubmit={this.handleCreateScript}>
                   <Form.Group controlId="scriptName" className="mb-3">
                     <Form.Label>Script name</Form.Label>
-                    <Form.Control
-                      required
-                      pattern={".*ttl$"}
-                      placeholder="ontology-name.ttl"
-                      onChange={(e) => this.setState({ scriptName: e.target.value })}
-                    />
+                    <InputGroup>
+                      <Form.Control
+                        required
+                        value={this.state.scriptName}
+                        pattern={"^[^\\s]+$"}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => {
+                          const scriptName = e.target.value;
+                          this.setState({
+                            scriptName: scriptName,
+                            ontologyURI: `http://onto.fel.cvut.cz/ontologies/s-pipes/${scriptName}`,
+                          });
+                        }}
+                      />
+                      <Form.Select
+                        value={this.state.scriptType}
+                        onChange={(e) => this.setState({ scriptType: e.target.value })}
+                        style={{ maxWidth: "100px" }}
+                      >
+                        <option value=".ttl">.ttl</option>
+                        <option value=".sms.ttl">.sms.ttl</option>
+                      </Form.Select>
+                    </InputGroup>
                   </Form.Group>
                   <Form.Group controlId="ontologyURI" className="mb-3">
                     <Form.Label>Ontology URI</Form.Label>
                     <Form.Control
                       required
                       type={"url"}
-                      placeholder="http://onto.fel.cvut.cz/ontologies/s-pipes/ontolog-name"
+                      value={this.state.ontologyURI}
+                      onFocus={(e) => e.target.select()}
                       onChange={(e) => this.setState({ ontologyURI: e.target.value })}
                     />
                   </Form.Group>
