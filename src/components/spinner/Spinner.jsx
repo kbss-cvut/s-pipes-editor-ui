@@ -2,9 +2,9 @@ import React from "react";
 import "./Spinner.css";
 
 const sizeMap = {
-  small: "20px",
-  middle: "40px",
-  large: "60px",
+  small: "40px",
+  middle: "60px",
+  large: "80px",
 };
 
 const Spinner = ({ color = "#3498db", size = "middle", style }) => {
