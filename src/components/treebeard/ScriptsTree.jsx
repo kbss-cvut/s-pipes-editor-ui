@@ -8,6 +8,7 @@ import Rest from "../../rest/Rest";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
+import Spinner from "react-bootstrap/Spinner";
 
 class ScriptsTree extends React.Component {
   constructor(props) {
@@ -97,7 +98,7 @@ class ScriptsTree extends React.Component {
 
   render() {
     if (this.state.data.length === 0) {
-      return <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />;
+      return <Loading />;
     } else {
       return (
         <Fragment>
