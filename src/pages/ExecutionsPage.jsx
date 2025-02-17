@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
-import Spinner from "../components/spinner/Spinner.jsx";
+import Loading from "../components/Loading.jsx";
 
 const ExecutionsPage = () => {
   const [data, setData] = useState([]);
@@ -29,7 +29,7 @@ const ExecutionsPage = () => {
   }, []);
 
   if (loading) {
-    return <Spinner />;
+    return <Loading />;
   }
 
   return (

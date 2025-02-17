@@ -8,7 +8,6 @@ import Rest from "../../rest/Rest";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
 import Loading from "../Loading";
 import ErrorModal from "../modal/ErrorModal";
-import Spinner from "react-bootstrap/Spinner";
 
 class ScriptsTree extends React.Component {
   constructor(props) {
