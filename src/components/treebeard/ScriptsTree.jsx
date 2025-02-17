@@ -97,7 +97,7 @@ class ScriptsTree extends React.Component {
 
   render() {
     if (this.state.data.length === 0) {
-      return <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />;
+      return <Loading />;
     } else {
       return (
         <Fragment>

@@ -630,9 +630,7 @@ class Script extends React.Component {
     };
     return (
       <div>
-        {this.state.isLoaded === false && (
-          <Loading size={"large"} style={{ margin: "auto", position: "absolute", inset: "0px", zIndex: 9000 }} />
-        )}
+        {this.state.isLoaded === false && <Loading />}
         <NavbarMenu />
 
         <ToastContainer position="top-end" className="p-3" style={{ zIndex: 100 }}>
