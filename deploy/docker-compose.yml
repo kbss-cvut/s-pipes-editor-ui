@@ -12,7 +12,7 @@ services:
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: "/etc/nginx"
       APP_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
-      SPIPES_EDITOR_REST_SERVICE_URL: "${SPIPES_EDITOR_REST:-http://s-pipes-editor-rest:18115}"
+      SPIPES_EDITOR_REST_SERVICE_URL: "${SPIPES_EDITOR_REST_URL:-http://s-pipes-editor-rest:18115}"
       SPIPES_ENGINE_URL: "${SPIPES_ENGINE_URL:-http://s-pipes-engine:8080/s-pipes}"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
@@ -26,7 +26,9 @@ services:
     depends_on:
       - s-pipes-editor-rest
     environment:
-      SERVICE_URL: "${SPIPES_EDITOR_REST:-http://s-pipes-editor-rest:18115}"
+      S_PIPES_API_URL: "${SPIPES_EDITOR_REST_URL:-http://localhost:1235/rest}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   s-pipes-editor-rest:
     #    <<: *s-pipes-editor-rest-dev-port
