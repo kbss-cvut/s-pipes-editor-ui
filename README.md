@@ -63,7 +63,7 @@ To make the script executable line endings should be replaced.
 `.env` file is used by Docker Compose by default.
 - If running `docker compose` or `spe.bat` in Windows (not in a WSL distribution), add:
     - `SHARED_ROOT=/host_mnt/c`
-    - `PWD=/host_mnt/$PROJECT_ROOT` _should be absolute path_
+    - `PWD=/host_mnt/$PROJECT_ROOT/deploy` _should be absolute path_
 - If running `docker compose` or `spe.sh` in a WSL distribution, set variables as follows:
     - `SHARED_ROOT=/mnt/c`
 
