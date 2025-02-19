@@ -31,9 +31,12 @@ for arg in "$@"; do
   fi
 done
 
-
+DEVELOPMENT_OPTIONS=(
+# -f .dev/dc-s-pipes-engine--debug-with-suspend.yml
+# -f dc-s-pipes-engine--substitute.yml
+)
 
 cd $PROJECT_DIR/deploy
-CUSTOM_SCRIPT_PATHS="$CUSTOM_SCRIPT_PATHS" docker compose --env-file=.env up
+CUSTOM_SCRIPT_PATHS="$CUSTOM_SCRIPT_PATHS" docker compose -f docker-compose.yml "${DEVELOPMENT_OPTIONS[@]}" --env-file=.env up
 cd
 
