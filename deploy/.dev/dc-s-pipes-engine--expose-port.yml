@@ -1,0 +1,4 @@
+services:
+  s-pipes-engine:
+    ports:
+      - "127.0.0.1:${SPIPES_ENGINE_PORT:-8080}:8080"
