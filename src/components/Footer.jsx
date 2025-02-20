@@ -4,15 +4,13 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="fixed-bottom">
-      <Navbar color="dark">
-        <Container>
-          <p className="p-3 ms-auto">
-            Made with <Icon name="heart" color="red" />
-          </p>
-        </Container>
-      </Navbar>
-    </div>
+    <Navbar className="mt-auto">
+      <Container>
+        <p className="p-3 ms-auto">
+          Made with <Icon name="heart" color="red" />
+        </p>
+      </Container>
+    </Navbar>
   );
 };
 
