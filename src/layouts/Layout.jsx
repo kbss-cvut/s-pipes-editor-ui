@@ -7,7 +7,7 @@ import Footer from "../components/Footer.jsx";
 
 const Layout = ({ children }) => {
   return (
-    <div>
+    <div className="d-flex flex-column min-vh-100">
       <NavbarMenu />
       <Container>
         <Outlet />
