@@ -3,8 +3,8 @@ import {
   ABSOLUTE_PATH,
   DISPLAY_NAME,
   EXECUTION_DURATION,
-  MODULE_EXECUTION_FINISH_DATE,
-  MODULE_EXECUTION_START_DATE,
+  PIPELINE_EXECUTION_START_DATE,
+  PIPELINE_EXECUTION_FINISH_DATE,
   RDF4j_TRANSFORMATION_ID,
   TRANSFORMATION,
 } from "../constants/vocabulary.js";
@@ -55,8 +55,8 @@ const ExecutionsPage = () => {
                   <FontAwesomeIcon icon={faMugHot} />
                 </td>
                 <td>{data[DISPLAY_NAME]}</td>
-                <td>{dayjs(data[MODULE_EXECUTION_START_DATE]).format("HH:mm:ss")}</td>
-                <td>{dayjs(data[MODULE_EXECUTION_FINISH_DATE]).format("HH:mm:ss")}</td>
+                <td>{dayjs(data[PIPELINE_EXECUTION_START_DATE]).format("YYYY-MM-DD HH:mm:ss.SSS")}</td>
+                <td>{dayjs(data[PIPELINE_EXECUTION_FINISH_DATE]).format("YYYY-MM-DD HH:mm:ss.SSS")}</td>
                 <td>{data[EXECUTION_DURATION]}ms</td>
                 <td>
                   <Container>
