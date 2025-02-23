@@ -17,6 +17,7 @@ class ScriptActionsModuleModal extends React.Component {
       scriptName: false,
       modalVisible: false,
       scriptType: ".ttl",
+      functionPrefix: "",
     };
 
     this.handleCreateScript = this.handleCreateScript.bind(this);
@@ -38,12 +39,11 @@ class ScriptActionsModuleModal extends React.Component {
 
   async handleCreateScript(event) {
     event.preventDefault();
-    const { scriptPath, ontologyURI, scriptName, scriptType } = this.state;
-    console.log(scriptPath, ontologyURI, scriptName, scriptType);
-    const fileName = `${scriptName}${scriptType}`;
-    console.log(fileName);
+    const { scriptPath, ontologyURI, scriptName, scriptType, functionPrefix } = this.state;
+    console.log(scriptPath, ontologyURI, scriptName, scriptType, functionPrefix);
+    const updatedOntologyURI = `${ontologyURI}-0.1`;
     try {
-      const response = await Rest.createScript(ontologyURI, fileName, scriptPath);
+      const response = await Rest.createScript(updatedOntologyURI, scriptName, scriptPath, scriptType, functionPrefix);
 
       this.props.handleRefresh();
 
@@ -99,7 +99,7 @@ class ScriptActionsModuleModal extends React.Component {
                       <Alert
                         onClick={() => {
                           const folderName = this.state.displayName || "";
-                          const ontologyURI = process.env.S_PIPES_DEFAULT_ONTOLOGY_URI || "";
+                          const ontologyURI = process.env.REACT_APP_S_PIPES_DEFAULT_ONTOLOGY_URI || "";
                           this.setState({
                             createScriptVisible: true,
                             scriptName: folderName,
@@ -136,14 +136,14 @@ class ScriptActionsModuleModal extends React.Component {
                       <Form.Control
                         required
                         value={this.state.scriptName}
-                        pattern={"^[^\\s]+$"}
                         onFocus={(e) => e.target.select()}
                         onChange={(e) => {
                           const scriptName = e.target.value;
-                          this.setState({
-                            scriptName: scriptName,
-                            ontologyURI: `http://onto.fel.cvut.cz/ontologies/s-pipes/${scriptName}`,
-                          });
+                          if (/^[a-zA-Z0-9_-]*$/.test(scriptName)) {
+                            this.setState({
+                              scriptName: scriptName,
+                            });
+                          }
                         }}
                       />
                       <Form.Select
@@ -166,8 +166,17 @@ class ScriptActionsModuleModal extends React.Component {
                       onChange={(e) => this.setState({ ontologyURI: e.target.value })}
                     />
                   </Form.Group>
+                  <Form.Group controlId="functionPrefix" className="mb-3">
+                    <Form.Label>Function prefix</Form.Label>
+                    <Form.Control
+                      required
+                      value={this.state.functionPrefix}
+                      onFocus={(e) => e.target.select()}
+                      onChange={(e) => this.setState({ functionPrefix: e.target.value })}
+                    />
+                  </Form.Group>
                   <Button variant="primary" type="submit">
-                    Submit
+                    Create script
                   </Button>
                 </Form>
               )}

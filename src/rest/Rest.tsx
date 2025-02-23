@@ -96,12 +96,14 @@ export const Rest = {
     return postFetcher(URLs.FUNCTION_FORM, data);
   },
 
-  createScript: function (ontologyURI, scriptName, scriptPath) {
+  createScript: function (ontologyURI, scriptName, scriptPath, scriptType, functionPrefix) {
     const data = {
       "@type": Vocabulary.SCRIPT_CREATE_DTO,
       [Vocabulary.ONTOLOGY_URI]: ontologyURI,
       [Vocabulary.SCRIPT_NAME]: scriptName,
       [Vocabulary.SCRIPT_PATH]: scriptPath,
+      [Vocabulary.SCRIPT_TYPE]: scriptType,
+      [Vocabulary.FUNCTION_PREFIX]: functionPrefix,
     };
     return postFetcher(URLs.SCRIPTS_CREATE, data);
   },
