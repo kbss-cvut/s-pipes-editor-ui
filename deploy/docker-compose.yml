@@ -26,7 +26,8 @@ services:
     depends_on:
       - s-pipes-editor-rest
     environment:
-      S_PIPES_EDITOR_API_URL: "${S_PIPES_EDITOR_REST_URL:-http://localhost:1235/rest}"
+      S_PIPES_EDITOR_API_URL: "${S_PIPES_EDITOR_REST_URL:-${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}/rest}"      
+      ""
 
   s-pipes-editor-rest:
     #    <<: *s-pipes-editor-rest-dev-port
