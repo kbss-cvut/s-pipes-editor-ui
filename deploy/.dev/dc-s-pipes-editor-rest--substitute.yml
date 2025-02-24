@@ -1,7 +1,7 @@
 services:
   nginx:
     environment:
-      SPIPES_EDITOR_REST_SERVICE_URL: "${SPIPES_EDITOR_REST:-http://host.docker.internal:18115}"
+      S_PIPES_EDITOR_REST_SERVICE_URL: "${S_PIPES_EDITOR_REST:-http://host.docker.internal:18115}"
     extra_hosts:
       - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
 
