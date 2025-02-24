@@ -12,8 +12,8 @@ services:
     environment:
       NGINX_ENVSUBST_OUTPUT_DIR: "/etc/nginx"
       APP_ORIGIN: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
-      SPIPES_EDITOR_REST_SERVICE_URL: "${SPIPES_EDITOR_REST_URL:-http://s-pipes-editor-rest:18115}"
-      SPIPES_ENGINE_URL: "${SPIPES_ENGINE_URL:-http://s-pipes-engine:8080/s-pipes}"
+      S_PIPES_EDITOR_REST_SERVICE_URL: "${S_PIPES_EDITOR_REST_URL:-http://s-pipes-editor-rest:18115}"
+      S_PIPES_ENGINE_URL: "${S_PIPES_ENGINE_URL:-http://s-pipes-engine:8080/s-pipes}"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template:ro
       - ./nginx/error.html:/usr/share/nginx/html/error.html:ro
@@ -26,7 +26,7 @@ services:
     depends_on:
       - s-pipes-editor-rest
     environment:
-      S_PIPES_EDITOR_API_URL: "${SPIPES_EDITOR_REST_URL:-http://localhost:1235/rest}"
+      S_PIPES_EDITOR_API_URL: "${S_PIPES_EDITOR_REST_URL:-http://localhost:1235/rest}"
 
   s-pipes-editor-rest:
     #    <<: *s-pipes-editor-rest-dev-port
@@ -40,7 +40,7 @@ services:
     environment:
       SCRIPTPATHS: "${SCRIPTPATHS:-${PWD}/../../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../../s-pipes/doc/examples}}"
       SCRIPTRULES: "${SCRIPTRULES:-${PWD}/../../s-pipes-editor/src/main/resources/rules}"
-      ENGINEURL: "${SPIPES_ENGINE_URL:-http://s-pipes-engine:8080/s-pipes}/"
+      ENGINEURL: "${S_PIPES_ENGINE_URL:-http://s-pipes-engine:8080/s-pipes}/"
       RDF4J_REPOSITORYURL: "${RDF4J_SERVER_URL:-http://db-server:7200}/repositories"
       RDF4J_REPOSITORYNAME: "${RDF4J_REPOSITORYNAME:-s-pipes-execution-log}"
       RDF4J_PCONFIGURL: "${RDF4J_PCONFIGURL:-${PWD}/../../s-pipes-editor-ui/deploy/s-pipes-engine/config.ttl}"

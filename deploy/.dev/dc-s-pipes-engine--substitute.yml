@@ -1,12 +1,12 @@
 services:
   nginx:
     environment:
-      SPIPES_ENGINE_URL: "${SPIPES_ENGINE_URL:-http://host.docker.internal:8080}"
+      S_PIPES_ENGINE_URL: "${S_PIPES_ENGINE_URL:-http://host.docker.internal:8080}"
     extra_hosts:
       - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
   s-pipes-editor-rest:
     environment:
-      ENGINEURL: "${SPIPES_ENGINE_URL:-http://host.docker.internal:${SPIPES_ENGINE_PORT:-8080}/s-pipes}/"
+      ENGINEURL: "${S_PIPES_ENGINE_URL:-http://host.docker.internal:${S_PIPES_ENGINE_PORT:-8080}/s-pipes}/"
     extra_hosts:
       - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
 
