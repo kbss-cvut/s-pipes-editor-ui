@@ -1,0 +1,3 @@
+services:
+  s-pipes-editor-rest:
+    image: "s-pipes-editor:latest"
