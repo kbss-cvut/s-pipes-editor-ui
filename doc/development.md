@@ -1,7 +1,7 @@
 Development
 
-In order to develop parts of the application with use of ($PROJECT_ROOT/deploy/docker-compose.yml)[../deploy/docker-compose.yml], 
-there are multiple helper configurations in ($PROJECT_ROOT/deploy/.dev)[../.dev] folder. Most common use cases to use are:
+In order to develop parts of the application with use of [$PROJECT_ROOT/deploy/docker-compose.yml](../deploy/docker-compose.yml), 
+there are multiple helper configurations in [$PROJECT_ROOT/deploy/.dev](../.dev) folder. Most common use cases to use are:
 
 1. development of s-pipes-editor backend
    - `cd $PROJECT_ROOT/deploy`
