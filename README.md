@@ -157,5 +157,9 @@ To simplify this process, a pre-commit Git hook is set up with [Husky](https://g
 ### Note
 > Skeleton is from - React Starter Boilerplate with Hot Module Replacement and Webpack 4
 
+## Documentation
+
+Development is described in [Development notes](doc/development.md).
+
 ###License
 Licensed under GPL v3.0.
