@@ -26,7 +26,7 @@ services:
     depends_on:
       - s-pipes-editor-rest
     environment:
-      S_PIPES_EDITOR_API_URL: "${S_PIPES_EDITOR_REST_URL:-${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}/rest}"      
+      S_PIPES_EDITOR_API_URL: "${S_PIPES_EDITOR_REST_URL:-${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}/rest}"
 
   s-pipes-editor-rest:
     image: "ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest"
@@ -43,10 +43,6 @@ services:
       RDF4J_REPOSITORYURL: "${RDF4J_SERVER_URL:-http://db-server:7200}/repositories"
       RDF4J_REPOSITORYNAME: "${RDF4J_REPOSITORYNAME:-s-pipes-execution-log}"
       RDF4J_PCONFIGURL: "${RDF4J_PCONFIGURL:-${PWD}/../../s-pipes-editor-ui/deploy/s-pipes-engine/config.ttl}"
-    volumes:
-      - /tmp:/tmp
-      - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
-      - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   s-pipes-engine:
     image: "ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest"
@@ -57,10 +53,6 @@ services:
       - db-server
     environment:
       CONTEXTS_SCRIPTPATHS: "${SCRIPTPATHS:-${PWD}/../../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../../s-pipes/doc/examples}}"
-    volumes:
-      - /tmp:/tmp
-      - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
-      - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
 
   db-server:
     build:
