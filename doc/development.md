@@ -1,4 +1,4 @@
-Development
+# Development
 
 In order to develop parts of the application with use of [$PROJECT_ROOT/deploy/docker-compose.yml](../deploy/docker-compose.yml), 
 there are multiple helper configurations in [$PROJECT_ROOT/deploy/.dev](../.dev) folder. Most common use cases to those configuraions are:
