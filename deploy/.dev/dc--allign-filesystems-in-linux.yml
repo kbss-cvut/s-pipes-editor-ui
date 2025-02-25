@@ -1,0 +1,12 @@
+services:
+  s-pipes-editor-rest:
+    volumes:
+      - /tmp:/tmp
+      - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
+      - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
+
+  s-pipes-engine:
+    volumes:
+      - /tmp:/tmp
+      - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
+      - /usr/local/tomcat/temp/:/usr/local/tomcat/temp/
