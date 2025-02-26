@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
-import Rest from "../../rest/Rest.jsx";
+import Rest from "../../rest/Rest.tsx";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {

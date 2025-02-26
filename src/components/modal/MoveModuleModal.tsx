@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Modal, Row } from "react-bootstrap";
-import { ONTOLOGY_URI, SCRIPT_PATH } from "../../constants/vocabulary.js";
-import Rest from "../../rest/Rest.jsx";
+import { ONTOLOGY_URI, SCRIPT_PATH } from "@constants/vocabulary.ts";
+import Rest from "@rest/Rest.tsx";
 
 class MoveModuleModal extends React.Component {
   constructor(props) {

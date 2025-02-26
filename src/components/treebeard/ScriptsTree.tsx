@@ -2,11 +2,11 @@ import React, { Fragment } from "react";
 import { includes } from "lodash";
 
 import styles from "./styles";
-import Header from "./Header";
+import Header from "./Header.js";
 import { Treebeard, decorators } from "react-treebeard";
-import Rest from "../../rest/Rest";
+import Rest from "@rest/Rest.js";
 import ScriptActionsModuleModal from "../modal/ScriptActionsModuleModal";
-import Loading from "../Loading";
+import Loading from "../Loading.js";
 import ErrorModal from "../modal/ErrorModal";
 
 class ScriptsTree extends React.Component {

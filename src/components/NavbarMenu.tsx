@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
-import { APP_TITLE } from "@config/env.js";
+import { APP_TITLE } from "@config/env.ts";
 
 const NavbarMenu = () => {
   return (

@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Icon } from "semantic-ui-react";
 import { Navbar } from "react-bootstrap";
-import NavbarMenu from "../components/NavbarMenu.jsx";
+import NavbarMenu from "@components/NavbarMenu";
 import { Outlet } from "react-router-dom";
-import Footer from "../components/Footer.jsx";
+import Footer from "@components/Footer";
 
 const Layout = ({ children }) => {
   return (

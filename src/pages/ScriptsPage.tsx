@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import ScriptsTree from "../components/treebeard/ScriptsTree.jsx";
+import ScriptsTree from "@components/treebeard/ScriptsTree";
 
 class ScriptsPage extends React.Component {
   render() {
