@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Alert, Button, Col, Container, Modal, Row } from "react-bootstrap";
-import { ERROR_MESSAGE, MODULE_URI, RULE_COMMENT } from "../../constants/vocabulary.js";
+import { ERROR_MESSAGE, MODULE_URI, RULE_COMMENT } from "@constants/vocabulary.ts";
 
 class FunctionExecutionModal extends React.Component {
   constructor(props) {

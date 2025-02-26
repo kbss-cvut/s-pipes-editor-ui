@@ -6,24 +6,24 @@ import cxtmenu from "cytoscape-cxtmenu";
 import popper from "cytoscape-popper";
 import navigator from "cytoscape-navigator";
 import expandCollapse from "cytoscape-expand-collapse";
-import Rest from "../rest/Rest.jsx";
-import NavbarMenu from "../components/NavbarMenu.jsx";
-import SFormsModal from "../components/sform/SFormsModal.jsx";
-import ModuleTypesSelection from "../components/ModuleTypesSelection.jsx";
-import ScriptInputOutputModal from "../components/sform/ScriptInputOutputModal.jsx";
+import Rest from "@rest/Rest.tsx";
+import NavbarMenu from "@components/NavbarMenu";
+import SFormsModal from "@components/sform/SFormsModal";
+import ModuleTypesSelection from "@components/ModuleTypesSelection";
+import ScriptInputOutputModal from "@components/sform/ScriptInputOutputModal";
 import { Dropdown } from "semantic-ui-react";
-import { ICONS_MAP } from "../constants/dagreIcons.js";
-import ScriptFunctionSelection from "../components/ScriptFunctionSelection.jsx";
+import { ICONS_MAP } from "@constants/dagreIcons";
+import ScriptFunctionSelection from "@components/ScriptFunctionSelection";
 import { Button, Toast, ToastContainer } from "react-bootstrap";
-import ValidationReportModal from "../components/modal/ValidationReportModal.jsx";
-import MoveModuleModal from "../components/modal/MoveModuleModal.jsx";
-import ScriptOntologyModal from "../components/modal/ScriptOntologyModal.jsx";
-import ScriptExecutionModal from "../components/modal/ScriptExecutionModal.jsx";
+import ValidationReportModal from "@components/modal/ValidationReportModal";
+import MoveModuleModal from "@components/modal/MoveModuleModal";
+import ScriptOntologyModal from "@components/modal/ScriptOntologyModal";
+import ScriptExecutionModal from "@components/modal/ScriptExecutionModal";
 import "@triply/yasgui/build/yasgui.min.css";
-import SFormsFunctionModal from "../components/sform/SFormsFunctionModal.jsx";
+import SFormsFunctionModal from "@components/sform/SFormsFunctionModal";
 import "@kbss-cvut/s-forms/css";
-import Loading from "../components/Loading.jsx";
-import ErrorModal from "../components/modal/ErrorModal.jsx";
+import Loading from "@components/Loading";
+import ErrorModal from "@components/modal/ErrorModal";
 import { useLocation } from "react-router-dom";
 import {
   TYPE,
@@ -43,7 +43,7 @@ import {
   MODULE_VARIABLE_VALUE,
   MODULE_VARIABLES,
   SCRIPT_PATH,
-} from "../constants/vocabulary.js";
+} from "@constants/vocabulary";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 const rankDirOptions = [

@@ -1,7 +1,7 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
-import { FUNCTION_URI, FUNCTION_NAME } from "../constants/vocabulary.js";
-import Rest from "../rest/Rest.jsx";
+import { FUNCTION_URI, FUNCTION_NAME } from "@constants/vocabulary.ts";
+import Rest from "@rest/Rest.tsx";
 
 class ScriptFunctionSelection extends React.Component {
   constructor(props) {

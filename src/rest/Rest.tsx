@@ -1,6 +1,6 @@
-import URLs from "./apiUrls.js";
-import * as Vocabulary from "../constants/vocabulary.js";
-import { getFetcher, postFetcher } from "./fetchers";
+import URLs from "./apiUrls.ts";
+import * as Vocabulary from "@constants/vocabulary";
+import { getFetcher, postFetcher } from "./fetchers.js";
 
 export const Rest = {
   getScripts: function () {

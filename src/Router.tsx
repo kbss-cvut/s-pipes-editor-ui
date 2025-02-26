@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, BrowserRouter, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage.jsx";
-import ExecutionsPage from "./pages/ExecutionsPage.jsx";
-import ScriptsPage from "./pages/ScriptsPage.jsx";
-import Layout from "./layouts/Layout.jsx";
-import NotFoundPage from "./pages/NotFoundPage.jsx";
-import ScriptPage from "./pages/ScriptPage.jsx";
+import HomePage from "@pages/HomePage";
+import ExecutionsPage from "@pages/ExecutionsPage";
+import ScriptsPage from "@pages/ScriptsPage";
+import Layout from "@layouts/Layout";
+import NotFoundPage from "@pages/NotFoundPage";
+import ScriptPage from "@pages/ScriptPage";
 
 const Router = () => {
   return (

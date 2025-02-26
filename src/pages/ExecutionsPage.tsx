@@ -7,14 +7,14 @@ import {
   PIPELINE_EXECUTION_FINISH_DATE,
   RDF4j_TRANSFORMATION_ID,
   TRANSFORMATION,
-} from "../constants/vocabulary.js";
-import Rest from "../rest/Rest.jsx";
+} from "@constants/vocabulary";
+import Rest from "@rest/Rest.tsx";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
-import Loading from "../components/Loading.jsx";
+import Loading from "@components/Loading";
 
 const ExecutionsPage = () => {
   const [data, setData] = useState([]);

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Alert, Button, Form, Modal } from "react-bootstrap";
-import Rest from "../../rest/Rest";
+import Rest from "@rest/Rest.js";
 import "@triply/yasgui/build/yasgui.min.css";
 import JSONPretty from "react-json-pretty";
 import "react-json-pretty/themes/monikai.css";
