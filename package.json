@@ -20,7 +20,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@frogcat/ttl2jsonld": "^0.0.6",
-    "@kbss-cvut/s-forms": "^0.7.2-beta-6cfd5af.0",
+    "@kbss-cvut/s-forms": "^0.8.0",
     "@tippyjs/react": "^4.2.5",
     "@triply/yasgui": "^4.2.14",
     "@vitejs/plugin-react": "^4.3.1",
