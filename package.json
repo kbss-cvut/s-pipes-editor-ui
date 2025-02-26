@@ -2,7 +2,7 @@
   "name": "react-starter-boilerplate-hmr",
   "version": "1.0.0",
   "description": "SPipes editor UI",
-  "main": "index.js",
+  "main": "index.tsx",
   "author": "Petr Jordan",
   "license": "MIT",
   "type": "module",
@@ -53,13 +53,17 @@
     "websocket": "^1.0.35"
   },
   "devDependencies": {
+    "@types/node": "^22.13.5",
+    "@types/react": "^19.0.10",
     "autoprefixer": "^9.7.6",
     "chalk": "^4.0.0",
     "flow-bin": "^0.142.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.9",
     "prettier": "^3.3.3",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^5.7.3",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "target": "es6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@config/*": ["./src/config/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@rest/*": ["./src/rest/*"]
+    },
+    "lib": ["es2017", "dom", "dom.iterable"],
+    "types": ["vite/client"]
+  },
+  "include": ["src/*.ts", "src/*.tsx"]
+}
