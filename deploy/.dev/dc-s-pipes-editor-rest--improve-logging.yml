@@ -1,0 +1,4 @@
+services:
+  s-pipes-editor-rest:
+    environment:
+      LOGGING_LEVEL_ROOT: "debug"
