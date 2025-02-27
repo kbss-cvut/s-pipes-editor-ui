@@ -43,6 +43,8 @@ services:
       RDF4J_REPOSITORYURL: "${RDF4J_SERVER_URL:-http://db-server:7200}/repositories"
       RDF4J_REPOSITORYNAME: "${RDF4J_REPOSITORYNAME:-s-pipes-execution-log}"
       RDF4J_PCONFIGURL: "${RDF4J_PCONFIGURL:-${PWD}/../../s-pipes-editor-ui/deploy/s-pipes-engine/config.ttl}"
+    volumes:
+      - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
 
   s-pipes-engine:
     image: "ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest"
@@ -53,6 +55,8 @@ services:
       - db-server
     environment:
       CONTEXTS_SCRIPTPATHS: "${SCRIPTPATHS:-${PWD}/../../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../../s-pipes/doc/examples}}"
+    volumes:
+      - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
 
   db-server:
     build:
