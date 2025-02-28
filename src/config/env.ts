@@ -14,4 +14,4 @@ const getEnv = (name, defaultValue) => {
 };
 
 export const APP_TITLE = getEnv("S_PIPES_EDITOR_APP_TITLE", "SPipes Editor");
-export const API_URL = getEnv("S_PIPES_API_EDITOR_URL", "http://localhost:1235/rest");
+export const API_URL = getEnv("S_PIPES_EDITOR_API_URL", "http://localhost:1235/rest");
