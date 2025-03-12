@@ -1,4 +1,4 @@
 services:
   s-pipes-editor-rest:
     environment:
-      CORS_ALLOWEDORIGINS: "http://localhost:4173,http://localhost:5173"
+      CORS_ALLOWEDORIGINS: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}},http://localhost:4173,http://localhost:5173"
