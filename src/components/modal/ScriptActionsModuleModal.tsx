@@ -2,6 +2,9 @@ import React from "react";
 
 import { Alert, Button, Col, Container, Form, Modal, Row, Table, InputGroup } from "react-bootstrap";
 import Rest from "../../rest/Rest.tsx";
+import { version } from "os";
+import ScriptOntologyModal from "./ScriptOntologyModal.js";
+import { func } from "prop-types";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {
@@ -17,7 +20,11 @@ class ScriptActionsModuleModal extends React.Component {
       scriptName: false,
       modalVisible: false,
       scriptType: ".ttl",
-      functionPrefix: "",
+      returnModuleName: "",
+      ontologyFragment: "",
+      ontologyVersion: "0.1",
+      returnSuffix: "Return",
+      functionName: "",
     };
 
     this.handleCreateScript = this.handleCreateScript.bind(this);
@@ -39,11 +46,29 @@ class ScriptActionsModuleModal extends React.Component {
 
   async handleCreateScript(event) {
     event.preventDefault();
-    const { scriptPath, ontologyURI, scriptName, scriptType, functionPrefix } = this.state;
-    console.log(scriptPath, ontologyURI, scriptName, scriptType, functionPrefix);
-    const updatedOntologyURI = `${ontologyURI}-0.1`;
+    const {
+      scriptPath,
+      scriptName,
+      scriptType,
+      ontologyURI,
+      ontologyFragment,
+      ontologyVersion,
+      returnModuleName,
+      returnSuffix,
+      functionName,
+    } = this.state;
+    console.log(scriptPath, ontologyURI, scriptName, scriptType, returnModuleName);
+    const completeOntologyURI = `${ontologyURI}/${ontologyFragment}-${ontologyVersion}`;
+    const completeReturnModuleName = `${returnModuleName}_${returnSuffix}`;
     try {
-      const response = await Rest.createScript(updatedOntologyURI, scriptName, scriptPath, scriptType, functionPrefix);
+      const response = await Rest.createScript(
+        completeOntologyURI,
+        scriptName,
+        scriptPath,
+        scriptType,
+        completeReturnModuleName,
+        functionName,
+      );
 
       this.props.handleRefresh();
 
@@ -99,11 +124,16 @@ class ScriptActionsModuleModal extends React.Component {
                       <Alert
                         onClick={() => {
                           const folderName = this.state.displayName || "";
-                          const ontologyURI = process.env.REACT_APP_S_PIPES_DEFAULT_ONTOLOGY_URI || "";
+                          const defaultOntologyURI = process.env.REACT_APP_S_PIPES_DEFAULT_ONTOLOGY_URI || "";
                           this.setState({
                             createScriptVisible: true,
                             scriptName: folderName,
-                            ontologyURI: `${ontologyURI}/${folderName}`,
+                            ontologyURI: defaultOntologyURI,
+                            ontologyFragment: folderName,
+                            returnModuleName: "",
+                            functionName: "", //TODO
+                            returnSuffix: "Return",
+                            ontologyVersion: "0.1",
                           });
                         }}
                         variant="info"
@@ -139,10 +169,12 @@ class ScriptActionsModuleModal extends React.Component {
                         onFocus={(e) => e.target.select()}
                         onChange={(e) => {
                           const scriptName = e.target.value;
-                          if (/^[a-zA-Z0-9_-]*$/.test(scriptName)) {
-                            this.setState({
-                              scriptName: scriptName,
-                            });
+                          if (/^[a-zA-Z0-9._-]*$/.test(scriptName)) {
+                            this.setState((prevState) => ({
+                              scriptName,
+                              functionName: `${prevState.returnModuleName}-${scriptName}`,
+                              ontologyFragment: scriptName,
+                            }));
                           }
                         }}
                       />
@@ -158,22 +190,65 @@ class ScriptActionsModuleModal extends React.Component {
                   </Form.Group>
                   <Form.Group controlId="ontologyURI" className="mb-3">
                     <Form.Label>Ontology URI</Form.Label>
-                    <Form.Control
-                      required
-                      type={"url"}
-                      value={this.state.ontologyURI}
-                      onFocus={(e) => e.target.select()}
-                      onChange={(e) => this.setState({ ontologyURI: e.target.value })}
-                    />
+                    <InputGroup>
+                      <Form.Control
+                        required
+                        type={"url"}
+                        value={this.state.ontologyURI}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => this.setState({ ontologyURI: e.target.value })}
+                      />
+                      &nbsp; / &nbsp;
+                      <Form.Control
+                        required
+                        value={this.state.ontologyFragment}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => this.setState({ ontologyFragment: e.target.value })}
+                      />
+                      &nbsp; - &nbsp;
+                      <Form.Control
+                        required
+                        value={this.state.ontologyVersion}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => this.setState({ ontologyVersion: e.target.value })}
+                      />
+                    </InputGroup>
                   </Form.Group>
-                  <Form.Group controlId="functionPrefix" className="mb-3">
-                    <Form.Label>Function prefix</Form.Label>
-                    <Form.Control
-                      required
-                      value={this.state.functionPrefix}
-                      onFocus={(e) => e.target.select()}
-                      onChange={(e) => this.setState({ functionPrefix: e.target.value })}
-                    />
+                  <Form.Group controlId="returnModuleName" className="mb-3">
+                    <Form.Label>Return module name</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        required
+                        value={this.state.returnModuleName}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => {
+                          const returnModuleName = e.target.value;
+                          this.setState((prevState) => ({
+                            returnModuleName,
+                            functionName: `${returnModuleName}-${prevState.scriptName}`,
+                          }));
+                        }}
+                      />
+                      &nbsp; _ &nbsp;
+                      <Form.Control
+                        required
+                        value={this.state.returnSuffix}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => this.setState({ returnSuffix: e.target.value })}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Form.Group controlId="functionName" className="mb-3">
+                    <Form.Label>Function name</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        required
+                        defaultValue={`${this.state.returnModuleName}-${this.state.scriptName}`}
+                        value={this.state.functionName}
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => this.setState({ functionName: e.target.value })}
+                      />
+                    </InputGroup>
                   </Form.Group>
                   <Button variant="primary" type="submit">
                     Create script
