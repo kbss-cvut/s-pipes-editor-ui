@@ -2,9 +2,7 @@ import React from "react";
 
 import { Alert, Button, Col, Container, Form, Modal, Row, Table, InputGroup } from "react-bootstrap";
 import Rest from "../../rest/Rest.tsx";
-import { version } from "os";
-import ScriptOntologyModal from "./ScriptOntologyModal.js";
-import { func } from "prop-types";
+import { DEFAULT_ONTOLOGY_URI } from "@config/env.ts";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {
@@ -124,7 +122,7 @@ class ScriptActionsModuleModal extends React.Component {
                       <Alert
                         onClick={() => {
                           const folderName = this.state.displayName || "";
-                          const defaultOntologyURI = process.env.REACT_APP_S_PIPES_DEFAULT_ONTOLOGY_URI || "";
+                          const defaultOntologyURI = DEFAULT_ONTOLOGY_URI || "";
                           this.setState({
                             createScriptVisible: true,
                             scriptName: folderName,
