@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Alert, Button, Col, Container, Form, Modal, Row, Table, InputGroup } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Modal, Row, InputGroup } from "react-bootstrap";
 import Rest from "../../rest/Rest.tsx";
-import { DEFAULT_ONTOLOGY_URI } from "@config/env.ts";
+import { DEFAULT_SCRIPT_PREFIX } from "@config/env.ts";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {
@@ -14,15 +14,16 @@ class ScriptActionsModuleModal extends React.Component {
       type: null,
       isLoaded: false,
       createScriptVisible: false,
-      ontologyURI: false,
-      scriptName: false,
       modalVisible: false,
+      scriptName: "",
       scriptType: ".ttl",
+      scriptPrefix: "",
+      fragment: "",
+      ontologyVersion: "",
       returnModuleName: "",
-      ontologyFragment: "",
-      ontologyVersion: "0.1",
-      returnSuffix: "Return",
+      returnSuffix: "",
       functionName: "",
+      showTemplateFunctions: true,
     };
 
     this.handleCreateScript = this.handleCreateScript.bind(this);
@@ -44,28 +45,34 @@ class ScriptActionsModuleModal extends React.Component {
 
   async handleCreateScript(event) {
     event.preventDefault();
-    const {
+    let {
       scriptPath,
       scriptName,
       scriptType,
-      ontologyURI,
-      ontologyFragment,
+      scriptPrefix,
+      fragment,
       ontologyVersion,
       returnModuleName,
       returnSuffix,
       functionName,
+      showTemplateFunctions,
     } = this.state;
-    console.log(scriptPath, ontologyURI, scriptName, scriptType, returnModuleName);
-    const completeOntologyURI = `${ontologyURI}/${ontologyFragment}-${ontologyVersion}`;
-    const completeReturnModuleName = `${returnModuleName}_${returnSuffix}`;
+    const ontologyURI = `${scriptPrefix}${fragment}${ontologyVersion}`;
+    let fullReturnModuleName = `${returnModuleName}${returnSuffix}`;
+
+    if (!showTemplateFunctions) {
+      functionName = null;
+      fullReturnModuleName = null;
+    }
+
     try {
       const response = await Rest.createScript(
-        completeOntologyURI,
+        ontologyURI,
         scriptName,
         scriptPath,
         scriptType,
-        completeReturnModuleName,
-        functionName,
+        showTemplateFunctions ? fullReturnModuleName : null,
+        showTemplateFunctions ? functionName : null,
       );
 
       this.props.handleRefresh();
@@ -122,16 +129,15 @@ class ScriptActionsModuleModal extends React.Component {
                       <Alert
                         onClick={() => {
                           const folderName = this.state.displayName || "";
-                          const defaultOntologyURI = DEFAULT_ONTOLOGY_URI || "";
                           this.setState({
                             createScriptVisible: true,
                             scriptName: folderName,
-                            ontologyURI: defaultOntologyURI,
-                            ontologyFragment: folderName,
+                            scriptPrefix: DEFAULT_SCRIPT_PREFIX || "",
+                            fragment: folderName,
                             returnModuleName: "",
-                            functionName: "", //TODO
-                            returnSuffix: "Return",
-                            ontologyVersion: "0.1",
+                            functionName: "",
+                            returnSuffix: "_Return",
+                            ontologyVersion: "-0.1",
                           });
                         }}
                         variant="info"
@@ -171,7 +177,7 @@ class ScriptActionsModuleModal extends React.Component {
                             this.setState((prevState) => ({
                               scriptName,
                               functionName: `${prevState.returnModuleName}-${scriptName}`,
-                              ontologyFragment: scriptName,
+                              fragment: scriptName,
                             }));
                           }
                         }}
@@ -179,7 +185,7 @@ class ScriptActionsModuleModal extends React.Component {
                       <Form.Select
                         value={this.state.scriptType}
                         onChange={(e) => this.setState({ scriptType: e.target.value })}
-                        style={{ maxWidth: "100px" }}
+                        style={{ maxWidth: "8rem" }}
                       >
                         <option value=".ttl">.ttl</option>
                         <option value=".sms.ttl">.sms.ttl</option>
@@ -188,67 +194,98 @@ class ScriptActionsModuleModal extends React.Component {
                   </Form.Group>
                   <Form.Group controlId="ontologyURI" className="mb-3">
                     <Form.Label>Ontology URI</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        required
-                        type={"url"}
-                        value={this.state.ontologyURI}
-                        onFocus={(e) => e.target.select()}
-                        onChange={(e) => this.setState({ ontologyURI: e.target.value })}
-                      />
-                      &nbsp; / &nbsp;
-                      <Form.Control
-                        required
-                        value={this.state.ontologyFragment}
-                        onFocus={(e) => e.target.select()}
-                        onChange={(e) => this.setState({ ontologyFragment: e.target.value })}
-                      />
-                      &nbsp; - &nbsp;
-                      <Form.Control
-                        required
-                        value={this.state.ontologyVersion}
-                        onFocus={(e) => e.target.select()}
-                        onChange={(e) => this.setState({ ontologyVersion: e.target.value })}
-                      />
-                    </InputGroup>
+                    <div className="border rounded p-3">
+                      <Row className="g-0">
+                        <Col xs={7}>
+                          <Form.Label>Prefix</Form.Label>
+                          <Form.Control
+                            required
+                            type="url"
+                            value={this.state.scriptPrefix}
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => this.setState({ scriptPrefix: e.target.value })}
+                            className="rounded-start rounded-0"
+                          />
+                        </Col>
+                        <Col xs={4}>
+                          <Form.Label>Fragment</Form.Label>
+                          <Form.Control
+                            value={this.state.fragment}
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => this.setState({ fragment: e.target.value })}
+                            className="rounded-0 border-start-0"
+                          />
+                        </Col>
+                        <Col xs={1}>
+                          <Form.Label>Version</Form.Label>
+                          <Form.Control
+                            value={this.state.ontologyVersion}
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => this.setState({ ontologyVersion: e.target.value })}
+                            className="rounded-0 border-start-0 rounded-end"
+                          />
+                        </Col>
+                      </Row>
+                    </div>
                   </Form.Group>
-                  <Form.Group controlId="returnModuleName" className="mb-3">
-                    <Form.Label>Return module name</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        required
-                        value={this.state.returnModuleName}
-                        onFocus={(e) => e.target.select()}
-                        onChange={(e) => {
-                          const returnModuleName = e.target.value;
-                          this.setState((prevState) => ({
-                            returnModuleName,
-                            functionName: `${returnModuleName}-${prevState.scriptName}`,
-                          }));
-                        }}
+
+                  <div className="border rounded p-3">
+                    <Form.Group controlId="functionsToggle" className="mb-3">
+                      <Form.Check
+                        type="checkbox"
+                        label="Include template functions"
+                        checked={this.state.showTemplateFunctions}
+                        onChange={(e) =>
+                          this.setState({
+                            showTemplateFunctions: e.target.checked,
+                            returnModuleName: "",
+                            returnSuffix: "_Return",
+                            functionName: "",
+                          })
+                        }
                       />
-                      &nbsp; _ &nbsp;
-                      <Form.Control
-                        required
-                        value={this.state.returnSuffix}
-                        onFocus={(e) => e.target.select()}
-                        onChange={(e) => this.setState({ returnSuffix: e.target.value })}
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                  <Form.Group controlId="functionName" className="mb-3">
-                    <Form.Label>Function name</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        required
-                        defaultValue={`${this.state.returnModuleName}-${this.state.scriptName}`}
-                        value={this.state.functionName}
-                        onFocus={(e) => e.target.select()}
-                        onChange={(e) => this.setState({ functionName: e.target.value })}
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                  <Button variant="primary" type="submit">
+                    </Form.Group>
+                    {this.state.showTemplateFunctions && (
+                      <>
+                        <Form.Group controlId="returnModuleName" className="mb-3">
+                          <Form.Label>Return module name</Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              required
+                              value={this.state.returnModuleName}
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const returnModuleName = e.target.value;
+                                this.setState((prevState) => ({
+                                  returnModuleName,
+                                  functionName: `${returnModuleName}-${prevState.scriptName}`,
+                                }));
+                              }}
+                            />
+                            <Form.Control
+                              value={this.state.returnSuffix}
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => this.setState({ returnSuffix: e.target.value })}
+                            />
+                          </InputGroup>
+                        </Form.Group>
+                        <Form.Group controlId="functionName" className="mb-3">
+                          <Form.Label>Function name</Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              required
+                              defaultValue={`${this.state.returnModuleName}-${this.state.scriptName}`}
+                              placeholder="<return module name>-<script name>"
+                              value={this.state.functionName}
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => this.setState({ functionName: e.target.value })}
+                            />
+                          </InputGroup>
+                        </Form.Group>
+                      </>
+                    )}
+                  </div>
+                  <Button variant="primary" type="submit" className="mt-3">
                     Create script
                   </Button>
                 </Form>
