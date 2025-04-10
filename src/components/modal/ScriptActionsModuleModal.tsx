@@ -58,6 +58,7 @@ class ScriptActionsModuleModal extends React.Component {
       functionName,
       showTemplateFunctions,
     } = this.state;
+    const filename = `${scriptName}${scriptType}`;
     const ontologyURI = `${scriptPrefix}${fragment}${ontologyVersion}`;
     let fullReturnModuleName = `${returnModuleName}${returnSuffix}`;
 
@@ -69,9 +70,8 @@ class ScriptActionsModuleModal extends React.Component {
     try {
       const response = await Rest.createScript(
         ontologyURI,
-        scriptName,
+        filename,
         scriptPath,
-        scriptType,
         showTemplateFunctions ? fullReturnModuleName : null,
         showTemplateFunctions ? functionName : null,
       );
