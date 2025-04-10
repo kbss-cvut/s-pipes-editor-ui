@@ -1,7 +1,9 @@
 import React from "react";
 
-import { Alert, Button, Col, Container, Form, Modal, Row, Table } from "react-bootstrap";
+import { Alert, Button, Col, Container, Form, Modal, Row, InputGroup } from "react-bootstrap";
 import Rest from "../../rest/Rest.tsx";
+import CreateScriptForm from "../forms/CreateScriptForm.tsx";
+import { DEFAULT_SCRIPT_PREFIX } from "@config/env.ts";
 
 class ScriptActionsModuleModal extends React.Component {
   constructor(props) {
@@ -13,9 +15,16 @@ class ScriptActionsModuleModal extends React.Component {
       type: null,
       isLoaded: false,
       createScriptVisible: false,
-      ontologyURI: false,
-      scriptName: false,
       modalVisible: false,
+      scriptName: "",
+      scriptType: ".ttl",
+      scriptPrefix: "",
+      fragment: "",
+      ontologyVersion: "",
+      returnModuleName: "",
+      returnSuffix: "",
+      functionName: "",
+      showTemplateFunctions: true,
     };
 
     this.handleCreateScript = this.handleCreateScript.bind(this);
@@ -37,10 +46,35 @@ class ScriptActionsModuleModal extends React.Component {
 
   async handleCreateScript(event) {
     event.preventDefault();
-    const { scriptPath, ontologyURI, scriptName } = this.state;
-    console.log(scriptPath, ontologyURI, scriptName);
+    let {
+      scriptPath,
+      scriptName,
+      scriptType,
+      scriptPrefix,
+      fragment,
+      ontologyVersion,
+      returnModuleName,
+      returnSuffix,
+      functionName,
+      showTemplateFunctions,
+    } = this.state;
+    const filename = `${scriptName}${scriptType}`;
+    const ontologyURI = `${scriptPrefix}${fragment}${ontologyVersion}`;
+    let fullReturnModuleName = `${returnModuleName}${returnSuffix}`;
+
+    if (!showTemplateFunctions) {
+      functionName = null;
+      fullReturnModuleName = null;
+    }
+
     try {
-      const response = await Rest.createScript(ontologyURI, scriptName, scriptPath);
+      const response = await Rest.createScript(
+        ontologyURI,
+        filename,
+        scriptPath,
+        showTemplateFunctions ? fullReturnModuleName : null,
+        showTemplateFunctions ? functionName : null,
+      );
 
       this.props.handleRefresh();
 
@@ -94,7 +128,20 @@ class ScriptActionsModuleModal extends React.Component {
                   {this.state.type === "folder" && (
                     <Col>
                       <Alert
-                        onClick={() => this.setState({ createScriptVisible: true })}
+                        onClick={() => {
+                          const folderName = this.state.displayName || "";
+                          this.setState({
+                            createScriptVisible: true,
+                            scriptName: folderName,
+                            scriptPrefix: DEFAULT_SCRIPT_PREFIX || "",
+                            fragment: folderName,
+                            returnModuleName: "",
+                            functionName: "",
+                            returnSuffix: "_Return",
+                            ontologyVersion: "-0.1",
+                            showTemplateFunctions: true,
+                          });
+                        }}
                         variant="info"
                         style={{ cursor: "pointer" }}
                       >
@@ -118,29 +165,11 @@ class ScriptActionsModuleModal extends React.Component {
               )}
 
               {this.state.createScriptVisible === true && (
-                <Form onSubmit={this.handleCreateScript}>
-                  <Form.Group controlId="scriptName" className="mb-3">
-                    <Form.Label>Script name</Form.Label>
-                    <Form.Control
-                      required
-                      pattern={".*ttl$"}
-                      placeholder="ontology-name.ttl"
-                      onChange={(e) => this.setState({ scriptName: e.target.value })}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="ontologyURI" className="mb-3">
-                    <Form.Label>Ontology URI</Form.Label>
-                    <Form.Control
-                      required
-                      type={"url"}
-                      placeholder="http://onto.fel.cvut.cz/ontologies/s-pipes/ontolog-name"
-                      onChange={(e) => this.setState({ ontologyURI: e.target.value })}
-                    />
-                  </Form.Group>
-                  <Button variant="primary" type="submit">
-                    Submit
-                  </Button>
-                </Form>
+                <CreateScriptForm
+                  state={this.state}
+                  setState={(newState) => this.setState(newState)}
+                  onSubmit={this.handleCreateScript}
+                />
               )}
             </Container>
           </Modal.Body>
