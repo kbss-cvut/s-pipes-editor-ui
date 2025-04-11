@@ -2,13 +2,22 @@ import URLs from "./apiUrls.ts";
 import * as Vocabulary from "@constants/vocabulary";
 import { getFetcher, postFetcher } from "./fetchers.js";
 
+const normaliseData = (response) => {
+  if (response["@list"]) {
+    return response["@list"];
+  }
+  return response;
+};
+
 export const Rest = {
   getScripts: function () {
     return getFetcher(URLs.SCRIPTS);
   },
 
   getExecutions: function () {
-    return getFetcher(URLs.EXECUTION_HISTORY);
+    return normaliseData(getFetcher(URLs.EXECUTION_HISTORY)).then((response) => {
+      return normaliseData(response);
+    });
   },
 
   getScript: function (script, transformation) {
@@ -33,7 +42,9 @@ export const Rest = {
       "@type": Vocabulary.SCRIPT_DTO,
       [Vocabulary.ABSOLUTE_PATH]: script,
     };
-    return postFetcher(URLs.SCRIPTS_ONTOLOGIES, data);
+    return normaliseData(postFetcher(URLs.SCRIPTS_ONTOLOGIES, data)).then((response) => {
+      return normaliseData(response);
+    });
   },
 
   removeScriptOwnOntology: function (script, ontologyURI) {
@@ -51,7 +62,9 @@ export const Rest = {
       [Vocabulary.SCRIPT_PATH]: script,
       [Vocabulary.ONTOLOGY_URI]: ontologyURI,
     };
-    return postFetcher(URLs.SCRIPTS_OWN_ONTOLOGY, data);
+    return normaliseData(postFetcher(URLs.SCRIPTS_OWN_ONTOLOGY, data)).then((response) => {
+      return normaliseData(response);
+    });
   },
 
   getScriptOwnOntology: function (script) {
@@ -59,7 +72,9 @@ export const Rest = {
       "@type": Vocabulary.SCRIPT_DTO,
       [Vocabulary.ABSOLUTE_PATH]: script,
     };
-    return postFetcher(URLs.SCRIPTS_OWN_ONTOLOGY, data);
+    return normaliseData(postFetcher(URLs.SCRIPTS_OWN_ONTOLOGY, data)).then((response) => {
+      return normaliseData(response);
+    });
   },
 
   getScriptForm: function (moduleTypeUri, moduleUri, scriptPath) {
@@ -144,7 +159,9 @@ export const Rest = {
       "@type": Vocabulary.SCRIPT_DTO,
       [Vocabulary.ABSOLUTE_PATH]: filepath,
     };
-    return postFetcher(URLs.MODULE_TYPES, data);
+    return normaliseData(postFetcher(URLs.MODULE_TYPES, data)).then((response) => {
+      return normaliseData(response);
+    });
   },
 
   getModulesFunctions: function (filepath) {
@@ -152,7 +169,9 @@ export const Rest = {
       "@type": Vocabulary.SCRIPT_DTO,
       [Vocabulary.ABSOLUTE_PATH]: filepath,
     };
-    return postFetcher(URLs.FUNCTION_SCRIPT, data);
+    return postFetcher(URLs.FUNCTION_SCRIPT, data).then((response) => {
+      return normaliseData(response);
+    });
   },
 
   executeFunction: function (functionUri, params) {
