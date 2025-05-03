@@ -228,6 +228,34 @@ export const Rest = {
     };
     return postFetcher(URLs.EXECUTION_HISTORY_MODULES, data);
   },
+
+  getDebugExecutions: function () {
+    return getFetcher(URLs.DEBUG_EXECUTIONS);
+  },
+
+  getExecution: function (transformationId) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${transformationId}`);
+  },
+
+  getExecutionModules: function (transformationId) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${transformationId}/modules`);
+  },
+
+  compareExecutions: function (id1, id2) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${id1}/compare/${id2}`);
+  },
+
+  findVariableOrigin: function (id, pattern) {
+    return getFetcher(`${URLs.DEBUG_VARIABLE_ORIGIN}/${id}?variable=${pattern}`);
+  },
+
+  findTripleOrigin: function (id, pattern) {
+    return getFetcher(`${URLs.DEBUG_TRIPLE_ORIGIN}/${id}?graphPattern=${pattern}`);
+  },
+
+  findTripleElimination: function (id, pattern) {
+    return getFetcher(`${URLs.DEBUG_TRIPLE_ELIMINATION}/${id}?graphPattern=${pattern}`);
+  },
 };
 
 export default Rest;
