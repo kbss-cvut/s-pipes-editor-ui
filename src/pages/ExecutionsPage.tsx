@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import DebugModal from "@components/modal/DebugModal";
+
 import {
   ABSOLUTE_PATH,
   DISPLAY_NAME,
@@ -11,7 +13,7 @@ import {
 import Rest from "@rest/Rest.tsx";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMugHot, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faMugHot, faEdit, faQuestion, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import Loading from "@components/Loading";
@@ -19,6 +21,9 @@ import Loading from "@components/Loading";
 const ExecutionsPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [executionName, setExecutionName] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  const [showDebugModal, setShowDebugModal] = useState(false);
 
   useEffect(() => {
     Rest.getExecutions().then((response) => {
@@ -73,6 +78,15 @@ const ExecutionsPage = () => {
                       >
                         <FontAwesomeIcon icon={faQuestion} />
                       </Col>
+                      <Col
+                        onClick={async () => {
+                          setSelectedId(data[TRANSFORMATION].split("/").pop());
+                          setExecutionName(data[DISPLAY_NAME]);
+                          setShowDebugModal(true);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faSearch} />
+                      </Col>
                     </Row>
                   </Container>
                 </td>
@@ -80,6 +94,15 @@ const ExecutionsPage = () => {
             ))}
         </tbody>
       </Table>
+      {showDebugModal && (
+        <DebugModal
+          show={showDebugModal}
+          onHide={() => setShowDebugModal(false)}
+          id={selectedId}
+          name={executionName}
+          executions={data}
+        />
+      )}
     </>
   );
 };
