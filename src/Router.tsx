@@ -6,6 +6,7 @@ import ScriptsPage from "@pages/ScriptsPage";
 import Layout from "@layouts/Layout";
 import NotFoundPage from "@pages/NotFoundPage";
 import ScriptPage from "@pages/ScriptPage";
+import ExecutionPage from "@pages/ExecutionPage";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
         <Route path="script" element={<ScriptPage />} />
+        <Route path="execution" element={<ExecutionPage />} />
       </Routes>
     </BrowserRouter>
   );

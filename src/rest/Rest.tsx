@@ -237,6 +237,12 @@ export const Rest = {
     return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${transformationId}`);
   },
 
+  getExecutionName: function (id) {
+    return normaliseData(getFetcher(`${URLs.EXECUTION}/${id}`)).then((response) => {
+      return normaliseData(response);
+    });
+  },
+
   getExecutionModules: function (transformationId) {
     return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${transformationId}/modules`);
   },
