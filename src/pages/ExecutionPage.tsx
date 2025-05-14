@@ -1,14 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import cytoscape from "cytoscape";
-import cytoscapePopper from "cytoscape-popper";
-import { createPopper } from "@popperjs/core";
 import dagre from "cytoscape-dagre";
+import dayjs from "dayjs";
 import { createRoot } from "react-dom/client";
 import { Rest } from "@rest/Rest.tsx";
 import { useSearchParams } from "react-router-dom";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import NavbarMenu from "@components/NavbarMenu";
+import Loading from "@components/Loading";
+import DebugModal from "@components/modal/DebugModal";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 cytoscape.use(dagre);
-cytoscape.use(cytoscapePopper(createPopper));
+
+const openJsonInNewTab = (jsonData) => {
+  const jsonString = JSON.stringify(jsonData, null, 2);
+  const newWindow = window.open();
+  newWindow.document.open();
+  newWindow.document.write("<html><body><pre>" + jsonString + "</pre></body></html>");
+  newWindow.document.close();
+};
 
 function NodePopperContent({ nodeData, onClose }) {
   return (
@@ -24,14 +36,78 @@ function NodePopperContent({ nodeData, onClose }) {
         position: "relative",
       }}
     >
-      <strong>Label:</strong> {nodeData.label}
-      <br />
-      <strong>ID:</strong> {nodeData.id}
-      <br />
-      <strong>Input triples:</strong> {nodeData.input_triple_count}
-      <br />
-      <strong>Output triples:</strong> {nodeData.output_triple_count}
-      <br />
+      <button
+        onClick={onClose}
+        style={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          background: "transparent",
+          border: "none",
+          fontSize: 24,
+          fontWeight: "bold",
+          cursor: "pointer",
+          lineHeight: 1,
+        }}
+        aria-label="Close"
+      >
+        ×
+      </button>
+      <div>
+        <div>
+          <b>Label:</b> {nodeData.label}
+        </div>
+        <div>
+          <b>ID:</b> {nodeData.id.split("/").pop()}
+        </div>
+        <div>
+          <b>Start date:</b> {dayjs(nodeData.start_date).format("YYYY-MM-DD HH:mm:ss.SSS")}
+        </div>
+        <div>
+          <b>Finish date:</b> {dayjs(nodeData.finish_date).format("YYYY-MM-DD HH:mm:ss.SSS")}
+        </div>
+        <div>
+          <b>Duration:</b> {nodeData.duration} ms
+        </div>
+        <div>
+          <b>Input triples:</b> {nodeData.input_triple_count}
+        </div>
+        <div>
+          <b>Output triples:</b> {nodeData.output_triple_count}
+        </div>
+        <div>
+          <b>Types:</b> {nodeData.types?.join(", ")}
+        </div>
+        <div>
+          <b>Input binding:</b> {nodeData.has_input_binding}
+        </div>
+        <div>
+          {nodeData.has_rdf4j_input ? (
+            <a
+              href={`http://localhost:1235/services/db-server/resource?uri=${encodeURIComponent(nodeData.has_rdf4j_input)}&role=context`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <b>RDF4j input</b> <FontAwesomeIcon icon={faExternalLinkAlt} />
+            </a>
+          ) : (
+            nodeData.has_rdf4j_input || ""
+          )}
+        </div>
+        <div>
+          {nodeData.has_rdf4j_output ? (
+            <a
+              href={`http://localhost:1235/services/db-server/resource?uri=${encodeURIComponent(nodeData.has_rdf4j_output)}&role=context`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <b>RDF4j output</b> <FontAwesomeIcon icon={faExternalLinkAlt} />
+            </a>
+          ) : (
+            nodeData.has_rdf4j_output || ""
+          )}
+        </div>
+      </div>
       <button onClick={onClose} style={{ marginTop: 10 }}>
         Close
       </button>
@@ -39,21 +115,31 @@ function NodePopperContent({ nodeData, onClose }) {
   );
 }
 
-function buildExecutionGraph(data) {
-  if (!data || !Array.isArray(data.has_module_executions)) {
+function renderGraph(modules) {
+  if (!Array.isArray(modules)) {
     return { nodes: [], edges: [] };
   }
-  const nodes = data.has_module_executions.map((mod) => ({
+  const nodes = modules.map((mod) => ({
     data: {
       id: mod.id,
-      label: mod.has_module_id.split("/").pop(),
+      label: mod.has_module_id ? mod.has_module_id.split("/").pop() : mod.id,
+      start_date: mod.start_date,
+      finish_date: mod.finish_date,
+      duration: mod.duration,
       input_triple_count: mod.input_triple_count,
       output_triple_count: mod.output_triple_count,
+      types: mod.types,
+      has_related_resources: mod.has_related_resources.id,
+      executed_in: mod.executed_in.id,
+      has_input_binding: mod.has_input_binding.id,
+      has_rdf4j_input: mod.has_rdf4j_input.id,
+      has_rdf4j_output: mod.has_rdf4j_output.id,
     },
   }));
+  console.log("nodes", nodes);
 
   const edges = [];
-  data.has_module_executions.forEach((mod) => {
+  modules.forEach((mod) => {
     if (mod.has_next) {
       edges.push({
         data: {
@@ -63,30 +149,50 @@ function buildExecutionGraph(data) {
       });
     }
   });
+
   return { nodes, edges };
 }
 
 function ExecutionPage() {
   const [executionData, setExecutionData] = useState([]);
   const [executionName, setExecutionName] = useState([]);
+  const [moduleData, setModuleData] = useState(null);
   const [searchParams] = useSearchParams();
   const executionId = searchParams.get("id");
+  const [showDebugModal, setShowDebugModal] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const cyRef = useRef(null);
   const cyInstance = useRef(null);
-  useEffect(() => {
-    Rest.getExecution(executionId).then((response) => {
-      setExecutionData(response);
-    });
-    Rest.getExecutionName(executionId).then((response) => {
-      setExecutionName(response[0]);
-    });
-  }, []);
 
   useEffect(() => {
-    if (!executionData) return;
+    setIsLoaded(false);
 
-    const { nodes, edges } = buildExecutionGraph(executionData);
+    Promise.all([
+      Rest.getExecution(executionId),
+      Rest.getExecutionName(executionId),
+      Rest.getExecutionModules(executionId),
+    ]).then(([execution, name, modules]) => {
+      setExecutionData(execution);
+      setExecutionName(name[0]);
+      setModuleData(modules);
+      setIsLoaded(true);
+
+      processGraph(modules);
+    });
+  }, [executionId]);
+
+  useEffect(() => {
+    if (isLoaded && moduleData) {
+      processGraph(moduleData);
+    }
+  }, [isLoaded, moduleData]);
+
+  function processGraph(executionData) {
+    if (!executionData || !isLoaded) {
+      return;
+    }
+    const { nodes, edges } = renderGraph(executionData);
 
     if (cyInstance.current) {
       cyInstance.current.destroy();
@@ -106,8 +212,8 @@ function ExecutionPage() {
             width: "label",
             height: "label",
             padding: "10px",
-            "background-color": "#888",
-            color: "#fff",
+            "background-color": "#ccc",
+            color: "black",
             "font-size": 14,
             "text-wrap": "wrap",
             "text-max-width": 120,
@@ -171,22 +277,68 @@ function ExecutionPage() {
         cyInstance.current = null;
       }
     };
-  }, [executionData]);
+  }
 
   return (
-    <div>
-      <h2>{executionName}</h2>
-      <p>Execution ID: {executionId}</p>
-      <div
-        ref={cyRef}
-        style={{
-          width: "80vw",
-          height: "90vh",
-          border: "2px solid #ccc",
-          background: "#fafafa",
-        }}
-      />
-    </div>
+    <>
+      <NavbarMenu />
+      {!isLoaded ? (
+        <Loading />
+      ) : (
+        <Container>
+          <Row>
+            <h6 className="mt-2">Pipeline Execution</h6>
+            <h2 className="mb-4">{executionName}</h2>
+          </Row>
+          <Row>
+            <Col xs={3}>
+              <div className="sidebar-panel">
+                <h5>Execution Info</h5>
+                <div>
+                  <b>ID:</b> {executionData.id?.split("/").pop()}
+                </div>
+                <div>
+                  <b>Date:</b> {dayjs(executionData.has_pipepline_execution_date).format("YYYY-MM-DD HH:mm:ss.SSS")}
+                </div>
+                <div>
+                  <b>Type:</b> {executionData.types?.join(", ")}
+                </div>
+                <div>
+                  <b>Modules executed: </b> {executionData.has_module_executions?.length}
+                </div>
+              </div>
+              <Button variant="outline-primary" className="mt-3" onClick={() => setShowDebugModal(true)}>
+                Debug Modal
+              </Button>
+              <br />
+              <Button variant="outline-secondary" className="mt-3" onClick={() => openJsonInNewTab(executionData)}>
+                Execution JSON <FontAwesomeIcon icon={faExternalLinkAlt} />
+              </Button>
+            </Col>
+            <Col xs={9}>
+              <div
+                ref={cyRef}
+                style={{
+                  width: "100%",
+                  height: "90vh",
+                  border: "2px solid #ccc",
+                  background: "#fcfcfc",
+                }}
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
+      {showDebugModal && (
+        <DebugModal
+          show={showDebugModal}
+          onHide={() => setShowDebugModal(false)}
+          id={executionId}
+          name={executionName}
+          modulesData={moduleData}
+        />
+      )}
+    </>
   );
 }
 
