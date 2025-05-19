@@ -25,6 +25,7 @@ class ScriptActionsModuleModal extends React.Component {
       returnSuffix: "",
       functionName: "",
       showTemplateFunctions: true,
+      functionArguments: [],
     };
 
     this.handleCreateScript = this.handleCreateScript.bind(this);
@@ -57,6 +58,7 @@ class ScriptActionsModuleModal extends React.Component {
       returnSuffix,
       functionName,
       showTemplateFunctions,
+      functionArguments,
     } = this.state;
     const filename = `${scriptName}${scriptType}`;
     const ontologyURI = `${scriptPrefix}${fragment}${ontologyVersion}`;
@@ -74,6 +76,7 @@ class ScriptActionsModuleModal extends React.Component {
         scriptPath,
         showTemplateFunctions ? fullReturnModuleName : null,
         showTemplateFunctions ? functionName : null,
+        functionArguments,
       );
 
       this.props.handleRefresh();
@@ -82,6 +85,7 @@ class ScriptActionsModuleModal extends React.Component {
         isLoaded: false,
         modalVisible: false,
         createScriptVisible: false,
+        functionArguments: [],
       });
     } catch (error) {
       alert("An error occurred during script creation.");
@@ -105,7 +109,7 @@ class ScriptActionsModuleModal extends React.Component {
   }
 
   handleClose() {
-    this.setState({ isLoaded: false, modalVisible: false, createScriptVisible: false });
+    this.setState({ isLoaded: false, modalVisible: false, createScriptVisible: false, functionArguments: [] });
   }
 
   render() {

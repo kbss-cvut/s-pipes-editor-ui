@@ -11,7 +11,36 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
     returnSuffix,
     functionName,
     showTemplateFunctions,
+    functionArguments = [],
   } = state;
+
+  const addArgument = () => {
+    setState({
+      functionArguments: [
+        ...functionArguments,
+        {
+          name: "",
+          optional: false,
+          label: "",
+          comment: "",
+        },
+      ],
+    });
+  };
+  const updateArgument = (index, field, value) => {
+    const updatedArguments = [...functionArguments];
+    updatedArguments[index] = {
+      ...updatedArguments[index],
+      [field]: value,
+    };
+    setState({ functionArguments: updatedArguments });
+  };
+
+  const removeArgument = (index) => {
+    const updatedArguments = [...functionArguments];
+    updatedArguments.splice(index, 1);
+    setState({ functionArguments: updatedArguments });
+  };
   return (
     <Form onSubmit={onSubmit}>
       <Form.Group controlId="scriptName" className="mb-3">
@@ -131,6 +160,51 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
                   onChange={(e) => setState({ functionName: e.target.value })}
                 />
               </InputGroup>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Function Arguments</Form.Label>
+              <div className="border rounded p-3">
+                {functionArguments &&
+                  functionArguments.map((param, index) => (
+                    <div key={index} className="mb-3 pb-3 border-bottom">
+                      <Row className="align-items-center">
+                        <Col xs={3}>
+                          <Form.Control
+                            value={param.name}
+                            onChange={(e) => updateArgument(index, "name", e.target.value)}
+                            placeholder="spl:predicate"
+                          />
+                        </Col>
+                        <Col xs={3}>
+                          <Form.Control
+                            value={param.label}
+                            onChange={(e) => updateArgument(index, "label", e.target.value)}
+                            placeholder="rdfs:label"
+                          />
+                        </Col>
+                        <Col xs={5}>
+                          <Form.Control
+                            value={param.comment}
+                            onChange={(e) => updateArgument(index, "comment", e.target.value)}
+                            placeholder="rdfs:comment"
+                          />
+                        </Col>
+                        <Col xs={1}>
+                          <Button variant="outline-danger" size="sm" onClick={() => removeArgument(index)}>
+                            X
+                          </Button>
+                        </Col>
+                      </Row>
+                      <div className="text-end"></div>
+                    </div>
+                  ))}
+
+                <div className="text-center">
+                  <Button variant="outline-primary" onClick={addArgument}>
+                    Add Argument
+                  </Button>
+                </div>
+              </div>
             </Form.Group>
           </>
         )}
