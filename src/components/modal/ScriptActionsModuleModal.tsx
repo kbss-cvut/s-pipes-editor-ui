@@ -17,7 +17,7 @@ class ScriptActionsModuleModal extends React.Component {
       createScriptVisible: false,
       modalVisible: false,
       scriptName: "",
-      scriptType: ".ttl",
+      scriptType: ".sms.ttl",
       scriptPrefix: "",
       fragment: "",
       ontologyVersion: "",

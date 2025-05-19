@@ -64,10 +64,10 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
           <Form.Select
             value={scriptType}
             onChange={(e) => setState({ scriptType: e.target.value })}
-            style={{ maxWidth: "8rem" }}
+            style={{ maxWidth: "10rem" }}
           >
-            <option value=".ttl">.ttl</option>
             <option value=".sms.ttl">.sms.ttl</option>
+            <option value=".ttl">.ttl</option>
           </Form.Select>
         </InputGroup>
       </Form.Group>
@@ -96,7 +96,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
               />
             </Col>
             <Col xs={1}>
-              <Form.Label>Version</Form.Label>
+              <Form.Label>Version suffix</Form.Label>
               <Form.Control
                 value={ontologyVersion}
                 onFocus={(e) => e.target.select()}
@@ -112,7 +112,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
         <Form.Group controlId="functionsToggle" className="mb-3">
           <Form.Check
             type="checkbox"
-            label="Include template functions"
+            label="Include function"
             checked={showTemplateFunctions}
             onChange={(e) =>
               setState({
@@ -127,26 +127,33 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
         {showTemplateFunctions && (
           <>
             <Form.Group controlId="returnModuleName" className="mb-3">
-              <Form.Label>Return module name</Form.Label>
-              <InputGroup>
-                <Form.Control
-                  required
-                  value={returnModuleName}
-                  onFocus={(e) => e.target.select()}
-                  onChange={(e) => {
-                    const returnModuleName = e.target.value;
-                    setState((prevState) => ({
-                      returnModuleName,
-                      functionName: `${returnModuleName}-${prevState.scriptName}`,
-                    }));
-                  }}
-                />
-                <Form.Control
-                  value={returnSuffix}
-                  onFocus={(e) => e.target.select()}
-                  onChange={(e) => setState({ returnSuffix: e.target.value })}
-                />
-              </InputGroup>
+              <Row className="g-0">
+                <Col xs={5}>
+                  <Form.Label>Return module name</Form.Label>
+                  <Form.Control
+                    required
+                    value={returnModuleName}
+                    onFocus={(e) => e.target.select()}
+                    onChange={(e) => {
+                      const returnModuleName = e.target.value;
+                      setState((prevState) => ({
+                        returnModuleName,
+                        functionName: `${returnModuleName}-${prevState.scriptName}`,
+                      }));
+                    }}
+                    className="rounded-start rounded-0"
+                  />
+                </Col>
+                <Col xs={7}>
+                  <Form.Label>Suffix</Form.Label>
+                  <Form.Control
+                    value={returnSuffix}
+                    onFocus={(e) => e.target.select()}
+                    onChange={(e) => setState({ returnSuffix: e.target.value })}
+                    className="rounded-0 border-start-0 rounded-end"
+                  />
+                </Col>
+              </Row>
             </Form.Group>
             <Form.Group controlId="functionName" className="mb-3">
               <Form.Label>Function name</Form.Label>
