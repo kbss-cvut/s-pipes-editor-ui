@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import cytoscape from "cytoscape";
 import dagre from "cytoscape-dagre";
+import { createPopper } from "@popperjs/core";
+import popper from "cytoscape-popper";
 import dayjs from "dayjs";
 import { createRoot } from "react-dom/client";
 import { Rest } from "@rest/Rest.tsx";
@@ -13,6 +15,7 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 cytoscape.use(dagre);
+cytoscape.use(popper(createPopper));
 
 const openJsonInNewTab = (jsonData) => {
   const jsonString = JSON.stringify(jsonData, null, 2);
@@ -72,15 +75,7 @@ function NodePopperContent({ nodeData, onClose }) {
         <div>
           <b>Input triples:</b> {nodeData.input_triple_count}
         </div>
-        <div>
-          <b>Output triples:</b> {nodeData.output_triple_count}
-        </div>
-        <div>
-          <b>Types:</b> {nodeData.types?.join(", ")}
-        </div>
-        <div>
-          <b>Input binding:</b> {nodeData.has_input_binding}
-        </div>
+
         <div>
           {nodeData.has_rdf4j_input ? (
             <a
@@ -93,6 +88,9 @@ function NodePopperContent({ nodeData, onClose }) {
           ) : (
             nodeData.has_rdf4j_input || ""
           )}
+        </div>
+        <div>
+          <b>Output triples:</b> {nodeData.output_triple_count}
         </div>
         <div>
           {nodeData.has_rdf4j_output ? (
@@ -108,9 +106,6 @@ function NodePopperContent({ nodeData, onClose }) {
           )}
         </div>
       </div>
-      <button onClick={onClose} style={{ marginTop: 10 }}>
-        Close
-      </button>
     </div>
   );
 }
@@ -128,10 +123,8 @@ function renderGraph(modules) {
       duration: mod.duration,
       input_triple_count: mod.input_triple_count,
       output_triple_count: mod.output_triple_count,
-      types: mod.types,
       has_related_resources: mod.has_related_resources.id,
       executed_in: mod.executed_in.id,
-      has_input_binding: mod.has_input_binding.id,
       has_rdf4j_input: mod.has_rdf4j_input.id,
       has_rdf4j_output: mod.has_rdf4j_output.id,
     },
@@ -177,7 +170,6 @@ function ExecutionPage() {
       setExecutionName(name[0]);
       setModuleData(modules);
       setIsLoaded(true);
-
       processGraph(modules);
     });
   }, [executionId]);
