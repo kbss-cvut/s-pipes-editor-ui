@@ -178,8 +178,9 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
                         <Col xs={3}>
                           <Form.Control
                             value={param.name}
+                            required
                             onChange={(e) => updateArgument(index, "name", e.target.value)}
-                            placeholder="spl:predicate"
+                            placeholder="Variable name [spl:predicate]"
                           />
                         </Col>
                         <Col xs={3}>
