@@ -1,6 +1,7 @@
 const URLs = {
   SCRIPTS: `/scripts`,
   EXECUTION_HISTORY: `/execution/history`,
+  EXECUTION: `/execution`,
   VIEWS_NEW: `/views/new`,
   SCRIPTS_DELETE: `/scripts/delete`,
   SCRIPTS_ONTOLOGIES: `/scripts/ontologies`,

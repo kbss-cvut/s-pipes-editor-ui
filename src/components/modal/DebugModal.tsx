@@ -1,6 +1,6 @@
 // @components/modal/DebugModal.js
 import { Modal, Button, Table, Tabs, Tab, Form, InputGroup } from "react-bootstrap";
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import Rest from "@rest/Rest.tsx";
 
 import dayjs from "dayjs";
@@ -9,6 +9,19 @@ import { GraphDBLink } from "@pages/ExecutionPage";
 
 const popModuleName = (module) => module.has_module_id?.split("/").pop();
 const popId = (exec) => exec[TRANSFORMATION].split("/").pop();
+
+const LoadingSpinner = () => (
+  <div className="mt-4 d-flex align-items-center">
+    <div className="spinner-border text-primary me-2" role="status" />
+    <span>Loading...</span>
+  </div>
+);
+
+const ErrorAlert = ({ message }) => (
+  <div className="alert alert-danger mt-3" role="alert">
+    {message}
+  </div>
+);
 
 const DebugModal = ({ show, onHide, id, name, modulesData }) => {
   const [state, setState] = useState({
@@ -26,18 +39,22 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
     tripleEliminationResult: null,
     error: null,
     activeTab: "modules",
-    comparableExecutions: [],
   });
 
   useEffect(() => {
     fetchExecutions();
   }, []);
 
+  const comparableExecutions = useMemo(
+    () => state.debugData.filter((exec) => popId(exec) !== id),
+    [state.debugData, id],
+  );
+
   const fetchExecutions = async () => {
     try {
       const response = await Rest.getExecutions();
       const comparableExecutions = response.filter((exec) => popId(exec) !== id);
-      setState({ ...state, debugData: response, loading: false, comparableExecutions: comparableExecutions });
+      setState({ ...state, debugData: response, loading: false });
     } catch (err) {
       console.error("Failed to fetch executions:", err);
       setState({ ...state, loading: false });
@@ -106,12 +123,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
         >
           <Tab eventKey="modules" title="Modules Executions" unmountOnExit>
             <h4 className="mt-3">Modules Executions</h4>
-            {state.isComparing && (
-              <div className="mt-4 d-flex align-items-center">
-                <div className="spinner-border text-primary me-2" role="status" />
-                <span>Loading...</span>
-              </div>
-            )}
+            {state.isComparing && <LoadingSpinner />}
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -170,7 +182,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                       disabled={state.isComparing}
                     >
                       <option value="">Select execution ID to compare</option>
-                      {state.comparableExecutions.map((exec) => (
+                      {comparableExecutions.map((exec) => (
                         <option key={exec[TRANSFORMATION]} value={popId(exec)}>
                           {exec[DISPLAY_NAME]} [{popId(exec)}]
                         </option>
@@ -183,20 +195,8 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                 </Form.Group>
               </Form>
 
-              {state.isComparing && (
-                <>
-                  <div className="mt-4 d-flex align-items-center">
-                    <div className="spinner-border text-primary me-2" role="status" />
-                    <span>Loading...</span>
-                  </div>
-                </>
-              )}
-
-              {state.error && (
-                <div className="alert alert-danger mt-3" role="alert">
-                  {state.error}
-                </div>
-              )}
+              {state.isComparing && <LoadingSpinner />}
+              {state.error && <ErrorAlert message={state.error} />}
 
               {state.comparisonResult && (
                 <div className="mt-4">
@@ -254,17 +254,8 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                   </InputGroup>
                 </Form.Group>
               </Form>
-              {state.isComparing && (
-                <div className=" d-flex align-items-center mt-4">
-                  <div className="spinner-border text-primary me-2" role="status" />
-                  <span>Loading...</span>
-                </div>
-              )}
-              {state.error && (
-                <div className="alert alert-danger mt-4" role="alert">
-                  {state.error}
-                </div>
-              )}
+              {state.isComparing && <LoadingSpinner />}
+              {state.error && <ErrorAlert message={state.error} />}
 
               {state.variableOriginResult && state.variableOriginResult.length > 0 && (
                 <div className="mt-4">
@@ -316,18 +307,8 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                   </InputGroup>
                 </Form.Group>
               </Form>
-              {state.error && (
-                <div className="alert alert-danger mt-3" role="alert">
-                  {state.error}
-                </div>
-              )}
-              {state.isComparing && (
-                <div className="mt-4 d-flex align-items-center">
-                  <div className="spinner-border text-primary me-2" role="status" />
-                  <span>Loading...</span>
-                </div>
-              )}
-
+              {state.isComparing && <LoadingSpinner />}
+              {state.error && <ErrorAlert message={state.error} />}
               {state.tripleOriginResult && state.tripleOriginResult.length > 0 && (
                 <div className="mt-4">
                   <h5>Triple Origin Results</h5>
@@ -390,17 +371,9 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                   </InputGroup>
                 </Form.Group>
               </Form>
-              {state.error && (
-                <div className="alert alert-danger mt-3" role="alert">
-                  {state.error}
-                </div>
-              )}
-              {state.isComparing && (
-                <div className="mt-4 d-flex align-items-center">
-                  <div className="spinner-border text-primary me-2" role="status" />
-                  <span>Loading...</span>
-                </div>
-              )}
+
+              {state.isComparing && <LoadingSpinner />}
+              {state.error && <ErrorAlert message={state.error} />}
 
               {state.tripleEliminationResult && state.tripleEliminationResult.length > 0 && (
                 <div className="mt-4">
