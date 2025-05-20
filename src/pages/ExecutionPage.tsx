@@ -25,6 +25,17 @@ const openJsonInNewTab = (jsonData) => {
   newWindow.document.close();
 };
 
+export function GraphDBLink({ id }) {
+  if (!id) return null;
+  const baseUrl = "http://localhost:1235/services/db-server/resource";
+  const url = `${baseUrl}?uri=${encodeURIComponent(id)}&role=context`;
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer">
+      GraphDB <FontAwesomeIcon icon={faExternalLinkAlt} />
+    </a>
+  );
+}
+
 function NodePopperContent({ nodeData, onClose }) {
   return (
     <div
@@ -73,37 +84,17 @@ function NodePopperContent({ nodeData, onClose }) {
           <b>Duration:</b> {nodeData.duration} ms
         </div>
         <div>
-          <b>Input triples:</b> {nodeData.input_triple_count}
+          <b>Input triples count:</b> {nodeData.input_triple_count}
         </div>
 
         <div>
-          {nodeData.has_rdf4j_input ? (
-            <a
-              href={`http://localhost:1235/services/db-server/resource?uri=${encodeURIComponent(nodeData.has_rdf4j_input)}&role=context`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <b>RDF4j input</b> <FontAwesomeIcon icon={faExternalLinkAlt} />
-            </a>
-          ) : (
-            nodeData.has_rdf4j_input || ""
-          )}
+          <b>Input:</b> <GraphDBLink id={nodeData.has_rdf4j_input && nodeData.has_rdf4j_input} />
         </div>
         <div>
-          <b>Output triples:</b> {nodeData.output_triple_count}
+          <b>Output triples count:</b> {nodeData.output_triple_count}
         </div>
         <div>
-          {nodeData.has_rdf4j_output ? (
-            <a
-              href={`http://localhost:1235/services/db-server/resource?uri=${encodeURIComponent(nodeData.has_rdf4j_output)}&role=context`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <b>RDF4j output</b> <FontAwesomeIcon icon={faExternalLinkAlt} />
-            </a>
-          ) : (
-            nodeData.has_rdf4j_output || ""
-          )}
+          <b>Output:</b> <GraphDBLink id={nodeData.has_rdf4j_output && nodeData.has_rdf4j_output} />
         </div>
       </div>
     </div>
@@ -160,14 +151,13 @@ function ExecutionPage() {
 
   useEffect(() => {
     setIsLoaded(false);
-
     Promise.all([
       Rest.getExecution(executionId),
       Rest.getExecutionName(executionId),
       Rest.getExecutionModules(executionId),
     ]).then(([execution, name, modules]) => {
       setExecutionData(execution);
-      setExecutionName(name[0]);
+      setExecutionName(name);
       setModuleData(modules);
       setIsLoaded(true);
       processGraph(modules);
@@ -299,7 +289,7 @@ function ExecutionPage() {
                   <b>Modules executed: </b> {executionData.has_module_executions?.length}
                 </div>
               </div>
-              <Button variant="outline-primary" className="mt-3" onClick={() => setShowDebugModal(true)}>
+              <Button variant="primary" className="mt-3" onClick={() => setShowDebugModal(true)}>
                 Debug Modal
               </Button>
               <br />

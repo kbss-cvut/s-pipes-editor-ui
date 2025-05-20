@@ -21,9 +21,6 @@ import Loading from "@components/Loading";
 const ExecutionsPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [executionName, setExecutionName] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
-  const [showDebugModal, setShowDebugModal] = useState(false);
 
   useEffect(() => {
     Rest.getExecutions().then((response) => {
@@ -78,14 +75,10 @@ const ExecutionsPage = () => {
                       >
                         <FontAwesomeIcon icon={faQuestion} />
                       </Col>
-                      <Col
-                        onClick={async () => {
-                          setSelectedId(data[TRANSFORMATION].split("/").pop());
-                          setExecutionName(data[DISPLAY_NAME]);
-                          setShowDebugModal(true);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faSearch} />
+                      <Col>
+                        <Link to={`/execution?id=${data[TRANSFORMATION].split("/").pop()}`}>
+                          <FontAwesomeIcon icon={faSearch} />
+                        </Link>
                       </Col>
                     </Row>
                   </Container>
@@ -94,15 +87,6 @@ const ExecutionsPage = () => {
             ))}
         </tbody>
       </Table>
-      {showDebugModal && (
-        <DebugModal
-          show={showDebugModal}
-          onHide={() => setShowDebugModal(false)}
-          id={selectedId}
-          name={executionName}
-          executions={data}
-        />
-      )}
     </>
   );
 };

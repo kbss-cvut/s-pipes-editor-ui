@@ -4,12 +4,11 @@ import { use, useEffect, useState } from "react";
 import Rest from "@rest/Rest.tsx";
 
 import dayjs from "dayjs";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DISPLAY_NAME, TRANSFORMATION } from "@constants/vocabulary";
-import Loading from "@components/Loading";
+import { GraphDBLink } from "@pages/ExecutionPage";
 
-const getModuleName = (module) => module.has_module_id?.split("/").pop();
+const popModuleName = (module) => module.has_module_id?.split("/").pop();
+const popId = (exec) => exec[TRANSFORMATION].split("/").pop();
 
 const DebugModal = ({ show, onHide, id, name, modulesData }) => {
   const [state, setState] = useState({
@@ -30,22 +29,14 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
     comparableExecutions: [],
   });
 
-  // useEffect(() => {
-  //     fetchModulesData(id);
-  //     setState({ ...state, loading: false });
-
-  // }, [id]);
-
   useEffect(() => {
     fetchExecutions();
   }, []);
 
   const fetchExecutions = async () => {
     try {
-      const response = await Rest.getDebugExecutions();
-      console.log("API Executions Response:", response);
-      const comparableExecutions = response.filter((exec) => exec.id.split("/").pop() !== id);
-
+      const response = await Rest.getExecutions();
+      const comparableExecutions = response.filter((exec) => popId(exec) !== id);
       setState({ ...state, debugData: response, loading: false, comparableExecutions: comparableExecutions });
     } catch (err) {
       console.error("Failed to fetch executions:", err);
@@ -53,21 +44,10 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
     }
   };
 
-  const fetchModulesData = async (id) => {
-    try {
-      const response = await Rest.getExecutionModules(id);
-      console.log("API Modules Response:", response);
-      setState({ ...state, modulesExecutions: response });
-    } catch (error) {
-      console.error("Failed to fetch modules data:", error);
-    }
-  };
-
   const compareExecutions = async (id1, id2) => {
     try {
       const response = await Rest.compareExecutions(id1, id2);
       setState({ ...state, comparisonResult: response });
-
       return response;
     } catch (error) {
       console.error("Failed to fetch modules data:", error);
@@ -78,7 +58,6 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
     try {
       const response = await Rest.findVariableOrigin(id, targetVar);
       setState({ ...state, variableOriginResult: response });
-
       return response;
     } catch (error) {
       console.error("Failed to fetch modules data:", error);
@@ -89,7 +68,6 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
     try {
       const response = await Rest.findTripleOrigin(id, encodeURI(pattern));
       setState({ ...state, tripleOriginResult: response });
-
       return response;
     } catch (error) {
       console.error("Failed to fetch modules data:", error);
@@ -100,7 +78,6 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
     try {
       const response = await Rest.findTripleElimination(id, encodeURI(pattern));
       setState({ ...state, tripleEliminationResult: response });
-
       return response;
     } catch (error) {
       console.error("Failed to fetch modules data:", error);
@@ -142,19 +119,26 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                   <th>Start Time</th>
                   <th>Duration [ms] </th>
                   <th>Input Triple Count</th>
+                  <th>Input</th>
                   <th>Output Triple Count</th>
+                  <th>Output</th>
                 </tr>
               </thead>
               <tbody>
                 {state.modulesExecutions &&
                   state.modulesExecutions.map((module, idx) => (
                     <tr key={idx}>
-                      <td>{getModuleName(module)}</td>
-
+                      <td>{popModuleName(module)}</td>
                       <td>{dayjs(module.start_date).format("YYYY-MM-DD HH:mm:ss.SSS")}</td>
                       <td>{module.duration}</td>
                       <td>{module.input_triple_count}</td>
+                      <td>
+                        <GraphDBLink id={module.has_rdf4j_input && module.has_rdf4j_input.id} />
+                      </td>
                       <td>{module.output_triple_count}</td>
+                      <td>
+                        <GraphDBLink id={module.has_rdf4j_output && module.has_rdf4j_output.id} />
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -187,8 +171,8 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                     >
                       <option value="">Select execution ID to compare</option>
                       {state.comparableExecutions.map((exec) => (
-                        <option key={exec.id} value={exec.id.split("/").pop()}>
-                          {exec.id.split("/").pop()}
+                        <option key={exec[TRANSFORMATION]} value={popId(exec)}>
+                          {exec[DISPLAY_NAME]} [{popId(exec)}]
                         </option>
                       ))}
                     </Form.Select>
@@ -224,7 +208,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                       <>
                         <p>
                           <strong>First difference found in module:</strong>{" "}
-                          {state.comparisonResult.difference_found_in?.has_module_id?.split("/").pop()}
+                          {popModuleName(state.comparisonResult.difference_found_in)}
                         </p>
                         <p>
                           <strong>Module ID:</strong> {state.comparisonResult.difference_found_in?.has_module_id}
@@ -288,7 +272,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                   {state.variableOriginResult.map((module, index) => (
                     <div key={module.id || index} className="border rounded p-3 bg-light mb-3">
                       <p>
-                        <strong>Created in module:</strong> {getModuleName(module)}
+                        <strong>Created in module:</strong> {popModuleName(module)}
                       </p>
                       <p>
                         <strong>Module ID:</strong> {module.has_module_id}
@@ -315,7 +299,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                 }}
               >
                 <Form.Group controlId="findTripleOrigin" className="mb-3 w-75">
-                  <Form.Label>Triple pattern</Form.Label>
+                  <Form.Label>Find out in which module a triple was created</Form.Label>
 
                   <InputGroup>
                     <Form.Control
@@ -350,7 +334,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                   {state.tripleOriginResult.map((module, index) => (
                     <div key={module.id || index} className="border rounded p-3 bg-light mb-3">
                       <p>
-                        <strong>Created in module:</strong> {getModuleName(module)}
+                        <strong>Created in module:</strong> {popModuleName(module)}
                       </p>
                       <p>
                         <strong>Module ID:</strong> {module.has_module_id}
@@ -359,7 +343,15 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                         <strong>Input Triple Count:</strong> {module.input_triple_count}
                       </p>
                       <p>
+                        <b>Input triples: </b>
+                        <GraphDBLink id={module.has_rdf4j_input && module.has_rdf4j_input.id} />
+                      </p>
+                      <p>
                         <strong>Output Triple Count:</strong> {module.output_triple_count}
+                      </p>
+                      <p>
+                        <b>Output triples: </b>
+                        <GraphDBLink id={module.has_rdf4j_output && module.has_rdf4j_output.id} />
                       </p>
                     </div>
                   ))}
@@ -383,14 +375,12 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                 }}
               >
                 <Form.Group controlId="findTripleElimination" className="mb-3 w-75">
-                  <Form.Label>Triple pattern</Form.Label>
-
+                  <Form.Label>Find out in which module a triple was eliminated</Form.Label>
                   <InputGroup>
                     <Form.Control
                       type="text"
                       value={state.graphPatternElimination}
                       onFocus={(e) => e.target.select()}
-                      // onChange={(e) => setGraphPatternElimination(e.target.value)}
                       onChange={(e) => setState({ ...state, graphPatternElimination: e.target.value })}
                       placeholder="<http://some/subject> <http://some/predicate> <http://some/object>"
                     />
@@ -418,7 +408,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                   {state.tripleEliminationResult.map((module, index) => (
                     <div key={module.id || index} className="border rounded p-3 bg-light mb-3">
                       <p>
-                        <strong>Eliminated in module:</strong> {getModuleName(module)}
+                        <strong>Eliminated in module:</strong> {popModuleName(module)}
                       </p>
                       <p>
                         <strong>Module ID:</strong> {module.has_module_id}
@@ -427,7 +417,15 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                         <strong>Input Triple Count:</strong> {module.input_triple_count}
                       </p>
                       <p>
+                        <b>Input triples: </b>
+                        <GraphDBLink id={module.has_rdf4j_input && module.has_rdf4j_input.id} />
+                      </p>
+                      <p>
                         <strong>Output Triple Count:</strong> {module.output_triple_count}
+                      </p>
+                      <p>
+                        <b>Output triples: </b>
+                        <GraphDBLink id={module.has_rdf4j_output && module.has_rdf4j_output.id} />
                       </p>
                     </div>
                   ))}
