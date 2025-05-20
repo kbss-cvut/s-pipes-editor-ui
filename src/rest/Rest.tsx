@@ -96,7 +96,13 @@ export const Rest = {
     return postFetcher(URLs.FUNCTION_FORM, data);
   },
 
-  createScript: function (ontologyURI, filename, scriptPath, returnModuleName, functionName) {
+  createScript: function (ontologyURI, filename, scriptPath, returnModuleName, functionName, functionArguments) {
+    const mappedArguments = functionArguments.map((arg) => ({
+      "@type": [Vocabulary.SCRIPT_FUNCTION_ARGUMENT],
+      [Vocabulary.SCRIPT_FUNCTION_ARGUMENT_NAME]: arg.name,
+      [Vocabulary.SCRIPT_FUNCTION_ARGUMENT_LABEL]: arg.label,
+      [Vocabulary.SCRIPT_FUNCTION_ARGUMENT_COMMENT]: arg.comment,
+    }));
     const data = {
       "@type": Vocabulary.SCRIPT_CREATE_DTO,
       [Vocabulary.ONTOLOGY_URI]: ontologyURI,
@@ -104,6 +110,7 @@ export const Rest = {
       [Vocabulary.SCRIPT_PATH]: scriptPath,
       [Vocabulary.SCRIPT_RETURN_MODULE_NAME]: returnModuleName,
       [Vocabulary.SCRIPT_FUNCTION_NAME]: functionName,
+      [Vocabulary.SCRIPT_FUNCTION_ARGUMENTS]: mappedArguments,
     };
     return postFetcher(URLs.SCRIPTS_CREATE, data);
   },
