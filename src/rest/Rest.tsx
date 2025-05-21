@@ -247,8 +247,8 @@ export const Rest = {
     return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}/modules`);
   },
 
-  compareExecutions: function (executionId, executionItToCompare) {
-    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}/compare/${executionItToCompare}`);
+  compareExecutions: function (executionId, executionIdToCompare) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}/compare/${executionIdToCompare}`);
   },
 
   findVariableOrigin: function (executionId, targetVariable) {
