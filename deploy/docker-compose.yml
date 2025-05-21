@@ -48,7 +48,6 @@ services:
       CORS_ALLOWEDORIGINS: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}"
     volumes:
       - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
-      - /var/folders:/var/folders
 
   s-pipes-engine:
     image: "ghcr.io/kbss-cvut/s-pipes/s-pipes-engine:latest"
@@ -61,7 +60,7 @@ services:
       CONTEXTS_SCRIPTPATHS: "${SCRIPTPATHS:-${PWD}/../../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../../s-pipes/doc/examples}}"
     volumes:
       - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
-      - /var/folders:/var/folders
+      - ${DEBUG_TEMP_FOLDER:-/var}:${DEBUG_TEMP_FOLDER:-/var}
 
   s-pipes-engine-debug:
     image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine-debug:latest
