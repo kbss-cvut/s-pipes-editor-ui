@@ -13,6 +13,7 @@ import Loading from "@components/Loading";
 import DebugModal from "@components/modal/DebugModal";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DB_SERVER_URL } from "@config/env.ts";
 
 cytoscape.use(dagre);
 cytoscape.use(popper(createPopper));
@@ -27,8 +28,7 @@ const openJsonInNewTab = (jsonData) => {
 
 export function GraphDBLink({ id }) {
   if (!id) return null;
-  const baseUrl = "http://localhost:1235/services/db-server/resource";
-  const url = `${baseUrl}?uri=${encodeURIComponent(id)}&role=context`;
+  const url = `${DB_SERVER_URL}resource?uri=${encodeURIComponent(id)}&role=context`;
   return (
     <a href={url} target="_blank" rel="noopener noreferrer">
       GraphDB <FontAwesomeIcon icon={faExternalLinkAlt} />
@@ -120,7 +120,6 @@ function renderGraph(modules) {
       has_rdf4j_output: mod.has_rdf4j_output.id,
     },
   }));
-  console.log("nodes", nodes);
 
   const edges = [];
   modules.forEach((mod) => {
