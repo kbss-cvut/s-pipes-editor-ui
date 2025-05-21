@@ -233,34 +233,34 @@ export const Rest = {
     return getFetcher(URLs.DEBUG_EXECUTIONS);
   },
 
-  getExecution: function (transformationId) {
-    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${transformationId}`);
+  getExecution: function (executionId) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}`);
   },
 
-  getExecutionName: function (id) {
-    return normaliseData(getFetcher(`${URLs.EXECUTION}/${id}`)).then((response) => {
+  getExecutionName: function (executionId) {
+    return normaliseData(getFetcher(`${URLs.EXECUTION}/${executionId}`)).then((response) => {
       return normaliseData(response);
     });
   },
 
-  getExecutionModules: function (transformationId) {
-    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${transformationId}/modules`);
+  getExecutionModules: function (executionId) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}/modules`);
   },
 
-  compareExecutions: function (id1, id2) {
-    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${id1}/compare/${id2}`);
+  compareExecutions: function (executionId, executionItToCompare) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}/compare/${executionItToCompare}`);
   },
 
-  findVariableOrigin: function (id, pattern) {
-    return getFetcher(`${URLs.DEBUG_VARIABLE_ORIGIN}/${id}?variable=${pattern}`);
+  findVariableOrigin: function (executionId, targetVariable) {
+    return getFetcher(`${URLs.DEBUG_VARIABLE_ORIGIN}/${executionId}?variable=${targetVariable}`);
   },
 
-  findTripleOrigin: function (id, pattern) {
-    return getFetcher(`${URLs.DEBUG_TRIPLE_ORIGIN}/${id}?graphPattern=${pattern}`);
+  findTripleOrigin: function (executionId, triplePattern) {
+    return getFetcher(`${URLs.DEBUG_TRIPLE_ORIGIN}/${executionId}?graphPattern=${triplePattern}`);
   },
 
-  findTripleElimination: function (id, pattern) {
-    return getFetcher(`${URLs.DEBUG_TRIPLE_ELIMINATION}/${id}?graphPattern=${pattern}`);
+  findTripleElimination: function (executionId, triplePattern) {
+    return getFetcher(`${URLs.DEBUG_TRIPLE_ELIMINATION}/${executionId}?graphPattern=${triplePattern}`);
   },
 };
 
