@@ -228,6 +228,40 @@ export const Rest = {
     };
     return postFetcher(URLs.EXECUTION_HISTORY_MODULES, data);
   },
+
+  getDebugExecutions: function () {
+    return getFetcher(URLs.DEBUG_EXECUTIONS);
+  },
+
+  getExecution: function (executionId) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}`);
+  },
+
+  getExecutionName: function (executionId) {
+    return normaliseData(getFetcher(`${URLs.EXECUTION}/${executionId}`)).then((response) => {
+      return normaliseData(response);
+    });
+  },
+
+  getExecutionModules: function (executionId) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}/modules`);
+  },
+
+  compareExecutions: function (executionId, executionIdToCompare) {
+    return getFetcher(`${URLs.DEBUG_EXECUTIONS}/${executionId}/compare/${executionIdToCompare}`);
+  },
+
+  findVariableOrigin: function (executionId, targetVariable) {
+    return getFetcher(`${URLs.DEBUG_VARIABLE_ORIGIN}/${executionId}?variable=${targetVariable}`);
+  },
+
+  findTripleOrigin: function (executionId, triplePattern) {
+    return getFetcher(`${URLs.DEBUG_TRIPLE_ORIGIN}/${executionId}?graphPattern=${triplePattern}`);
+  },
+
+  findTripleElimination: function (executionId, triplePattern) {
+    return getFetcher(`${URLs.DEBUG_TRIPLE_ELIMINATION}/${executionId}?graphPattern=${triplePattern}`);
+  },
 };
 
 export default Rest;

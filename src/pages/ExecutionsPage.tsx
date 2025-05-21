@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import DebugModal from "@components/modal/DebugModal";
+
 import {
   ABSOLUTE_PATH,
   DISPLAY_NAME,
@@ -11,7 +13,7 @@ import {
 import Rest from "@rest/Rest.tsx";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMugHot, faEdit, faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faMugHot, faEdit, faQuestion, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import Loading from "@components/Loading";
@@ -72,6 +74,11 @@ const ExecutionsPage = () => {
                         }}
                       >
                         <FontAwesomeIcon icon={faQuestion} />
+                      </Col>
+                      <Col>
+                        <Link to={`/execution?id=${data[TRANSFORMATION].split("/").pop()}`}>
+                          <FontAwesomeIcon icon={faSearch} />
+                        </Link>
                       </Col>
                     </Row>
                   </Container>

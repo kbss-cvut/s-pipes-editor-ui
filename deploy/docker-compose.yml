@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     depends_on:
       - s-pipes-engine
+      - s-pipes-engine-debug
       - s-pipes-editor-rest
       - db-server
       - s-pipes-editor-ui
@@ -59,6 +60,18 @@ services:
       CONTEXTS_SCRIPTPATHS: "${SCRIPTPATHS:-${PWD}/../../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../../s-pipes/doc/examples}}"
     volumes:
       - ${SHARED_ROOT:-/home}:${SHARED_ROOT:-/home}
+      - ${DEBUG_TEMP_FOLDER:-/var}:${DEBUG_TEMP_FOLDER:-/var}
+
+  s-pipes-engine-debug:
+    image: ghcr.io/kbss-cvut/s-pipes/s-pipes-engine-debug:latest
+    expose:
+      - "8080"
+    depends_on:
+      - db-server
+    environment:
+      - STORAGE_URL=http://db-server:7200/repositories
+      - REPOSITORY_NAME=s-pipes-execution-log
+      - SPRINGDOC_SWAGGER_UI_DISABLE_SWAGGER_DEFAULT_URL=true
 
   db-server:
     build:

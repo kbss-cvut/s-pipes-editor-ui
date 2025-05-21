@@ -1,6 +1,7 @@
 const URLs = {
   SCRIPTS: `/scripts`,
   EXECUTION_HISTORY: `/execution/history`,
+  EXECUTION: `/execution`,
   VIEWS_NEW: `/views/new`,
   SCRIPTS_DELETE: `/scripts/delete`,
   SCRIPTS_ONTOLOGIES: `/scripts/ontologies`,
@@ -20,6 +21,10 @@ const URLs = {
   SCRIPTS_MODULE_DEPENDENCY: `/scripts/modules/dependency`,
   SCRIPTS_VALIDATE: `/scripts/validate`,
   EXECUTION_HISTORY_MODULES: `/execution/history-modules`,
+  DEBUG_EXECUTIONS: `/log/executions`,
+  DEBUG_TRIPLE_ORIGIN: `/log/triple-origin`,
+  DEBUG_TRIPLE_ELIMINATION: `/log/triple-elimination`,
+  DEBUG_VARIABLE_ORIGIN: `/log/variable-origin`,
 };
 
 export default URLs;

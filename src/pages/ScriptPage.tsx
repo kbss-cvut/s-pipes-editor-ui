@@ -19,6 +19,7 @@ import ValidationReportModal from "@components/modal/ValidationReportModal";
 import MoveModuleModal from "@components/modal/MoveModuleModal";
 import ScriptOntologyModal from "@components/modal/ScriptOntologyModal";
 import ScriptExecutionModal from "@components/modal/ScriptExecutionModal";
+import ModuleExecutionModal from "@components/modal/ModuleExecutionModal";
 import "@triply/yasgui/build/yasgui.min.css";
 import SFormsFunctionModal from "@components/sform/SFormsFunctionModal";
 import "@kbss-cvut/s-forms/css";
@@ -110,6 +111,7 @@ class Script extends React.Component {
       cytoscape: null,
       showNotification: false,
       notificationData: null,
+      showModuleExecutionModal: false,
     };
 
     cytoscape.use(dagre);
@@ -426,6 +428,17 @@ class Script extends React.Component {
             modalState["moduleLabel"] = ele.data("label");
             modalState["variables"] = ele.data("variables");
             modalState["scriptPath"] = ele.data("scriptPath");
+            this.setState(modalState);
+          },
+        },
+        {
+          content: '<span class="fa fa-play-circle fa-2x"/>',
+          select: (ele) => {
+            const modalState = JSON.parse(JSON.stringify(modalInputs));
+            modalState["moduleURI"] = ele.data("id");
+            modalState["moduleLabel"] = ele.data("label");
+            modalState["scriptPath"] = ele.data("scriptPath");
+            modalState["showModuleExecutionModal"] = true;
             this.setState(modalState);
           },
         },
@@ -749,6 +762,17 @@ class Script extends React.Component {
           scriptPath={this.state.scriptPath}
           moduleURI={this.state.moduleURI}
           moduleLabel={this.state.moduleLabel}
+        />
+        <ModuleExecutionModal
+          moduleURI={this.state.moduleURI}
+          moduleLabel={this.state.moduleLabel}
+          scriptPath={this.state.scriptPath}
+          showModuleExecutionModal={this.state.showModuleExecutionModal}
+          onClose={() => {
+            const modalState = JSON.parse(JSON.stringify(this.state));
+            modalState.showModuleExecutionModal = false;
+            this.setState(modalState);
+          }}
         />
 
         {/*<FunctionExecutionModal*/}
