@@ -28,7 +28,7 @@ const openJsonInNewTab = (jsonData) => {
 
 export function GraphDBLink({ id }) {
   if (!id) return null;
-  const url = `${DB_SERVER_URL}resource?uri=${encodeURIComponent(id)}&role=context`;
+  const url = `${DB_SERVER_URL}/resource?uri=${encodeURIComponent(id)}&role=context`;
   return (
     <a href={url} target="_blank" rel="noopener noreferrer">
       GraphDB <FontAwesomeIcon icon={faExternalLinkAlt} />

@@ -21,4 +21,4 @@ export const DEFAULT_SCRIPT_PREFIX = getEnv(
   "S_PIPES_EDITOR_DEFAULT_SCRIPT_PREFIX",
   "http://onto.fel.cvut.cz/ontologies/s-pipes/",
 );
-export const DB_SERVER_URL = getEnv("S_PIPES_EDITOR_DB_SERVER_URL", "http://localhost:1235/services/db-server/");
+export const DB_SERVER_URL = getEnv("S_PIPES_EDITOR_DB_SERVER_URL", "http://localhost:1235/services/db-server");
