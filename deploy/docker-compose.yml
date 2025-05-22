@@ -29,7 +29,7 @@ services:
     environment:
       S_PIPES_EDITOR_API_URL: "${S_PIPES_EDITOR_REST_URL:-${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}/rest}"
       S_PIPES_EDITOR_APP_TITLE: "SPipes Editor"
-      S_PIPES_EDITOR_DB_SERVER_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}/services/db-server/"
+      S_PIPES_EDITOR_DB_SERVER_URL: "${PUBLIC_ORIGIN:-http://localhost:${INTERNAL_HOST_PORT:-1235}}/services/db-server"
 
   s-pipes-editor-rest:
     image: "ghcr.io/kbss-cvut/s-pipes-editor/s-pipes-editor:latest"
