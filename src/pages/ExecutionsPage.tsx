@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from "react";
 import DebugModal from "@components/modal/DebugModal";
 
-import {
-  ABSOLUTE_PATH,
-  DISPLAY_NAME,
-  EXECUTION_DURATION,
-  PIPELINE_EXECUTION_START_DATE,
-  PIPELINE_EXECUTION_FINISH_DATE,
-  RDF4j_TRANSFORMATION_ID,
-  TRANSFORMATION,
-} from "@constants/vocabulary";
 import Rest from "@rest/Rest.tsx";
-import { Col, Container, Row, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMugHot, faEdit, faQuestion, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import Loading from "@components/Loading";
@@ -23,7 +14,7 @@ const ExecutionsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Rest.getExecutions().then((response) => {
+    Rest.getDebugExecutions().then((response) => {
       console.log(response);
       setData(response);
       setLoading(false);
@@ -38,53 +29,32 @@ const ExecutionsPage = () => {
     <>
       <h3 className="mt-3">Executions</h3>
       <Table striped bordered hover>
-        <thead>
+        <thead style={{ textAlign: "center" }}>
           <tr>
-            <th>Status</th>
-            <th>Name</th>
+            <th>ID</th>
             <th>Started</th>
-            <th>Finished</th>
-            <th>Duration</th>
-            <th style={{ textAlign: "center" }}>Action</th>
+            <th>Modules Executed</th>
+            <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ textAlign: "center" }}>
           {data
             .filter((v) => v !== null)
-            .map((data, key) => (
-              <tr key={key}>
-                <td align={"center"}>
-                  <FontAwesomeIcon icon={faMugHot} />
-                </td>
-                <td>{data[DISPLAY_NAME]}</td>
-                <td>{dayjs(data[PIPELINE_EXECUTION_START_DATE]).format("YYYY-MM-DD HH:mm:ss.SSS")}</td>
-                <td>{dayjs(data[PIPELINE_EXECUTION_FINISH_DATE]).format("YYYY-MM-DD HH:mm:ss.SSS")}</td>
-                <td>{data[EXECUTION_DURATION]}ms</td>
-                <td>
-                  <Container>
-                    <Row>
-                      <Col>
-                        <Link to={`/script?file=${data[ABSOLUTE_PATH]}&transformation=${data[TRANSFORMATION]}`}>
-                          <FontAwesomeIcon icon={faEdit} />
-                        </Link>
-                      </Col>
-                      <Col
-                        onClick={() => {
-                          window.open(data[RDF4j_TRANSFORMATION_ID], "_blank");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faQuestion} />
-                      </Col>
-                      <Col>
-                        <Link to={`/execution?id=${data[TRANSFORMATION].split("/").pop()}`}>
-                          <FontAwesomeIcon icon={faSearch} />
-                        </Link>
-                      </Col>
-                    </Row>
-                  </Container>
-                </td>
-              </tr>
-            ))}
+            .map((data, key) => {
+              const executionId = data.id.split("/").pop();
+              return (
+                <tr key={key}>
+                  <td>{executionId}</td>
+                  <td>{dayjs(data.has_pipepline_execution_date).format("YYYY-MM-DD HH:mm:ss.SSS")}</td>
+                  <td>{data.has_module_executions.length}</td>
+                  <td>
+                    <Link to={`/execution?id=${executionId}`}>
+                      <FontAwesomeIcon icon={faSearch} />
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </Table>
     </>
