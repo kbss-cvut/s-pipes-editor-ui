@@ -42,6 +42,7 @@ services:
       SCRIPTPATHS: "${SCRIPTPATHS:-${PWD}/../../s-pipes-modules;${CUSTOM_SCRIPT_PATHS:-${PWD}/../../s-pipes/doc/examples}}"
       SCRIPTRULES: "${SCRIPTRULES:-${PWD}/../../s-pipes-editor/src/main/resources/rules}"
       ENGINEURL: "${S_PIPES_ENGINE_URL:-http://s-pipes-engine:8080/s-pipes}/"
+      DEBUGURL: "${S_PIPES_ENGINE_DEBUG_URL:-http://s-pipes-engine-debug:8080/s-pipes-debug}/"
       RDF4J_REPOSITORYURL: "${RDF4J_SERVER_URL:-http://db-server:7200}/repositories"
       RDF4J_REPOSITORYNAME: "${RDF4J_REPOSITORYNAME:-s-pipes-execution-log}"
       RDF4J_PCONFIGURL: "${RDF4J_PCONFIGURL:-${PWD}/../../s-pipes-editor-ui/deploy/s-pipes-engine/config.ttl}"
