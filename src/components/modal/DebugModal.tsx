@@ -1,11 +1,13 @@
 // @components/modal/DebugModal.js
-import { Modal, Button, Table, Tabs, Tab, Form, InputGroup } from "react-bootstrap";
+import { Modal, Button, Table, Tabs, Tab, Form, InputGroup, OverlayTrigger, Popover } from "react-bootstrap";
 import { use, useEffect, useMemo, useState } from "react";
 import Rest from "@rest/Rest.tsx";
 
 import dayjs from "dayjs";
 import { DISPLAY_NAME, TRANSFORMATION } from "@constants/vocabulary";
 import { GraphDBLink } from "@pages/ExecutionPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 const popModuleName = (module) => module.has_module_id?.split("/").pop();
 const popId = (exec) => exec[TRANSFORMATION].split("/").pop();
@@ -21,6 +23,16 @@ const ErrorAlert = ({ message }) => (
   <div className="alert alert-danger mt-3" role="alert">
     {message}
   </div>
+);
+const popover = (
+  <Popover id="popover-basic" style={{ fontSize: "14px" }}>
+    <Popover.Header as="h3">Tripple pattern</Popover.Header>
+    <Popover.Body>
+      Follow the structure <br />
+      <b>&lt;subject&gt; &lt;predicate&gt; &lt;object&gt;</b> <br />
+      or use variables such as <b>?s, ?p, ?o</b>
+    </Popover.Body>
+  </Popover>
 );
 
 const DebugModal = ({ show, onHide, id, name, modulesData }) => {
@@ -291,15 +303,18 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
               >
                 <Form.Group controlId="findTripleOrigin" className="mb-3 w-75">
                   <Form.Label>Find out in which module a triple was created</Form.Label>
-
+                  <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={popover}>
+                    <span style={{ cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faQuestionCircle} className="ms-2 text-muted" />
+                    </span>
+                  </OverlayTrigger>
                   <InputGroup>
                     <Form.Control
                       type="text"
                       value={state.graphPatternOrigin}
                       onFocus={(e) => e.target.select()}
-                      // onChange={(e) => setGraphPatternOrigin(e.target.value)}
                       onChange={(e) => setState({ ...state, graphPatternOrigin: e.target.value })}
-                      placeholder="<http://some/subject> <http://some/predicate> <http://some/object>"
+                      placeholder="Enter triple pattern"
                     />
                     <Button variant="primary" type="submit" disabled={state.isComparing}>
                       {state.isComparing ? "Loading..." : "Find module"}
@@ -357,13 +372,18 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
               >
                 <Form.Group controlId="findTripleElimination" className="mb-3 w-75">
                   <Form.Label>Find out in which module a triple was eliminated</Form.Label>
+                  <OverlayTrigger trigger={["hover", "focus"]} placement="right" overlay={popover}>
+                    <span style={{ cursor: "pointer" }}>
+                      <FontAwesomeIcon icon={faQuestionCircle} className="ms-2 text-muted" />
+                    </span>
+                  </OverlayTrigger>
                   <InputGroup>
                     <Form.Control
                       type="text"
                       value={state.graphPatternElimination}
                       onFocus={(e) => e.target.select()}
                       onChange={(e) => setState({ ...state, graphPatternElimination: e.target.value })}
-                      placeholder="<http://some/subject> <http://some/predicate> <http://some/object>"
+                      placeholder="Enter triple pattern"
                     />
                     <Button variant="primary" type="submit" disabled={state.isComparing}>
                       {state.isComparing ? "Loading..." : "Find module"}
