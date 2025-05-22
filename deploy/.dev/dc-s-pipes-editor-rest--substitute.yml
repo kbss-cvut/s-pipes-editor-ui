@@ -5,3 +5,5 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway" # support "http://host.docker.internal" for Linux (Windows/Mac works without it)
 
+
+  # Note, that for MacOS you migth need to set up DEBUG_TEMP_FOLDER=/var/folder, where the temporary files are created.
