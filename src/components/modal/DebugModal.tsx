@@ -237,7 +237,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                 }}
               >
                 <Form.Group controlId="findVariableOrigin" className="mb-3 w-50">
-                  <Form.Label>Variable name</Form.Label>
+                  <Form.Label>Find out where variable was created</Form.Label>
 
                   <InputGroup>
                     <Form.Control
@@ -249,7 +249,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                       placeholder="Enter variable name"
                     />
                     <Button variant="primary" type="submit" disabled={state.isComparing}>
-                      {state.isComparing ? "Loading..." : "Compare Executions"}
+                      {state.isComparing ? "Loading..." : "Find module"}
                     </Button>
                   </InputGroup>
                 </Form.Group>
@@ -302,7 +302,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                       placeholder="<http://some/subject> <http://some/predicate> <http://some/object>"
                     />
                     <Button variant="primary" type="submit" disabled={state.isComparing}>
-                      {state.isComparing ? "Loading..." : "Compare Executions"}
+                      {state.isComparing ? "Loading..." : "Find module"}
                     </Button>
                   </InputGroup>
                 </Form.Group>
@@ -366,7 +366,7 @@ const DebugModal = ({ show, onHide, id, name, modulesData }) => {
                       placeholder="<http://some/subject> <http://some/predicate> <http://some/object>"
                     />
                     <Button variant="primary" type="submit" disabled={state.isComparing}>
-                      {state.isComparing ? "Loading..." : "Compare Executions"}
+                      {state.isComparing ? "Loading..." : "Find module"}
                     </Button>
                   </InputGroup>
                 </Form.Group>
