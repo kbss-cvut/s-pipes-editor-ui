@@ -7,6 +7,7 @@ export const SCRIPT_DTO = `${S_PIPES}/script-dto`;
 export const QUESTION_DTO = `${S_PIPES}/question-dto`;
 export const ROOT_QUESTION = `${S_PIPES}/has-root-question`;
 export const SCRIPT_PATH = `${S_PIPES}/has-script-path`;
+export const ORIGINAL_SCRIPT_PATH = `${S_PIPES}/has-original-script-path`;
 export const MODULE_DTO = `${S_PIPES}/module-dto`;
 export const DEPENDENCY_DTO = `${S_PIPES}/dependency-dto`;
 export const MOVE_MODULE_DTO = `${S_PIPES}/move-module-dto`;
