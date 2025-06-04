@@ -77,13 +77,13 @@ export const Rest = {
     });
   },
 
-  getScriptForm: function (moduleTypeUri, moduleUri, scriptPath, originalScriptPath) {
+  getScriptForm: function (moduleTypeUri, moduleUri, scriptPath, executionScriptPath) {
     const data = {
       "@type": Vocabulary.QUESTION_DTO,
       [Vocabulary.MODULE_TYPE_URI]: moduleTypeUri,
       [Vocabulary.MODULE_URI]: moduleUri,
       [Vocabulary.SCRIPT_PATH]: scriptPath,
-      [Vocabulary.ORIGINAL_SCRIPT_PATH]: originalScriptPath || scriptPath,
+      [Vocabulary.EXECUTION_SCRIPT_PATH]: executionScriptPath || scriptPath,
     };
     return postFetcher(URLs.SCRIPTS_FORMS, data);
   },

@@ -19,7 +19,7 @@ class SFormsModal extends React.Component {
       moduleUri: null,
       errorMessage: null,
       scriptPath: null,
-      originalScriptPath: null,
+      executionScriptPath: null,
     };
     this.refForm = React.createRef();
     this.handleErrorModal = this.handleErrorModal.bind(this);
@@ -28,7 +28,7 @@ class SFormsModal extends React.Component {
   componentWillReceiveProps(newProps) {
     if (newProps.moduleTypeUri && newProps.scriptPath) {
       this.setState({ isLoading: true });
-      Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath, newProps.originalScriptPath).then((response) => {
+      Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath, newProps.executionScriptPath).then((response) => {
         this.setState({
           isLoaded: true,
           isLoading: false,
@@ -37,7 +37,7 @@ class SFormsModal extends React.Component {
           moduleTypeUri: newProps.moduleTypeUri,
           moduleUri: newProps.moduleUri,
           scriptPath: newProps.scriptPath,
-          originalScriptPath: newProps.originalScriptPath,
+          executionScriptPath: newProps.executionScriptPath,
         });
       });
     }
