@@ -510,7 +510,7 @@ class Script extends React.Component {
       commands: [
         {
           content: '<span class="fa fa-trash fa-2x"/>',
-          select: function (ele) {
+          select: (ele) => {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
             this.setState({ isLoaded: false });
