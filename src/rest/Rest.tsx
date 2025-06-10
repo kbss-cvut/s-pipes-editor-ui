@@ -214,14 +214,6 @@ export const Rest = {
     return postFetcher(URLs.SCRIPTS_MODULE_DEPENDENCY, data);
   },
 
-  createModuleLink: function (scriptPath, moduleUris) {
-    const data = {
-      absolutePath: scriptPath,
-      moduleUris: moduleUris,
-    };
-    return postFetcher(URLs.SCRIPTS_ADD_LINK, data);
-  },
-
   validateScript: function (filepath) {
     const data = {
       "@type": Vocabulary.SCRIPT_DTO,

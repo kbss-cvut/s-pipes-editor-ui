@@ -25,7 +25,6 @@ const URLs = {
   DEBUG_TRIPLE_ORIGIN: `/log/triple-origin`,
   DEBUG_TRIPLE_ELIMINATION: `/log/triple-elimination`,
   DEBUG_VARIABLE_ORIGIN: `/log/variable-origin`,
-  SCRIPTS_ADD_LINK: '/scripts/modules/link',
 };
 
 export default URLs;

@@ -278,7 +278,7 @@ class Script extends React.Component {
       ? "Linking mode disabled"
       : "Linking mode enabled. Choose two unconnected nodes to add the connection between them. Choose two connected nodes to remove or reverse the connection between them";
 
-    this.setState({isLinking: !isLinking});
+    this.setState({ isLinking: !isLinking });
     this.showToast(message);
   };
 
@@ -306,8 +306,9 @@ class Script extends React.Component {
 
   createLink = async (source, target) => {
     try {
-      await Rest.createModuleLink(this.state.file, [source, target]);
+      await Rest.addModuleDependency(this.state.file, source, target);
       this.showToast(`Connection ${source} → ${target} was created successfully`);
+      window.location.reload();
     } catch (error) {
       this.showToast("Error while creating a connection: " + error.message);
       console.error("Error while creating a connection:", error);
@@ -782,6 +783,13 @@ class Script extends React.Component {
             <br />
             <Button variant="info" onClick={() => this.handleValidateReport()}>
               Validate Report
+            </Button>
+          </div>
+
+          <div className="mb-2">
+            <br />
+            <Button variant={this.state.isLinking ? "danger" : "info"} onClick={this.toggleLinkingMode}>
+              {this.state.isLinking ? "Cancel connection creation" : "Enable connection creation"}
             </Button>
           </div>
 
