@@ -112,8 +112,6 @@ class Script extends React.Component {
       showNotification: false,
       notificationData: null,
       showModuleExecutionModal: false,
-      startNode: null,
-      isLinking: false,
     };
 
     cytoscape.use(dagre);
@@ -128,7 +126,6 @@ class Script extends React.Component {
     this.handleRenderChange = this.handleRenderChange.bind(this);
     this.handleValidateReport = this.handleValidateReport.bind(this);
     this.handleErrorModal = this.handleErrorModal.bind(this);
-    this.toggleLinkingMode = this.toggleLinkingMode.bind(this);
   }
 
   componentWillMount() {
@@ -270,56 +267,6 @@ class Script extends React.Component {
     modalState["modalValidation"] = true;
     this.setState(modalState);
     // window.location.href='?file=' + this.state.file
-  };
-
-  toggleLinkingMode = () => {
-    const isLinking = this.state.isLinking;
-    const message = isLinking
-      ? "Linking mode disabled"
-      : "Linking mode enabled. Choose two unconnected nodes to add the connection between them. Choose two connected nodes to remove or reverse the connection between them";
-
-    this.setState({ isLinking: !isLinking });
-    this.showToast(message);
-  };
-
-  handleNodeClick = async (event) => {
-    if (!this.state.isLinking) return;
-
-    const nodeId = event.target.id();
-
-    if (!this.state.startNode) {
-      this.setState({ startNode: nodeId });
-      this.showToast(`Start node chosen: ${nodeId}`);
-    } else {
-      const endNode = nodeId;
-      this.showToast(`End node chosen: ${endNode}`);
-
-      try {
-        await this.createLink(this.state.startNode, endNode);
-      } catch (err) {
-        this.showToast("Error while creating a connection");
-        return;
-      }
-      this.setState({ startNode: null, isLinking: false });
-    }
-  };
-
-  createLink = async (source, target) => {
-    try {
-      await Rest.addModuleDependency(this.state.file, source, target);
-      this.showToast(`Connection ${source} → ${target} was created successfully`);
-      window.location.reload();
-    } catch (error) {
-      this.showToast("Error while creating a connection: " + error.message);
-      console.error("Error while creating a connection:", error);
-    }
-  };
-
-  showToast = (message) => {
-    this.setState({
-      showNotification: true,
-      notificationData: message,
-    });
   };
 
   handleOntologyReport = () => {
@@ -563,7 +510,7 @@ class Script extends React.Component {
       commands: [
         {
           content: '<span class="fa fa-trash fa-2x"/>',
-          select: function (ele) {
+          select: (ele) => {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
             this.setState({ isLoaded: false });
@@ -683,10 +630,6 @@ class Script extends React.Component {
         this.setState(modalState);
       }.bind(this),
     );
-
-    this.cy.on("tap", "node", (event) => {
-      this.handleNodeClick(event);
-    });
   }
 
   render() {
@@ -783,13 +726,6 @@ class Script extends React.Component {
             <br />
             <Button variant="info" onClick={() => this.handleValidateReport()}>
               Validate Report
-            </Button>
-          </div>
-
-          <div className="mb-2">
-            <br />
-            <Button variant={this.state.isLinking ? "danger" : "info"} onClick={this.toggleLinkingMode}>
-              {this.state.isLinking ? "Cancel connection creation" : "Enable connection creation"}
             </Button>
           </div>
 
