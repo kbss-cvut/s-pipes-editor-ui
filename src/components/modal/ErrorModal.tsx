@@ -42,7 +42,14 @@ class ErrorModal extends React.Component {
           <Modal.Header closeButton>
             <Modal.Title>Error</Modal.Title>
           </Modal.Header>
-          <Modal.Body>{this.state.errorMessage}</Modal.Body>
+          <Modal.Body>
+            {this.state.errorMessage.split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => this.handleClose()}>
               Close
