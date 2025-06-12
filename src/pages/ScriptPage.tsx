@@ -84,6 +84,38 @@ const websocketURL = new URL("/rest/notifications", window.location.href);
 websocketURL.protocol = websocketURL.protocol.replace("http", "ws");
 const client = new W3CWebSocket(websocketURL);
 
+interface ErrorResponse {
+  error?: string;
+  module?: string;
+  script?: string;
+  subscript?: string;
+  details?: string;
+}
+
+function formatDependencyErrorMessage(error: any): string {
+  if (error.response && error.response.data) {
+    const data: ErrorResponse = error.response.data;
+    let formattedMessage = `Error: ${data.error ?? "Unknown error"}\n`;
+
+    if (data.module) {
+      formattedMessage += `Module: ${data.module} \n`;
+    }
+    if (data.script) {
+      formattedMessage += `Was not found in Script: ${data.script}\n`;
+    }
+    if (data.subscript) {
+      formattedMessage += `But was found in Subscript: ${data.subscript}\n You should modify the subscript instead`;
+    }
+    if (data.details) {
+      formattedMessage += `Details: ${data.details}`;
+    }
+
+    return formattedMessage;
+  } else {
+    return "Unexpected error occurred.";
+  }
+}
+
 class Script extends React.Component {
   constructor(props) {
     super(props);
@@ -520,8 +552,8 @@ class Script extends React.Component {
                 ele.remove();
               })
               .catch((error) => {
-                this.setState({ errorMessage: "An error occurred during edge deletion." });
-                console.error(`An error occurred during edge deletion: ${error}`);
+                this.setState({ errorMessage: formatDependencyErrorMessage(error) });
+                console.error(formatDependencyErrorMessage(error));
               });
           },
         },
@@ -543,8 +575,8 @@ class Script extends React.Component {
               this.setState({ isLoaded: true });
             })
             .catch((error) => {
-              this.setState({ errorMessage: "An error occurred while adding edge/dependency." });
-              console.error(`An error occurred while adding edge/dependency: ${error}`);
+              this.setState({ errorMessage: formatDependencyErrorMessage(error) });
+              console.error(formatDependencyErrorMessage(error));
             });
         } else {
           this.cy.remove("edge[source='" + sourceNode.data("id") + "']");
