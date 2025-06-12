@@ -30,8 +30,15 @@ class ErrorModal extends React.Component {
     this.setState({ errorMessage: null });
   }
 
+  extractFilePath(errorMessage) {
+    const match = errorMessage.match(/But was found in Subscript:\s*(.+)/);
+    return match ? match[1].trim() : null;
+  }
+
   render() {
     if (this.state.errorMessage) {
+      const subscript = this.extractFilePath(this.state.errorMessage);
+
       return (
         <Modal
           show={true}
@@ -53,6 +60,16 @@ class ErrorModal extends React.Component {
           <Modal.Footer>
             <Button variant="secondary" onClick={() => this.handleClose()}>
               Close
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                const url = `${window.location.origin}/script?file=${subscript}`;
+                console.log("Opening subscript editor at:", subscript);
+                window.open(url, "_blank");
+              }}
+            >
+              Open SubScript in Editor
             </Button>
           </Modal.Footer>
         </Modal>
