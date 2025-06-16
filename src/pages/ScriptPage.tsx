@@ -630,6 +630,18 @@ class Script extends React.Component {
         this.setState(modalState);
       }.bind(this),
     );
+
+    this.cy.on("tap", ":parent", ({ target: node }) => {
+      const scriptPath = node.children()[0]?.data("scriptPath");
+
+      if (scriptPath) {
+        const url = `${location.origin}/script?file=${scriptPath}`;
+        console.log("Opening script editor at:", url);
+        window.open(url, "_blank");
+      } else {
+        console.warn("File path not found in parent node!");
+      }
+    });
   }
 
   render() {
