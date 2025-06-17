@@ -10,6 +10,7 @@ class ErrorModal extends React.Component {
       isLoaded: false,
       modalVisible: false,
       errorMessage: null,
+      subscript: null,
     };
 
     this.handleClose = this.handleClose.bind(this);
@@ -21,24 +22,19 @@ class ErrorModal extends React.Component {
         isLoaded: true,
         modalVisible: true,
         errorMessage: newProps["errorMessage"],
+        subscript: newProps["subscript"],
       });
     }
   }
 
   handleClose() {
     this.props.handleErrorModal();
-    this.setState({ errorMessage: null });
-  }
-
-  extractFilePath(errorMessage) {
-    const match = errorMessage.match(/But was found in Subscript:\s*(.+)/);
-    return match ? match[1].trim() : null;
+    this.setState({ errorMessage: null, subscript: null });
   }
 
   render() {
     if (this.state.errorMessage) {
-      const subscript = this.extractFilePath(this.state.errorMessage);
-
+      const subscript = this.state.subscript;
       return (
         <Modal
           show={true}
