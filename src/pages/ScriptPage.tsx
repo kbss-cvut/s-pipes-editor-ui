@@ -404,7 +404,8 @@ class Script extends React.Component {
       selector: "node[menu]",
       commands: [
         {
-          content: '<span class="fa fa-trash fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
           select: (ele) => {
             this.setState({ isLoaded: false });
             Rest.deleteScriptNode(filepath, ele.data("id"))
@@ -417,9 +418,11 @@ class Script extends React.Component {
                 console.error(`An error occurred during node deletion: ${error}`);
               });
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-info-circle fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Show input and debug"><i class="fa fa-info-circle fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "input";
@@ -430,9 +433,11 @@ class Script extends React.Component {
             modalState["scriptPath"] = ele.data("scriptPath");
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-play-circle fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Run module"><i class="fa fa-play-circle fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleURI"] = ele.data("id");
@@ -441,9 +446,11 @@ class Script extends React.Component {
             modalState["showModuleExecutionModal"] = true;
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-file fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Get script path"><i class="fa fa-file fa-2x"></i></span>',
           select: (ele) => {
             //TODO modal with style
             if (ele.data("scriptPath") === this.state.file) {
@@ -454,9 +461,11 @@ class Script extends React.Component {
               window.location.href = "?file=" + ele.data("scriptPath");
             }
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-plane fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Move module"><i class="fa fa-plane fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["selectedScript"] = ele.data("scriptPath");
@@ -464,9 +473,11 @@ class Script extends React.Component {
             modalState["modalMove"] = true;
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-bug fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Validate"><i class="fa fa-bug fa-2x"></i></span>',
           select: (ele) => {
             // //TODO modal with style
             console.log(ele.data("validation"));
@@ -480,9 +491,11 @@ class Script extends React.Component {
               );
             }
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-info-circle fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Show output\n"><i class="fa fa-info-circle fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "output";
@@ -491,9 +504,11 @@ class Script extends React.Component {
             modalState["moduleLabel"] = ele.data("label");
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-cogs fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Edit module\n"><i class="fa fa-cogs fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleTypeUri"] = ele.data("component");
@@ -501,6 +516,7 @@ class Script extends React.Component {
             modalState["fileEdit"] = ele.data("scriptPath");
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
       ],
     });
@@ -509,7 +525,8 @@ class Script extends React.Component {
       selector: "edge[menu]",
       commands: [
         {
-          content: '<span class="fa fa-trash fa-2x"/>',
+          content:
+            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
           select: (ele) => {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
@@ -524,6 +541,7 @@ class Script extends React.Component {
                 console.error(`An error occurred during edge deletion: ${error}`);
               });
           },
+          contentStyle: { "pointer-events": "all" },
         },
       ],
     });
