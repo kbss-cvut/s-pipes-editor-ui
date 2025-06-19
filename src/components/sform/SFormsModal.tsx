@@ -28,7 +28,12 @@ class SFormsModal extends React.Component {
   componentWillReceiveProps(newProps) {
     if (newProps.moduleTypeUri && newProps.scriptPath) {
       this.setState({ isLoading: true });
-      Rest.getScriptForm(newProps.moduleTypeUri, newProps.moduleUri, newProps.scriptPath, newProps.executionScriptPath).then((response) => {
+      Rest.getScriptForm(
+        newProps.moduleTypeUri,
+        newProps.moduleUri,
+        newProps.scriptPath,
+        newProps.executionScriptPath,
+      ).then((response) => {
         this.setState({
           isLoaded: true,
           isLoading: false,
@@ -78,7 +83,7 @@ class SFormsModal extends React.Component {
         "section.collapse": "Collapse",
       },
       intl: {
-        locale: "cs",
+        locale: "en",
       },
       modalView: false,
       // modalProps,
