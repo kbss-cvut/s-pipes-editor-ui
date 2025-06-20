@@ -46,6 +46,9 @@ import {
   SCRIPT_PATH,
 } from "@constants/vocabulary";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import { debounce } from "lodash";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 const rankDirOptions = [
   // preset
@@ -84,7 +87,14 @@ const websocketURL = new URL("/rest/notifications", window.location.href);
 websocketURL.protocol = websocketURL.protocol.replace("http", "ws");
 const client = new W3CWebSocket(websocketURL);
 
+function getMenuButtonHtml({ iconClass, tooltip }: { iconClass: string; tooltip: string }) {
+  return `<span class="menu-btn" data-tippy-content="${tooltip}">
+    <i class="${iconClass}"></i>
+  </span>`;
+}
+
 class Script extends React.Component {
+  private domMutationObserver: MutationObserver;
   constructor(props) {
     super(props);
 
@@ -157,6 +167,10 @@ class Script extends React.Component {
   componentWillUnmount() {
     if (client.readyState === client.OPEN || client.readyState === client.CONNECTING) {
       client.close();
+    }
+
+    if (this.domMutationObserver) {
+      this.domMutationObserver.disconnect();
     }
   }
 
@@ -404,7 +418,7 @@ class Script extends React.Component {
       selector: "node[menu]",
       commands: [
         {
-          content: '<span class="fa fa-trash fa-2x"/>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete this module" }),
           select: (ele) => {
             this.setState({ isLoaded: false });
             Rest.deleteScriptNode(filepath, ele.data("id"))
@@ -417,9 +431,13 @@ class Script extends React.Component {
                 console.error(`An error occurred during node deletion: ${error}`);
               });
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-info-circle fa-2x"/>',
+          content: getMenuButtonHtml({
+            iconClass: "fa fa-info-circle fa-2x",
+            tooltip: "Show input and debug this module",
+          }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "input";
@@ -430,9 +448,10 @@ class Script extends React.Component {
             modalState["scriptPath"] = ele.data("scriptPath");
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-play-circle fa-2x"/>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-play-circle fa-2x", tooltip: "Execute this module" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleURI"] = ele.data("id");
@@ -441,9 +460,13 @@ class Script extends React.Component {
             modalState["showModuleExecutionModal"] = true;
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-file fa-2x"/>',
+          content: getMenuButtonHtml({
+            iconClass: "fa fa-file fa-2x",
+            tooltip: "Open script where this module is defined",
+          }),
           select: (ele) => {
             //TODO modal with style
             if (ele.data("scriptPath") === this.state.file) {
@@ -454,9 +477,10 @@ class Script extends React.Component {
               window.location.href = "?file=" + ele.data("scriptPath");
             }
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-plane fa-2x"/>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-plane fa-2x", tooltip: "Move this module to another script" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["selectedScript"] = ele.data("scriptPath");
@@ -464,9 +488,10 @@ class Script extends React.Component {
             modalState["modalMove"] = true;
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-bug fa-2x"/>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-bug fa-2x", tooltip: "Validate" }),
           select: (ele) => {
             // //TODO modal with style
             console.log(ele.data("validation"));
@@ -480,9 +505,10 @@ class Script extends React.Component {
               );
             }
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-info-circle fa-2x"/>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-info-circle fa-2x", tooltip: "Show output" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "output";
@@ -491,9 +517,10 @@ class Script extends React.Component {
             modalState["moduleLabel"] = ele.data("label");
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="fa fa-cogs fa-2x"/>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-cogs fa-2x", tooltip: "Edit this module" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleTypeUri"] = ele.data("component");
@@ -501,6 +528,7 @@ class Script extends React.Component {
             modalState["fileEdit"] = ele.data("scriptPath");
             this.setState(modalState);
           },
+          contentStyle: { "pointer-events": "all" },
         },
       ],
     });
@@ -509,7 +537,7 @@ class Script extends React.Component {
       selector: "edge[menu]",
       commands: [
         {
-          content: '<span class="fa fa-trash fa-2x"/>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete dependency" }),
           select: (ele) => {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
@@ -524,9 +552,30 @@ class Script extends React.Component {
                 console.error(`An error occurred during edge deletion: ${error}`);
               });
           },
+          contentStyle: { "pointer-events": "all" },
         },
       ],
     });
+
+    // Callback to initialize tooltips for menu buttons of modules
+    const initTooltipDOMMutationCallback = debounce(() => {
+      document.querySelectorAll(".menu-btn[data-tippy-content]").forEach((el) => {
+        if (el._tippy) return;
+
+        tippy(el, {
+          content: el.getAttribute("data-tippy-content"),
+          placement: "right",
+          arrow: true,
+          delay: [500, 0],
+        });
+      });
+    }, 100);
+
+    this.domMutationObserver = new MutationObserver(initTooltipDOMMutationCallback);
+    const cytoscapeContainer = document.querySelector(".__________cytoscape_container");
+    if (cytoscapeContainer) {
+      this.domMutationObserver.observe(cytoscapeContainer, { childList: true, subtree: true });
+    }
 
     this.cy.edgehandles({
       handleNodes: "node[menu]",
