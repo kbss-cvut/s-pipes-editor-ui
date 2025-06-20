@@ -18,6 +18,7 @@ class SFormsFunctionModal extends React.Component {
       moduleUri: null,
       scriptPath: null,
       errorMessage: null,
+      isSubmitting: false,
     };
     this.refForm = React.createRef();
     this.handleErrorModal = this.handleErrorModal.bind(this);
@@ -46,6 +47,7 @@ class SFormsFunctionModal extends React.Component {
   }
 
   async handleSubmit() {
+    this.setState({ isSubmitting: true });
     let data =
       this.refForm.current.getFormQuestionsData()[0][
         "http://onto.fel.cvut.cz/ontologies/documentation/has_related_question"
@@ -72,8 +74,9 @@ class SFormsFunctionModal extends React.Component {
     } catch (error) {
       this.setState({ errorMessage: "An error occurred during script execution" });
       console.error(`An error occurred during script execution: ${error}`);
+    } finally {
+      this.setState({ isLoaded: false, modalVisible: false, isSubmitting: false });
     }
-    this.setState({ isLoaded: false, modalVisible: false });
   }
 
   render() {
@@ -114,8 +117,8 @@ class SFormsFunctionModal extends React.Component {
             <Button variant="secondary" onClick={() => this.handleClose()}>
               Close
             </Button>
-            <Button variant="primary" onClick={() => this.handleSubmit()}>
-              Save Changes
+            <Button variant="primary" onClick={() => this.handleSubmit()} disabled={this.state.isSubmitting}>
+              {this.state.isSubmitting ? "Executing..." : "Execute Function"}
             </Button>
           </Modal.Footer>
         </Modal>
