@@ -94,7 +94,7 @@ function getMenuButtonHtml({ iconClass, tooltip }: { iconClass: string; tooltip:
 }
 
 class Script extends React.Component {
-  private observer: MutationObserver;
+  private domMutationObserver: MutationObserver;
   constructor(props) {
     super(props);
 
@@ -169,8 +169,8 @@ class Script extends React.Component {
       client.close();
     }
 
-    if (this.observer) {
-      this.observer.disconnect();
+    if (this.domMutationObserver) {
+      this.domMutationObserver.disconnect();
     }
   }
 
@@ -418,7 +418,7 @@ class Script extends React.Component {
       selector: "node[menu]",
       commands: [
         {
-          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete" }),
+          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete this module" }),
           select: (ele) => {
             this.setState({ isLoaded: false });
             Rest.deleteScriptNode(filepath, ele.data("id"))
@@ -434,7 +434,10 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: getMenuButtonHtml({ iconClass: "fa fa-info-circle fa-2x", tooltip: "Show input and debug" }),
+          content: getMenuButtonHtml({
+            iconClass: "fa fa-info-circle fa-2x",
+            tooltip: "Show input and debug this module",
+          }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "input";
@@ -448,7 +451,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: getMenuButtonHtml({ iconClass: "fa fa-play-circle fa-2x", tooltip: "Run module" }),
+          content: getMenuButtonHtml({ iconClass: "fa fa-play-circle fa-2x", tooltip: "Execute this module" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleURI"] = ele.data("id");
@@ -460,7 +463,10 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: getMenuButtonHtml({ iconClass: "fa fa-file fa-2x", tooltip: "Get script path" }),
+          content: getMenuButtonHtml({
+            iconClass: "fa fa-file fa-2x",
+            tooltip: "Open script where this module is defined",
+          }),
           select: (ele) => {
             //TODO modal with style
             if (ele.data("scriptPath") === this.state.file) {
@@ -474,7 +480,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: getMenuButtonHtml({ iconClass: "fa fa-plane fa-2x", tooltip: "Move module" }),
+          content: getMenuButtonHtml({ iconClass: "fa fa-plane fa-2x", tooltip: "Move this module to another script" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["selectedScript"] = ele.data("scriptPath");
@@ -514,7 +520,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: getMenuButtonHtml({ iconClass: "fa fa-cogs fa-2x", tooltip: "Edit module" }),
+          content: getMenuButtonHtml({ iconClass: "fa fa-cogs fa-2x", tooltip: "Edit this module" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleTypeUri"] = ele.data("component");
@@ -531,7 +537,7 @@ class Script extends React.Component {
       selector: "edge[menu]",
       commands: [
         {
-          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete" }),
+          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete dependency" }),
           select: (ele) => {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
@@ -551,7 +557,8 @@ class Script extends React.Component {
       ],
     });
 
-    const mutationCallback = debounce(() => {
+    // Callback to initialize tooltips for menu buttons of modules
+    const initTooltipDOMMutationCallback = debounce(() => {
       document.querySelectorAll(".menu-btn[data-tippy-content]").forEach((el) => {
         if (el._tippy) return;
 
@@ -559,13 +566,16 @@ class Script extends React.Component {
           content: el.getAttribute("data-tippy-content"),
           placement: "right",
           arrow: true,
-          delay: [1000, 0],
+          delay: [500, 0],
         });
       });
     }, 100);
 
-    this.observer = new MutationObserver(mutationCallback);
-    this.observer.observe(document.body, { childList: true, subtree: true });
+    this.domMutationObserver = new MutationObserver(initTooltipDOMMutationCallback);
+    const cytoscapeContainer = document.querySelector(".__________cytoscape_container");
+    if (cytoscapeContainer) {
+      this.domMutationObserver.observe(cytoscapeContainer, { childList: true, subtree: true });
+    }
 
     this.cy.edgehandles({
       handleNodes: "node[menu]",
