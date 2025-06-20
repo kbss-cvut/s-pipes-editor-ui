@@ -47,6 +47,8 @@ import {
 } from "@constants/vocabulary";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { debounce } from "lodash";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 const rankDirOptions = [
   // preset
