@@ -85,7 +85,7 @@ class SFormsFunctionModal extends React.Component {
         "section.collapse": "Collapse",
       },
       intl: {
-        locale: "cs",
+        locale: "en",
       },
       modalView: false,
       // modalProps,
