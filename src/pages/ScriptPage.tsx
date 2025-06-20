@@ -46,6 +46,7 @@ import {
   SCRIPT_PATH,
 } from "@constants/vocabulary";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import { debounce } from "lodash";
 
 const rankDirOptions = [
   // preset
@@ -85,6 +86,7 @@ websocketURL.protocol = websocketURL.protocol.replace("http", "ws");
 const client = new W3CWebSocket(websocketURL);
 
 class Script extends React.Component {
+  private observer: MutationObserver;
   constructor(props) {
     super(props);
 
@@ -157,6 +159,10 @@ class Script extends React.Component {
   componentWillUnmount() {
     if (client.readyState === client.OPEN || client.readyState === client.CONNECTING) {
       client.close();
+    }
+
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 
@@ -404,8 +410,7 @@ class Script extends React.Component {
       selector: "node[menu]",
       commands: [
         {
-          content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
+          content: '<span class="menu-btn" data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
           select: (ele) => {
             this.setState({ isLoaded: false });
             Rest.deleteScriptNode(filepath, ele.data("id"))
@@ -422,7 +427,7 @@ class Script extends React.Component {
         },
         {
           content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Show input and debug"><i class="fa fa-info-circle fa-2x"></i></span>',
+            '<span class="menu-btn" data-tippy-content="Show input and debug"><i class="fa fa-info-circle fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "input";
@@ -437,7 +442,7 @@ class Script extends React.Component {
         },
         {
           content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Run module"><i class="fa fa-play-circle fa-2x"></i></span>',
+            '<span class="menu-btn" data-tippy-content="Run module"><i class="fa fa-play-circle fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleURI"] = ele.data("id");
@@ -450,7 +455,7 @@ class Script extends React.Component {
         },
         {
           content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Get script path"><i class="fa fa-file fa-2x"></i></span>',
+            '<span class="menu-btn" data-tippy-content="Get script path"><i class="fa fa-file fa-2x"></i></span>',
           select: (ele) => {
             //TODO modal with style
             if (ele.data("scriptPath") === this.state.file) {
@@ -464,8 +469,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Move module"><i class="fa fa-plane fa-2x"></i></span>',
+          content: '<span class="menu-btn" data-tippy-content="Move module"><i class="fa fa-plane fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["selectedScript"] = ele.data("scriptPath");
@@ -476,8 +480,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Validate"><i class="fa fa-bug fa-2x"></i></span>',
+          content: '<span class="menu-btn" data-tippy-content="Validate"><i class="fa fa-bug fa-2x"></i></span>',
           select: (ele) => {
             // //TODO modal with style
             console.log(ele.data("validation"));
@@ -495,7 +498,7 @@ class Script extends React.Component {
         },
         {
           content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Show output\n"><i class="fa fa-info-circle fa-2x"></i></span>',
+            '<span class="menu-btn" data-tippy-content="Show output"><i class="fa fa-info-circle fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "output";
@@ -507,8 +510,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Edit module\n"><i class="fa fa-cogs fa-2x"></i></span>',
+          content: '<span class="menu-btn" data-tippy-content="Edit module"><i class="fa fa-cogs fa-2x"></i></span>',
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleTypeUri"] = ele.data("component");
@@ -525,8 +527,7 @@ class Script extends React.Component {
       selector: "edge[menu]",
       commands: [
         {
-          content:
-            '<img src onerror="tippy(\'span\', { delay: [1000, 0] })"><span data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
+          content: '<span class="menu-btn" data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
           select: (ele) => {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
@@ -545,6 +546,22 @@ class Script extends React.Component {
         },
       ],
     });
+
+    const mutationCallback = debounce(() => {
+      document.querySelectorAll(".menu-btn[data-tippy-content]").forEach((el) => {
+        if (el._tippy) return;
+
+        tippy(el, {
+          content: el.getAttribute("data-tippy-content"),
+          placement: "right",
+          arrow: true,
+          delay: [1000, 0],
+        });
+      });
+    }, 100);
+
+    this.observer = new MutationObserver(mutationCallback);
+    this.observer.observe(document.body, { childList: true, subtree: true });
 
     this.cy.edgehandles({
       handleNodes: "node[menu]",
