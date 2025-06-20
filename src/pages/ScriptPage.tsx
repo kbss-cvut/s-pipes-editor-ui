@@ -87,6 +87,12 @@ const websocketURL = new URL("/rest/notifications", window.location.href);
 websocketURL.protocol = websocketURL.protocol.replace("http", "ws");
 const client = new W3CWebSocket(websocketURL);
 
+function getMenuButtonHtml({ iconClass, tooltip }: { iconClass: string; tooltip: string }) {
+  return `<span class="menu-btn" data-tippy-content="${tooltip}">
+    <i class="${iconClass}"></i>
+  </span>`;
+}
+
 class Script extends React.Component {
   private observer: MutationObserver;
   constructor(props) {
@@ -412,7 +418,7 @@ class Script extends React.Component {
       selector: "node[menu]",
       commands: [
         {
-          content: '<span class="menu-btn" data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete" }),
           select: (ele) => {
             this.setState({ isLoaded: false });
             Rest.deleteScriptNode(filepath, ele.data("id"))
@@ -428,8 +434,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content:
-            '<span class="menu-btn" data-tippy-content="Show input and debug"><i class="fa fa-info-circle fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-info-circle fa-2x", tooltip: "Show input and debug" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "input";
@@ -443,8 +448,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content:
-            '<span class="menu-btn" data-tippy-content="Run module"><i class="fa fa-play-circle fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-play-circle fa-2x", tooltip: "Run module" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleURI"] = ele.data("id");
@@ -456,8 +460,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content:
-            '<span class="menu-btn" data-tippy-content="Get script path"><i class="fa fa-file fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-file fa-2x", tooltip: "Get script path" }),
           select: (ele) => {
             //TODO modal with style
             if (ele.data("scriptPath") === this.state.file) {
@@ -471,7 +474,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="menu-btn" data-tippy-content="Move module"><i class="fa fa-plane fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-plane fa-2x", tooltip: "Move module" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["selectedScript"] = ele.data("scriptPath");
@@ -482,7 +485,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="menu-btn" data-tippy-content="Validate"><i class="fa fa-bug fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-bug fa-2x", tooltip: "Validate" }),
           select: (ele) => {
             // //TODO modal with style
             console.log(ele.data("validation"));
@@ -499,8 +502,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content:
-            '<span class="menu-btn" data-tippy-content="Show output"><i class="fa fa-info-circle fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-info-circle fa-2x", tooltip: "Show output" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["input"] = "output";
@@ -512,7 +514,7 @@ class Script extends React.Component {
           contentStyle: { "pointer-events": "all" },
         },
         {
-          content: '<span class="menu-btn" data-tippy-content="Edit module"><i class="fa fa-cogs fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-cogs fa-2x", tooltip: "Edit module" }),
           select: (ele) => {
             const modalState = JSON.parse(JSON.stringify(modalInputs));
             modalState["moduleTypeUri"] = ele.data("component");
@@ -529,7 +531,7 @@ class Script extends React.Component {
       selector: "edge[menu]",
       commands: [
         {
-          content: '<span class="menu-btn" data-tippy-content="Delete"><i class="fa fa-trash fa-2x"></i></span>',
+          content: getMenuButtonHtml({ iconClass: "fa fa-trash fa-2x", tooltip: "Delete" }),
           select: (ele) => {
             let sourceNode = ele.data("source");
             let targetNode = ele.data("target");
