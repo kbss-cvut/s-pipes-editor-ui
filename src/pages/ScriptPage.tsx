@@ -122,6 +122,7 @@ class Script extends React.Component {
       showNotification: false,
       notificationData: null,
       showModuleExecutionModal: false,
+      subscript: null,
     };
 
     cytoscape.use(dagre);
@@ -265,7 +266,7 @@ class Script extends React.Component {
   }
 
   handleErrorModal() {
-    this.setState({ errorMessage: null });
+    this.setState({ errorMessage: null, subscript: null });
   }
 
   handleRenderChange = (e, { value }) => {
@@ -548,8 +549,11 @@ class Script extends React.Component {
                 ele.remove();
               })
               .catch((error) => {
-                this.setState({ errorMessage: "An error occurred during edge deletion." });
-                console.error(`An error occurred during edge deletion: ${error}`);
+                this.setState({
+                  errorMessage: `An error occurred during edge deletion\n ${error.response?.data.message}`,
+                  subscript: error.response?.data.subscript ?? null,
+                });
+                console.error(`An error occurred during edge deletion: ${error.response?.data.message}`);
               });
           },
           contentStyle: { "pointer-events": "all" },
@@ -592,8 +596,11 @@ class Script extends React.Component {
               this.setState({ isLoaded: true });
             })
             .catch((error) => {
-              this.setState({ errorMessage: "An error occurred while adding edge/dependency." });
-              console.error(`An error occurred while adding edge/dependency: ${error}`);
+              this.setState({
+                errorMessage: `An error occurred while adding edge/dependency\n ${error.response?.data.message}`,
+                subscript: error.response?.data.subscript ?? null,
+              });
+              console.error(`An error occurred while adding edge/dependency: ${error.response?.data.message}`);
             });
         } else {
           this.cy.remove("edge[source='" + sourceNode.data("id") + "']");
@@ -679,6 +686,18 @@ class Script extends React.Component {
         this.setState(modalState);
       }.bind(this),
     );
+
+    this.cy.on("tap", ":parent", ({ target: node }) => {
+      const scriptPath = node.children()[0]?.data("scriptPath");
+
+      if (scriptPath) {
+        const url = `${location.origin}/script?file=${scriptPath}`;
+        console.log("Opening script editor at:", url);
+        window.open(url, "_blank");
+      } else {
+        console.warn("File path not found in parent node!");
+      }
+    });
   }
 
   render() {
@@ -850,7 +869,11 @@ class Script extends React.Component {
           cy={this.cy}
         />
 
-        <ErrorModal errorMessage={this.state.errorMessage} handleErrorModal={this.handleErrorModal} />
+        <ErrorModal
+          errorMessage={this.state.errorMessage}
+          subscript={this.state.subscript}
+          handleErrorModal={this.handleErrorModal}
+        />
       </div>
     );
   }
