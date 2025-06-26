@@ -108,7 +108,7 @@ class SFormsFunctionModal extends React.Component {
           aria-labelledby="example-custom-modal-styling-title"
         >
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Execute function</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <SForms ref={this.refForm} form={this.state.selectedForm} options={options} />
