@@ -41,6 +41,9 @@ const popover = (
         <br />
         <br />
         ?s &lt;http://xmlns.com/foaf/0.1/knows&gt; &lt;http://example.org/person/2&gt;
+        <br />
+        <br />
+        ?person &lt;http://xmlns.com/foaf/0.1/knows&gt; ?friend
       </span>
     </Popover.Body>
   </Popover>
