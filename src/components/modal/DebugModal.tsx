@@ -26,11 +26,25 @@ const ErrorAlert = ({ message }) => (
 );
 const popover = (
   <Popover id="popover-basic" style={{ fontSize: "14px" }}>
-    <Popover.Header as="h3">Tripple pattern</Popover.Header>
+    <Popover.Header as="h3">Triple pattern</Popover.Header>
     <Popover.Body>
-      Follow the structure <br />
-      <b>&lt;subject&gt; &lt;predicate&gt; &lt;object&gt;</b> <br />
-      or use variables such as <b>?s, ?p, ?o</b>
+      Follow the structure:
+      <br />
+      <b>&lt;subject&gt; &lt;predicate&gt; &lt;object&gt;</b>
+      <br />
+      or use variables such as <b>?s, ?p, ?o</b>.<br />
+      <br />
+      <b>Examples:</b>
+      <br />
+      <span style={{ fontFamily: "monospace" }}>
+        &lt;http://example.org/person/1&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; "Alice"
+        <br />
+        <br />
+        ?s &lt;http://xmlns.com/foaf/0.1/knows&gt; &lt;http://example.org/person/2&gt;
+        <br />
+        <br />
+        ?person &lt;http://xmlns.com/foaf/0.1/knows&gt; ?friend
+      </span>
     </Popover.Body>
   </Popover>
 );
