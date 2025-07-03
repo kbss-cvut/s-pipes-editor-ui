@@ -53,7 +53,7 @@ const ExecutionsPage = () => {
                     <span
                       style={{ cursor: "pointer", color: "#007bff", textDecoration: "underline" }}
                       onClick={() => openJsonInNewTab(data)}
-                      title="Открыть JSON"
+                      title="Open JSON"
                     >
                       {executionId}
                     </span>
