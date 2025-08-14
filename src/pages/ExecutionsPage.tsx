@@ -70,8 +70,8 @@ const ExecutionsPage = () => {
                   </td>
                   <td>{data.has_module_executions?.length ?? 0}</td>
                   <td>{data.has_pipeline_execution_status ?? "STARTED"}</td>
-                  <td>{data.has_executed_function_name ?? "—"}</td>
-                  <td>{data.has_pipeline_name ?? "—"}</td>
+                  <td>{data.has_executed_function ?? "—"}</td>
+                  <td>{data.has_script ?? "—"}</td>
                   <td>
                     <Link to={`/execution?id=${executionId}`}>
                       <FontAwesomeIcon icon={faSearch} />
