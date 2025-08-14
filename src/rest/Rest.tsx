@@ -184,11 +184,12 @@ export const Rest = {
     });
   },
 
-  executeFunction: function (functionUri, params) {
+  executeFunction: function (functionUri, params, scriptPath) {
     const data = {
       "@type": Vocabulary.EXECUTION_FUNCTION_DTO,
       [Vocabulary.FUNCTION_URI]: functionUri,
       [Vocabulary.PARAMETER]: params,
+      [Vocabulary.SCRIPT_PATH]: scriptPath,
     };
     return postFetcher(URLs.FUNCTION_EXECUTE, data);
   },
