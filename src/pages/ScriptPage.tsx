@@ -472,7 +472,7 @@ class Script extends React.Component {
             //TODO modal with style
             if (ele.data("scriptPath") === this.state.file) {
               alert("Script path is the same as actual one");
-            } else if (ele.data("scriptPath") === undefined) {
+            } else if (ele.data("scriptPath") === null) {
               alert("Script path is not defined");
             } else {
               window.location.href = "?file=" + ele.data("scriptPath");
