@@ -16,6 +16,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
 
   const addArgument = () => {
     setState({
+      ...state,
       functionArguments: [
         ...functionArguments,
         {
@@ -33,13 +34,13 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
       ...updatedArguments[index],
       [field]: value,
     };
-    setState({ functionArguments: updatedArguments });
+    setState({ ...state, functionArguments: updatedArguments });
   };
 
   const removeArgument = (index) => {
     const updatedArguments = [...functionArguments];
     updatedArguments.splice(index, 1);
-    setState({ functionArguments: updatedArguments });
+    setState({ ...state, functionArguments: updatedArguments });
   };
   return (
     <Form onSubmit={onSubmit}>
@@ -54,6 +55,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
               const scriptName = e.target.value;
               if (/^[a-zA-Z0-9._-]*$/.test(scriptName)) {
                 setState((prevState) => ({
+                  ...state,
                   scriptName,
                   functionName: `${prevState.returnModuleName}-${scriptName}`,
                   fragment: scriptName,
@@ -63,7 +65,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
           />
           <Form.Select
             value={scriptType}
-            onChange={(e) => setState({ scriptType: e.target.value })}
+            onChange={(e) => setState({ ...state, scriptType: e.target.value })}
             style={{ maxWidth: "10rem" }}
           >
             <option value=".sms.ttl">.sms.ttl</option>
@@ -82,7 +84,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
                 type="url"
                 value={scriptPrefix}
                 onFocus={(e) => e.target.select()}
-                onChange={(e) => setState({ scriptPrefix: e.target.value })}
+                onChange={(e) => setState({ ...state, scriptPrefix: e.target.value })}
                 className="rounded-start rounded-0"
               />
             </Col>
@@ -91,7 +93,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
               <Form.Control
                 value={fragment}
                 onFocus={(e) => e.target.select()}
-                onChange={(e) => setState({ fragment: e.target.value })}
+                onChange={(e) => setState({ ...state, fragment: e.target.value })}
                 className="rounded-0 border-start-0"
               />
             </Col>
@@ -100,7 +102,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
               <Form.Control
                 value={ontologyVersion}
                 onFocus={(e) => e.target.select()}
-                onChange={(e) => setState({ ontologyVersion: e.target.value })}
+                onChange={(e) => setState({ ...state, ontologyVersion: e.target.value })}
                 className="rounded-0 border-start-0 rounded-end"
               />
             </Col>
@@ -116,6 +118,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
             checked={showTemplateFunctions}
             onChange={(e) =>
               setState({
+                ...state,
                 showTemplateFunctions: e.target.checked,
                 returnModuleName: "",
                 returnSuffix: "_Return",
@@ -137,6 +140,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
                     onChange={(e) => {
                       const returnModuleName = e.target.value;
                       setState((prevState) => ({
+                        ...state,
                         returnModuleName,
                         functionName: `${returnModuleName}-${prevState.scriptName}`,
                       }));
@@ -149,7 +153,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
                   <Form.Control
                     value={returnSuffix}
                     onFocus={(e) => e.target.select()}
-                    onChange={(e) => setState({ returnSuffix: e.target.value })}
+                    onChange={(e) => setState({ ...state, returnSuffix: e.target.value })}
                     className="rounded-0 border-start-0 rounded-end"
                   />
                 </Col>
@@ -164,7 +168,7 @@ const CreateScriptForm = ({ state, setState, onSubmit }) => {
                   placeholder="<return module name>-<script name>"
                   value={functionName}
                   onFocus={(e) => e.target.select()}
-                  onChange={(e) => setState({ functionName: e.target.value })}
+                  onChange={(e) => setState({ ...state, functionName: e.target.value })}
                 />
               </InputGroup>
             </Form.Group>
