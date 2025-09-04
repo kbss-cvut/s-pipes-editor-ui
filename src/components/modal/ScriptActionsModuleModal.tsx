@@ -1,51 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Alert, Button, Col, Container, Modal, Row } from "react-bootstrap";
+import Rest from "../../rest/Rest";
+import CreateScriptForm from "../forms/CreateScriptForm";
+import { DEFAULT_SCRIPT_PREFIX } from "@config/env";
 
-import { Alert, Button, Col, Container, Form, Modal, Row, InputGroup } from "react-bootstrap";
-import Rest from "../../rest/Rest.tsx";
-import CreateScriptForm from "../forms/CreateScriptForm.tsx";
-import { DEFAULT_SCRIPT_PREFIX } from "@config/env.ts";
+const ScriptActionsModuleModal = ({ scriptPath, displayName, type, handleRefresh }) => {
+  const [state, setState] = useState({
+    scriptPath: null,
+    displayName: null,
+    type: null,
+    isLoaded: false,
+    createScriptVisible: false,
+    modalVisible: false,
+    scriptName: "",
+    scriptType: ".sms.ttl",
+    scriptPrefix: "",
+    fragment: "",
+    ontologyVersion: "",
+    returnModuleName: "",
+    returnSuffix: "",
+    functionName: "",
+    showTemplateFunctions: true,
+    functionArguments: [],
+  });
 
-class ScriptActionsModuleModal extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      scriptPath: null,
-      displayName: null,
-      type: null,
-      isLoaded: false,
-      createScriptVisible: false,
-      modalVisible: false,
-      scriptName: "",
-      scriptType: ".sms.ttl",
-      scriptPrefix: "",
-      fragment: "",
-      ontologyVersion: "",
-      returnModuleName: "",
-      returnSuffix: "",
-      functionName: "",
-      showTemplateFunctions: true,
-      functionArguments: [],
-    };
-
-    this.handleCreateScript = this.handleCreateScript.bind(this);
-    this.handleDeleteScript = this.handleDeleteScript.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.scriptPath && newProps.displayName && newProps.type) {
-      this.setState({
-        scriptPath: newProps.scriptPath,
-        displayName: newProps.displayName,
-        type: newProps.type,
+  useEffect(() => {
+    if (scriptPath && displayName && type) {
+      setState((prevState) => ({
+        ...prevState,
+        scriptPath,
+        displayName,
+        type,
         isLoaded: true,
         modalVisible: true,
-      });
+      }));
     }
-  }
+  }, [scriptPath, displayName, type]);
 
-  async handleCreateScript(event) {
+  const handleCreateScript = async (event) => {
     event.preventDefault();
     let {
       scriptPath,
@@ -59,18 +51,19 @@ class ScriptActionsModuleModal extends React.Component {
       functionName,
       showTemplateFunctions,
       functionArguments,
-    } = this.state;
+    } = state;
+
     const filename = `${scriptName}${scriptType}`;
     const ontologyURI = `${scriptPrefix}${fragment}${ontologyVersion}`;
     let fullReturnModuleName = `${returnModuleName}${returnSuffix}`;
 
     if (!showTemplateFunctions) {
-      functionName = null;
       fullReturnModuleName = null;
+      functionName = null;
     }
 
     try {
-      const response = await Rest.createScript(
+      await Rest.createScript(
         ontologyURI,
         filename,
         scriptPath,
@@ -79,115 +72,120 @@ class ScriptActionsModuleModal extends React.Component {
         functionArguments,
       );
 
-      this.props.handleRefresh();
-
-      this.setState({
+      handleRefresh();
+      setState((prevState) => ({
+        ...prevState,
         isLoaded: false,
         modalVisible: false,
         createScriptVisible: false,
         functionArguments: [],
-      });
+      }));
     } catch (error) {
       alert("An error occurred during script creation.");
       console.error(`An error occurred during script creation: ${error}`);
     }
-  }
+  };
 
-  handleEditScript() {
-    window.location.href = "/script?file=" + this.state.scriptPath;
-  }
+  const handleEditScript = () => {
+    window.location.href = "/script?file=" + state.scriptPath;
+  };
 
-  async handleDeleteScript() {
+  const handleDeleteScript = async () => {
     try {
-      await Rest.deleteScript(this.state.scriptPath);
-      this.props.handleRefresh();
-      this.setState({ isLoaded: false, modalVisible: false });
+      await Rest.deleteScript(state.scriptPath);
+      handleRefresh();
+      setState((prevState) => ({
+        ...prevState,
+        isLoaded: false,
+        modalVisible: false,
+      }));
     } catch (error) {
       alert("An error occurred during script deletion.");
       console.error(`An error occurred during script deletion: ${error}`);
     }
+  };
+
+  const handleClose = () => {
+    setState((prevState) => ({
+      ...prevState,
+      isLoaded: false,
+      modalVisible: false,
+      createScriptVisible: false,
+      functionArguments: [],
+    }));
+  };
+
+  if (!state.isLoaded) {
+    return null;
   }
 
-  handleClose() {
-    this.setState({ isLoaded: false, modalVisible: false, createScriptVisible: false, functionArguments: [] });
-  }
+  return (
+    <Modal
+      show={state.modalVisible}
+      onHide={handleClose}
+      dialogClassName="modal-80w"
+      aria-labelledby="example-custom-modal-styling-title"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>{state.displayName}</Modal.Title>
+      </Modal.Header>
 
-  render() {
-    if (this.state.isLoaded) {
-      return (
-        <Modal
-          show={this.state.modalVisible}
-          onHide={() => this.handleClose()}
-          dialogClassName="modal-80w"
-          aria-labelledby="example-custom-modal-styling-title"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>{this.state.displayName}</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <Container>
-              {this.state.createScriptVisible === false && (
-                <Row>
-                  {this.state.type === "folder" && (
-                    <Col>
-                      <Alert
-                        onClick={() => {
-                          const folderName = this.state.displayName || "";
-                          this.setState({
-                            createScriptVisible: true,
-                            scriptName: folderName,
-                            scriptPrefix: DEFAULT_SCRIPT_PREFIX || "",
-                            fragment: folderName,
-                            returnModuleName: "",
-                            functionName: "",
-                            returnSuffix: "_Return",
-                            ontologyVersion: "-0.1",
-                            showTemplateFunctions: true,
-                          });
-                        }}
-                        variant="info"
-                        style={{ cursor: "pointer" }}
-                      >
-                        CREATE SCRIPT
-                      </Alert>
-                    </Col>
-                  )}
-                  {this.state.type === "file-text" && (
-                    <Col>
-                      <Alert onClick={() => this.handleEditScript()} variant="info" style={{ cursor: "pointer" }}>
-                        EDIT
-                      </Alert>
-                    </Col>
-                  )}
-                  <Col>
-                    <Alert onClick={() => this.handleDeleteScript()} variant="danger" style={{ cursor: "pointer" }}>
-                      DELETE
-                    </Alert>
-                  </Col>
-                </Row>
+      <Modal.Body>
+        <Container>
+          {!state.createScriptVisible && (
+            <Row>
+              {state.type === "folder" && (
+                <Col>
+                  <Alert
+                    onClick={() => {
+                      const folderName = state.displayName || "";
+                      setState((prevState) => ({
+                        ...prevState,
+                        createScriptVisible: true,
+                        scriptName: folderName,
+                        scriptPrefix: DEFAULT_SCRIPT_PREFIX || "",
+                        fragment: folderName,
+                        returnModuleName: "",
+                        functionName: "",
+                        returnSuffix: "_Return",
+                        ontologyVersion: "-0.1",
+                        showTemplateFunctions: true,
+                      }));
+                    }}
+                    variant="info"
+                    style={{ cursor: "pointer" }}
+                  >
+                    CREATE SCRIPT
+                  </Alert>
+                </Col>
               )}
-
-              {this.state.createScriptVisible === true && (
-                <CreateScriptForm
-                  state={this.state}
-                  setState={(newState) => this.setState(newState)}
-                  onSubmit={this.handleCreateScript}
-                />
+              {state.type === "file-text" && (
+                <Col>
+                  <Alert onClick={handleEditScript} variant="info" style={{ cursor: "pointer" }}>
+                    EDIT
+                  </Alert>
+                </Col>
               )}
-            </Container>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => this.handleClose()}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      );
-    } else {
-      return null;
-    }
-  }
-}
+              <Col>
+                <Alert onClick={handleDeleteScript} variant="danger" style={{ cursor: "pointer" }}>
+                  DELETE
+                </Alert>
+              </Col>
+            </Row>
+          )}
+
+          {state.createScriptVisible && (
+            <CreateScriptForm state={state} setState={setState} onSubmit={handleCreateScript} />
+          )}
+        </Container>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 export default ScriptActionsModuleModal;
