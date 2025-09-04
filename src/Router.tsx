@@ -1,26 +1,30 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Routes, BrowserRouter, Route } from "react-router-dom";
-import HomePage from "@pages/HomePage";
-import ExecutionsPage from "@pages/ExecutionsPage";
-import ScriptsPage from "@pages/ScriptsPage";
 import Layout from "@layouts/Layout";
-import NotFoundPage from "@pages/NotFoundPage";
-import ScriptPage from "@pages/ScriptPage";
-import ExecutionPage from "@pages/ExecutionPage";
+import Spinner from "@components/spinner/Spinner";
+
+const HomePage = React.lazy(() => import("./pages/HomePage"));
+const ScriptsPage = React.lazy(() => import("./pages/ScriptsPage"));
+const ExecutionsPage = React.lazy(() => import("./pages/ExecutionsPage"));
+const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
+const ScriptPage = React.lazy(() => import("./pages/ScriptPage"));
+const ExecutionPage = React.lazy(() => import("./pages/ExecutionPage"));
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="scripts" element={<ScriptsPage />} />
-          <Route path="executions" element={<ExecutionsPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-        <Route path="script" element={<ScriptPage />} />
-        <Route path="execution" element={<ExecutionPage />} />
-      </Routes>
+      <Suspense fallback={<Spinner />}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="scripts" element={<ScriptsPage />} />
+            <Route path="executions" element={<ExecutionsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+          <Route path="script" element={<ScriptPage />} />
+          <Route path="execution" element={<ExecutionPage />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 };

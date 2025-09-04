@@ -7,7 +7,13 @@ const sizeMap = {
   large: "80px",
 };
 
-const Spinner = ({ color = "#3498db", size = "middle", style }) => {
+interface SpinnerProps {
+  color?: string;
+  size?: string;
+  style?: object;
+}
+
+const Spinner = ({ color = "#3498db", size = "middle", style }: SpinnerProps) => {
   const spinnerSize = sizeMap[size] || sizeMap.middle;
 
   return (
