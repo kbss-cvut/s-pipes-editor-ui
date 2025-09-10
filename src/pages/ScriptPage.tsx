@@ -818,8 +818,8 @@ class Script extends React.Component {
         <SFormsModal
           moduleTypeUri={this.state.moduleTypeUri}
           moduleUri={this.state.moduleUri}
-          scriptPath={this.state.fileEdit !== null ? this.state.fileEdit : this.state.file}
-          executionScriptPath={this.state.fileEdit !== null ? this.state.file : undefined}
+          scriptPath={this.state.fileEdit != null ? this.state.fileEdit : this.state.file}
+          executionScriptPath={this.state.fileEdit != null ? this.state.file : undefined}
         />
 
         <SFormsFunctionModal scriptPath={this.state.file} functionUri={this.state.functionUri} />
