@@ -25,7 +25,7 @@
     "@tippyjs/react": "^4.2.5",
     "@triply/yasgui": "^4.2.14",
     "@vitejs/plugin-react": "^4.3.4",
-    "axios": "^1.8.2",
+    "axios": "^1.12.0",
     "bootstrap": "^5.3.3",
     "cytoscape": "^3.30.2",
     "cytoscape-compound-drag-and-drop": "^1.1.0",
