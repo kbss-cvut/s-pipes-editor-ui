@@ -198,7 +198,7 @@ class Script extends React.Component {
       }
     }
 
-    const label = n[LABEL] === undefined ? n["@id"].toString().split("/").reverse()[0] : n[LABEL];
+    const label = n[LABEL] === undefined ? n["@id"].toString().split(/[#\/]/).reverse()[0] : n[LABEL];
     const icon = ICONS_MAP[n[COMPONENT]] === undefined ? "beer.png" : ICONS_MAP[n[COMPONENT]];
 
     newNodes.push({
