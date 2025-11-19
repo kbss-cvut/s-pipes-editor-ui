@@ -69,8 +69,19 @@ const ExecutionsPage = () => {
                       : "—"}
                   </td>
                   <td>{data.has_module_executions?.length ?? 0}</td>
-                  <td>{data.has_pipeline_execution_status ?? "STARTED"}</td>
-                  <td>{data.has_executed_function ?? "—"}</td>
+                  <td>
+                    {data.types?.includes(
+                      "http://onto.fel.cvut.cz/ontologies/dataset-descriptor/finished-pipeline-execution",
+                    )
+                      ? "FINISHED"
+                      : data.types?.includes(
+                            "http://onto.fel.cvut.cz/ontologies/dataset-descriptor/failed-pipeline-execution",
+                          )
+                        ? "FAILED"
+                        : "STARTED"}
+                  </td>
+
+                  <td>{data.has_function ?? "—"}</td>
                   <td>{data.has_script ?? "—"}</td>
                   <td>
                     <Link to={`/execution?id=${executionId}`}>
