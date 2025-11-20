@@ -59,8 +59,8 @@ const ExecutionsPage = () => {
                     </span>
                   </td>
                   <td>
-                    {data.has_pipepline_execution_date
-                      ? dayjs(data.has_pipepline_execution_date).format("YYYY-MM-DD HH:mm:ss.SSS")
+                    {data.has_pipepline_execution_start_date
+                      ? dayjs(data.has_pipepline_execution_start_date).format("YYYY-MM-DD HH:mm:ss.SSS")
                       : "—"}
                   </td>
                   <td>
@@ -89,7 +89,7 @@ const ExecutionsPage = () => {
                     </Link>
                   </td>
                   <td>
-                    <Link to={`/script?file=${data.has_executed_function_script_path}`}>
+                    <Link to={`/script?file=${data.has_script_path}`}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Link>
                   </td>
