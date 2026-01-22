@@ -38,7 +38,7 @@
     "dayjs": "^1.11.13",
     "js-cookie": "^2.2.1",
     "jsonld": "^8.3.3",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.23",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.5",
