@@ -33,6 +33,7 @@ class SFormsFunctionModal extends React.Component {
           modalVisible: true,
           moduleTypeUri: newProps.scriptPath,
           moduleUri: newProps.functionUri,
+          scriptPath: newProps.scriptPath,
         });
       });
     }
@@ -68,7 +69,7 @@ class SFormsFunctionModal extends React.Component {
     });
 
     try {
-      const response = await Rest.executeFunction(functionUri, params.join("&"));
+      const response = await Rest.executeFunction(functionUri, params.join("&"), this.state.scriptPath);
       console.log(response);
       window.location.href = "/executions";
     } catch (error) {
