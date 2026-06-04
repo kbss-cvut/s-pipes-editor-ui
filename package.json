@@ -45,7 +45,7 @@
     "react-cytoscapejs": "^1.2.1",
     "react-dom": "^18.2.0",
     "react-json-pretty": "^2.2.0",
-    "react-router-dom": "^6.30.3",
+    "react-router-dom": "^6.30.4",
     "react-spring": "^8.0.27",
     "react-treebeard": "^3.2.4",
     "semantic-ui-react": "^2.1.5",
